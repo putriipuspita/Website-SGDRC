@@ -1,0 +1,532 @@
+'use client';
+import React, { useState } from 'react';
+// Import Icon
+import { Upload, FileText, Eye, Save, Sliders, MoveVertical, Type, Award } from 'lucide-react';
+
+// Import Komponent
+import toast from 'react-hot-toast';
+import KwitansiPendaftaran from '@/components/peserta/bukti-pendaftaran/RegistrationReceipt';
+import { fetchDenganToken } from '@/lib/apiClient';
+
+// Sub-komponen Input File Template Sertifikat
+const InputTemplateSertifikat = ({ label, value, tipe, modeEdit, onChange, getNamaFile }) => (
+  <div className="space-y-2">
+    <label className="text-[12px] font-bold text-slate-700">{label}</label>
+    <div className="relative group">
+      <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 z-0" size={14} />
+      <input
+        type="text"
+        readOnly
+        value={getNamaFile(value)}
+        className={`w-full pl-10 pr-12 py-2.5 border-2 rounded-xl text-[12px] font-medium outline-none transition-all ${modeEdit ? 'bg-white border-[#16B9FF] text-[#0B255D] cursor-pointer' : 'bg-slate-50 border-slate-100 text-slate-400'
+          }`}
+      />
+      <input
+        type="file"
+        accept="image/png"
+        onChange={(e) => onChange(e, tipe)}
+        disabled={!modeEdit}
+        className={`absolute inset-0 opacity-0 z-10 ${modeEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+      />
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">
+        <Upload size={14} className={modeEdit ? 'text-[#16B9FF]' : ''} />
+      </div>
+    </div>
+  </div>
+);
+
+// Sub-komponen Input File Legalitas (Logo, TTD, Cap)
+const InputLegalitas = ({ label, path, tipe, modeEdit, onChange }) => (
+  <div className="space-y-2">
+    <label className="text-[11px] font-bold text-slate-600 uppercase">{label}</label>
+    <div className="relative h-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
+      {path ? (
+        <img src={path} className="h-full w-full object-contain" alt={label} />
+      ) : (
+        <Upload size={20} className="text-slate-300" />
+      )}
+      {modeEdit && (
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => onChange(e, tipe)}
+          className="absolute inset-0 opacity-0 cursor-pointer"
+        />
+      )}
+    </div>
+  </div>
+);
+
+// Sub-komponen Input Slider Konfigurasi
+const SliderConfigCard = ({ judul, ikon: Ikon, ikonColor, fields, min, max, currentConfig, updateConfig, modeEdit, accentClass }) => (
+  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+    <div className="flex items-center gap-2 mb-1">
+      <Ikon size={14} className={ikonColor} />
+      <span className="text-[12px] font-bold text-slate-700">{judul}</span>
+    </div>
+    {fields.map((field) => (
+      <div key={field} className="flex flex-col gap-1">
+        <div className="flex justify-between text-[8px] font-bold text-slate-500 uppercase">
+          <span>{field.replace('y_', '').replace('size_', '')}</span>
+          <span>{currentConfig[field] || 0}{judul.includes('Posisi') ? '%' : 'px'}</span>
+        </div>
+        <input
+          type="range"
+          disabled={!modeEdit}
+          min={min}
+          max={max}
+          value={currentConfig[field] || 0}
+          onChange={(e) => updateConfig(field, parseInt(e.target.value))}
+          className={`w-full h-1 ${accentClass}`}
+        />
+      </div>
+    ))}
+  </div>
+);
+
+// Komponen Utama Sertifikat
+const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
+  const [configTab, setConfigTab] = useState('sertifikat');
+  const [modeEdit, setModeEdit] = useState(false);
+  const [sertifikatPeserta, setSertifikatPeserta] = useState(data.sertifikat_peserta || '');
+  const [sertifikatJuara, setSertifikatJuara] = useState(data.sertifikat_juara || '');
+  const [nomorMulai, setNomorMulai] = useState(data.sertifikat_nomor_mulai || '001');
+  const [nomorMulaiJuara, setNomorMulaiJuara] = useState(data.sertifikat_nomor_mulai_juara || '001');
+  const [formatNomor, setFormatNomor] = useState(data.sertifikat_format_nomor || '[no]/SPH/PAN-SGDRC/XII/2024');
+  const [previewTipe, setPreviewTipe] = useState('peserta');
+
+  // State Konfigurasi Peserta
+  const [configPeserta, setConfigPeserta] = useState(data.sertifikat_config_peserta ? JSON.parse(data.sertifikat_config_peserta) : {
+    y_nomor: 33, y_nama: 48, y_status: 62, y_kategori: 72,
+    size_nomor: 11, size_nama: 32, size_status: 18, size_kategori: 13,
+    font_nama: 'Cinzel'
+  });
+
+  // State Konfigurasi Juara
+  const [configJuara, setConfigJuara] = useState(data.sertifikat_config_juara ? JSON.parse(data.sertifikat_config_juara) : {
+    y_nomor: 33, y_nama: 48, y_status: 62, y_kategori: 72,
+    size_nomor: 11, size_nama: 32, size_status: 18, size_kategori: 13,
+    font_nama: 'Cinzel'
+  });
+
+  // Sinkronisasi Data ke State Komponen
+  React.useEffect(() => {
+    // Jika Data Tersedia
+    if (data) {
+      setSertifikatPeserta(data.sertifikat_peserta || '');
+      setSertifikatJuara(data.sertifikat_juara || '');
+      setNomorMulai(data.sertifikat_nomor_mulai || '001');
+      setNomorMulaiJuara(data.sertifikat_nomor_mulai_juara || '001');
+      setFormatNomor(data.sertifikat_format_nomor || '[no]/SPH/PAN-SGDRC/XII/2024');
+
+      // Sertifikat Peserta
+      if (data.sertifikat_config_peserta) {
+        try {
+          setConfigPeserta(JSON.parse(data.sertifikat_config_peserta));
+        } catch (e) { }
+      }
+
+      // Sertifikat Juara
+      if (data.sertifikat_config_juara) {
+        try {
+          setConfigJuara(JSON.parse(data.sertifikat_config_juara));
+        } catch (e) { }
+      }
+    }
+  }, [data]);
+
+  // List Font
+  const listFont = [
+    // Serif (Elegant & Classic)
+    { name: 'Cinzel', value: 'Cinzel' },
+    { name: 'Playfair Display', value: 'Playfair Display' },
+    { name: 'Lora', value: 'Lora' },
+    { name: 'Merriweather', value: 'Merriweather' },
+    { name: 'Cormorant Garamond', value: 'Cormorant Garamond' },
+    { name: 'Bodoni Moda', value: 'Bodoni Moda' },
+
+    // Sans-Serif (Modern & Clean)
+    { name: 'Montserrat', value: 'Montserrat' },
+    { name: 'Poppins', value: 'Poppins' },
+    { name: 'Inter', value: 'Inter' },
+    { name: 'Oswald', value: 'Oswald' },
+    { name: 'Raleway', value: 'Raleway' },
+    { name: 'Outfit', value: 'Outfit' },
+
+    // Script & Calligraphy (Beautiful Script)
+    { name: 'Great Vibes', value: 'Great Vibes' },
+    { name: 'Alex Brush', value: 'Alex Brush' },
+    { name: 'Dancing Script', value: 'Dancing Script' },
+    { name: 'Parisienne', value: 'Parisienne' },
+    { name: 'Satisfy', value: 'Satisfy' },
+    { name: 'Pinyon Script', value: 'Pinyon Script' },
+
+    // Display & Decorative (Unique)
+    { name: 'Cinzel Decorative', value: 'Cinzel Decorative' },
+    { name: 'UnifrakturMaguntia', value: 'UnifrakturMaguntia' }
+  ];
+
+  // State Surat Bukti
+  const [ketuaNama, setKetuaNama] = useState(data.ketua_pelaksana || '');
+  const [pathTtd, setPathTtd] = useState(data.path_ttd || '');
+  const [pathCap, setPathCap] = useState(data.path_cap || '');
+  const [pathLogo, setPathLogo] = useState(data.path_logo_robotika || '');
+  const [pathLogoSgdrc, setPathLogoSgdrc] = useState(data.path_logo_sgdrc || '');
+
+  // Update Konfigurasi
+  const updateConfig = (field, value) => {
+    if (previewTipe === 'peserta') setConfigPeserta(prev => ({ ...prev, [field]: value }));
+    else setConfigJuara(prev => ({ ...prev, [field]: value }));
+  };
+
+  const currentConfig = previewTipe === 'peserta' ? configPeserta : configJuara;
+
+  // Fungsi Upload Sertifikat
+  const tanganiUpload = async (e, tipe) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    // Folder Upload
+    const folder = ['peserta', 'juara'].includes(tipe) ? 'sertifikat' : 'legal';
+    const path = await prosesUploadFile(file, folder, "Mengunggah...");
+
+    // Menentukan Tempat Penyimpanan
+    if (path) {
+      if (tipe === 'peserta') setSertifikatPeserta(path);
+      else if (tipe === 'juara') setSertifikatJuara(path);
+      else if (tipe === 'ttd') setPathTtd(path);
+      else if (tipe === 'cap') setPathCap(path);
+      else if (tipe === 'logo_robotika') setPathLogo(path);
+      else if (tipe === 'logo_sgdrc') setPathLogoSgdrc(path);
+      toast.success("Berhasil diunggah");
+    }
+  };
+
+  // Fungsi Mengatur Nama File
+  const getNamaFile = (path) => {
+    if (!path) return 'Belum ada file';
+    return path.split('/').pop();
+  };
+
+  // Fungsi Simpan Perubahan
+  const simpanPerubahan = () => {
+    onSave({
+      umum: {
+        sertifikat_peserta: sertifikatPeserta,
+        sertifikat_juara: sertifikatJuara,
+        sertifikat_nomor_mulai: nomorMulai,
+        sertifikat_nomor_mulai_juara: nomorMulaiJuara,
+        sertifikat_format_nomor: formatNomor,
+        sertifikat_config_peserta: JSON.stringify(configPeserta),
+        sertifikat_config_juara: JSON.stringify(configJuara),
+        ketua_pelaksana: ketuaNama,
+        path_ttd: pathTtd,
+        path_cap: pathCap,
+        path_logo_robotika: pathLogo,
+        path_logo_sgdrc: pathLogoSgdrc
+      }
+    });
+    setModeEdit(false);
+  };
+
+  return (
+    // Halaman Bagian Sertifikat
+    <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 animate-in fade-in duration-700">
+      {/* Memuat Fonts */}
+      <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?family=${(currentConfig.font_nama || 'Cinzel').replace(/ /g, '+')}&display=swap`} />
+
+      {/* Container Isi Dokument */}
+      <div className="lg:col-span-5 space-y-6">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+
+          {/* Container Header */}
+          <div className="bg-[#0B255D] p-1 flex items-center gap-1">
+            {/* Tombol Sertifikat */}
+            <button onClick={() => setConfigTab('sertifikat')} className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wide transition-all ${configTab === 'sertifikat' ? 'bg-white text-[#0B255D] shadow-md' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>
+              <Award size={14} /> Sertifikat
+            </button>
+
+            {/* Tombol Surat Bukti */}
+            <button onClick={() => setConfigTab('surat')} className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wide transition-all ${configTab === 'surat' ? 'bg-white text-[#0B255D] shadow-md' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>
+              <FileText size={14} /> Surat Bukti
+            </button>
+          </div>
+
+          {/* Container Isi Dokument */}
+          <div className="p-6 space-y-6">
+            {configTab === 'sertifikat' ? (
+              // Bagian Sertifikat
+              <div className="space-y-6 animate-in slide-in-from-left duration-300">
+                {/* Template Sertifikat Peserta */}
+                <InputTemplateSertifikat
+                  label="Template Peserta (PNG)"
+                  value={sertifikatPeserta}
+                  tipe="peserta"
+                  modeEdit={modeEdit}
+                  onChange={tanganiUpload}
+                  getNamaFile={getNamaFile}
+                />
+
+                {/* Template Sertifikat Juara */}
+                <InputTemplateSertifikat
+                  label="Template Juara (PNG)"
+                  value={sertifikatJuara}
+                  tipe="juara"
+                  modeEdit={modeEdit}
+                  onChange={tanganiUpload}
+                  getNamaFile={getNamaFile}
+                />
+
+                {/* Format Nomor Sertifikat */}
+                <div className="space-y-2">
+                  <label className="text-[12px] font-bold text-slate-700">Format Nomor Sertifikat</label>
+                  <input type="text" value={formatNomor} disabled={!modeEdit} onChange={(e) => setFormatNomor(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                </div>
+
+                {/* Container Nomor Mulai */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* No Mulai Peserta */}
+                  <div className="space-y-2">
+                    <label className="text-[12px] font-bold text-slate-700">No. Mulai Peserta</label>
+                    <input type="number" value={nomorMulai} disabled={!modeEdit} onChange={(e) => setNomorMulai(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                  </div>
+
+                  {/* No Mulai Juara */}
+                  <div className="space-y-2">
+                    <label className="text-[12px] font-bold text-slate-700">No. Mulai Juara</label>
+                    <input type="number" value={nomorMulaiJuara} disabled={!modeEdit} onChange={(e) => setNomorMulaiJuara(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                  </div>
+                </div>
+
+                {/* Jenis Font Nama */}
+                <div className="space-y-2">
+                  <label className="text-[12px] font-bold text-slate-700">Jenis Font Nama ({previewTipe === 'peserta' ? 'Peserta' : 'Juara'})</label>
+                  <select
+                    disabled={!modeEdit}
+                    value={currentConfig.font_nama || 'Cinzel'}
+                    onChange={(e) => updateConfig('font_nama', e.target.value)}
+                    className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`}
+                  >
+                    {listFont.map(font => (
+                      <option key={font.value} value={font.value}>{font.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Container Slider */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Slider Posisi */}
+                  <SliderConfigCard
+                    judul="Posisi (Y%)"
+                    ikon={MoveVertical}
+                    ikonColor="text-[#16B9FF]"
+                    fields={['y_nomor', 'y_nama', 'y_status', ...(previewTipe === 'juara' ? ['y_kategori'] : [])]}
+                    min={0}
+                    max={100}
+                    currentConfig={currentConfig}
+                    updateConfig={updateConfig}
+                    modeEdit={modeEdit}
+                    accentClass="accent-[#16B9FF]"
+                  />
+
+                  {/* Slider Ukuran */}
+                  <SliderConfigCard
+                    judul="Ukuran (PX)"
+                    ikon={Type}
+                    ikonColor="text-[#F43F5E]"
+                    fields={['size_nomor', 'size_nama', 'size_status', ...(previewTipe === 'juara' ? ['size_kategori'] : [])]}
+                    min={5}
+                    max={100}
+                    currentConfig={currentConfig}
+                    updateConfig={updateConfig}
+                    modeEdit={modeEdit}
+                    accentClass="accent-rose-500"
+                  />
+                </div>
+              </div>
+            ) : (
+
+              // Bagian Surat Bukti
+              <div className="space-y-5 animate-in slide-in-from-right duration-300">
+                {/* Nama Ketua Pelaksana */}
+                <div className="space-y-2">
+                  <label className="text-[12px] font-bold text-slate-700">Nama Ketua Pelaksana</label>
+                  <input type="text" value={ketuaNama} disabled={!modeEdit} onChange={(e) => setKetuaNama(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                </div>
+
+                {/* Container Logo */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Logo Robotika */}
+                  <InputLegalitas
+                    label="Logo Robotika"
+                    path={pathLogo}
+                    tipe="logo_robotika"
+                    modeEdit={modeEdit}
+                    onChange={tanganiUpload}
+                  />
+
+                  {/* Logo SGDRC */}
+                  <InputLegalitas
+                    label="Logo SGDRC"
+                    path={pathLogoSgdrc}
+                    tipe="logo_sgdrc"
+                    modeEdit={modeEdit}
+                    onChange={tanganiUpload}
+                  />
+                </div>
+
+                {/* Container Legalitas */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Tanda Tangan */}
+                  <InputLegalitas
+                    label="Tanda Tangan"
+                    path={pathTtd}
+                    tipe="ttd"
+                    modeEdit={modeEdit}
+                    onChange={tanganiUpload}
+                  />
+
+                  {/* Cap Stempel */}
+                  <InputLegalitas
+                    label="Cap Stempel"
+                    path={pathCap}
+                    tipe="cap"
+                    modeEdit={modeEdit}
+                    onChange={tanganiUpload}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Tombol Simpan atau Edit */}
+            <button onClick={() => { if (modeEdit) simpanPerubahan(); else setModeEdit(true); }} disabled={sedangMenyimpan} className={`w-full py-3 rounded-xl text-[13px] font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${modeEdit ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-[#0B255D] hover:bg-blue-500 text-white'}`}>
+              {sedangMenyimpan ? 'Menyimpan...' : (modeEdit ? <><Save size={16} /> Simpan Perubahan</> : <><Sliders size={16} /> Edit Pengaturan</>)}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Container Preview */}
+      <div className="lg:col-span-7">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
+
+          {/* Container Header */}
+          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div className="flex items-center gap-2"><Eye size={16} className="text-[#16B9FF]" /><span className="text-[12px] font-black text-[#0B255D] uppercase">Preview</span></div>
+            {configTab === 'sertifikat' && (
+              <div className="flex bg-white p-1 rounded-lg border border-slate-200">
+                {['peserta', 'juara'].map(tipe => (
+                  <button
+                    key={tipe}
+                    onClick={() => setPreviewTipe(tipe)}
+                    className={`px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${previewTipe === tipe ? 'bg-[#16B9FF] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'}`}
+                  >
+                    {tipe.charAt(0).toUpperCase() + tipe.slice(1)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Container Tampilan */}
+          <div className="flex-1 p-4 bg-slate-100/50 overflow-auto">
+            {configTab === 'sertifikat' ? (
+              <div className="relative h-[450px] w-fit bg-white shadow-2xl mx-auto overflow-hidden">
+                {(previewTipe === 'peserta' ? sertifikatPeserta : sertifikatJuara) ? (
+                  <>
+                    <img src={previewTipe === 'peserta' ? sertifikatPeserta : sertifikatJuara} className="h-full w-auto" />
+                    {/* Overlay Teks Dinamis Sertifikat */}
+                    <div className="absolute inset-0 pointer-events-none flex flex-col items-center">
+
+                      {/* Nomor */}
+                      <div
+                        style={{
+                          top: `${currentConfig.y_nomor}%`,
+                          fontSize: `${currentConfig.size_nomor * 0.9}px`,
+                          fontFamily: 'Montserrat, sans-serif',
+                          lineHeight: 1
+                        }}
+                        className="absolute w-full text-center text-black"
+                      >
+                        Nomor: {formatNomor.replace('[no]', previewTipe === 'peserta' ? nomorMulai : nomorMulaiJuara)}
+                      </div>
+
+                      {/* Nama */}
+                      <div
+                        style={{
+                          top: `${currentConfig.y_nama}%`,
+                          fontSize: `${currentConfig.size_nama * 0.9}px`,
+                          fontFamily: `"${currentConfig.font_nama || 'Cinzel'}", serif`,
+                          fontWeight: 'bold',
+                          lineHeight: 1
+                        }}
+                        className="absolute w-full text-center text-black"
+                      >
+                        NAMA PESERTA CONTOH
+                      </div>
+
+                      {/* Status */}
+                      <div
+                        style={{
+                          top: `${currentConfig.y_status}%`,
+                          fontSize: `${currentConfig.size_status * 0.9}px`,
+                          fontFamily: 'Montserrat, sans-serif',
+                          lineHeight: 1
+                        }}
+                        className={`absolute w-full text-center font-bold ${previewTipe === 'juara' ? 'text-white' : 'text-black'}`}
+                      >
+                        {previewTipe === 'peserta' ? `PESERTA ROBOT SOCCER SENIOR` : 'JUARA 1'}
+                      </div>
+
+                      {/* Kategori Lomba (Hanya di Juara) */}
+                      {previewTipe === 'juara' && (
+                        <div
+                          style={{
+                            top: `${currentConfig.y_kategori}%`,
+                            fontSize: `${(currentConfig.size_kategori || 13) * 0.9}px`,
+                            fontFamily: 'Montserrat, sans-serif',
+                            lineHeight: 1
+                          }}
+                          className="absolute w-full text-center font-bold uppercase text-black"
+                        >
+                          KATEGORI ROBOT SOCCER SENIOR
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="h-full px-20 flex items-center text-slate-300 font-bold uppercase tracking-widest border-2 border-dashed border-slate-200">No Template</div>
+                )}
+              </div>
+            ) : (
+
+              // Tampilan Preview Unduh Bukti
+              <div className="bg-white border border-slate-200 rounded-xl p-0 max-w-[650px] mx-auto shadow-sm overflow-hidden h-[500px] relative flex justify-center bg-slate-50/30">
+                <div className="scale-[0.42] origin-top translate-y-2">
+                  <KwitansiPendaftaran
+                    pengaturan={{
+                      ketua_pelaksana: ketuaNama,
+                      path_ttd: pathTtd,
+                      path_cap: pathCap,
+                      path_logo_robotika: pathLogo,
+                      path_logo_sgdrc: pathLogoSgdrc
+                    }}
+                    data={{
+                      id: 1,
+                      lomba: "ROBOT SOCCER SENIOR",
+                      tim: "TIM CONTOH SGDRC",
+                      peserta: ["PESERTA CONTOH 1", "PESERTA CONTOH 2"],
+                      jenjang: "Mahasiswa",
+                      instansi: "Universitas Sunan Gunung Djati"
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Sertifikat;
