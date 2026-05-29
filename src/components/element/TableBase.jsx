@@ -9,7 +9,8 @@ export const TableBase = ({
   emptyText = 'Data Belum Ada',
   notFound = false,
   notFoundText = 'Data tidak ditemukan',
-  children
+  children,
+  footer
 }) => {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.05),0_0_20px_rgba(22,185,255,0.06)] overflow-hidden">
@@ -43,13 +44,13 @@ export const TableBase = ({
               </tr>
             ) : isEmpty ? (
               <tr>
-                <td colSpan={headers.length} className="py-16 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
+                <td colSpan={headers.length} className="py-8 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
                   {emptyText}
                 </td>
               </tr>
             ) : notFound ? (
               <tr>
-                <td colSpan={headers.length} className="py-16 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
+                <td colSpan={headers.length} className="py-8 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
                   {notFoundText}
                 </td>
               </tr>
@@ -59,6 +60,12 @@ export const TableBase = ({
           </tbody>
         </table>
       </div>
+      {/* Paginasi / Footer Menyatu */}
+      {footer && (
+        <div className="border-t border-slate-100">
+          {footer}
+        </div>
+      )}
     </div>
   );
 };

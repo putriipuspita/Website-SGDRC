@@ -382,6 +382,44 @@ const PesertaLomba = () => {
               loading={loading}
               loadingText="Memuat Data Peserta..."
               isEmpty={daftarPeserta.length === 0 && kataKunci === ''}
+              footer={
+                <div className="px-6 py-3 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+                  <p className="text-[11px] font-bold text-slate-600">
+                    Menampilkan {indeksPertama + 1} - {Math.min(indeksTerakhir, dataTerfilter.length)} dari {dataTerfilter.length} data
+                  </p>
+
+                  {/* Container Tombol */}
+                  <div className="flex items-center gap-2.5">
+                    {/* Tombol Sebelumnya */}
+                    <button
+                      disabled={halamanSekarang === 1}
+                      onClick={() => setHalamanSekarang(halamanSekarang - 1)}
+                      className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
+                          ${halamanSekarang === 1 ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
+                    >
+                      <ChevronLeft size={16} className={`transition-transform ${halamanSekarang !== 1 && 'group-hover:-translate-x-0.5'}`} />
+                      Sebelumnya
+                    </button>
+
+                    {/* Nomor Halaman */}
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F8FAFC] border-2 border-slate-100 text-[#0B255D] text-[12px] font-black shadow-sm">
+                      {halamanSekarang}
+                    </div>
+
+                    {/* Tombol Selanjutnya */}
+                    <button
+                      disabled={halamanSekarang >= totalHalaman}
+                      onClick={() => setHalamanSekarang(halamanSekarang + 1)}
+                      className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
+                          ${halamanSekarang >= totalHalaman ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
+                    >
+                      Selanjutnya
+                      <ChevronRight size={16} className={`transition-transform ${halamanSekarang < totalHalaman && 'group-hover:translate-x-0.5'}`} />
+                    </button>
+                  </div>
+                </div>
+              }
+              // Data Belum Ada
               emptyText="Data Belum Ada"
               notFound={dataTampil.length === 0 && (daftarPeserta.length > 0 || kataKunci !== '')}
               notFoundText="Data tidak ditemukan"
@@ -493,43 +531,6 @@ const PesertaLomba = () => {
                 </tr>
               ))}
             </TableBase>
-
-            {/* Container Paginasi */}
-            <div className="px-6 py-3 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-[11px] font-bold text-slate-600">
-                Menampilkan {indeksPertama + 1} - {Math.min(indeksTerakhir, dataTerfilter.length)} dari {dataTerfilter.length} data
-              </p>
-
-              {/* Continer Tombol */}
-              <div className="flex items-center gap-2.5">
-                {/* Tombol Sebelumnya */}
-                <button
-                  disabled={halamanSekarang === 1}
-                  onClick={() => setHalamanSekarang(halamanSekarang - 1)}
-                  className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
-                      ${halamanSekarang === 1 ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
-                >
-                  <ChevronLeft size={16} className={`transition-transform ${halamanSekarang !== 1 && 'group-hover:-translate-x-0.5'}`} />
-                  Sebelumnya
-                </button>
-
-                {/* Nomor Halaman */}
-                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F8FAFC] border-2 border-slate-100 text-[#0B255D] text-[12px] font-black shadow-sm">
-                  {halamanSekarang}
-                </div>
-
-                {/* Tombol Selanjutnya */}
-                <button
-                  disabled={halamanSekarang >= totalHalaman}
-                  onClick={() => setHalamanSekarang(halamanSekarang + 1)}
-                  className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
-                      ${halamanSekarang >= totalHalaman ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
-                >
-                  Selanjutnya
-                  <ChevronRight size={16} className={`transition-transform ${halamanSekarang < totalHalaman && 'group-hover:translate-x-0.5'}`} />
-                </button>
-              </div>
-            </div>
 
           </div>
         </main>

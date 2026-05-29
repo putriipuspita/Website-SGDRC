@@ -180,7 +180,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
       Object.keys(berkas).forEach(k => { if (berkas[k]) formData.append(k, berkas[k]); });
 
       // Kirim Request ke Backend
-      const res = await fetchDenganToken('/api/peserta/pendaftaran', {
+      const res = await fetchDenganToken('/api/peserta/daftar', {
         method: 'POST',
         body: formData
       });

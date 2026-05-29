@@ -174,13 +174,6 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
   return (
     // Halaman Bagian Jadwal
     <div className="space-y-6 animate-in slide-in-from-bottom-2 duration-500 pb-10">
-      {/* Scrollbar Custome */}
-      <style>{`
-        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; transition: all 0.3s; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-      `}</style>
 
       {/* Container Konten Jadwal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
