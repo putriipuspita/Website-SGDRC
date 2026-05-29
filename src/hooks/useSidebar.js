@@ -1,15 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-/**
- * Custom hook untuk mengatur state sidebar + sinkronisasi localStorage
- * Menghapus ~25 baris kode duplikat dari 3 file halaman peserta
- * (Dashboard.jsx, DataPeserta.jsx, Sertifikat.jsx)
- *
- * @returns {[boolean, Function]} - [apakahSidebarTerbuka, setApakahSidebarTerbuka]
- */
+// Fungsi Buka Tutup Sidebar
 const useSidebar = () => {
-  // Inisialisasi state sidebar dari localStorage (atau default)
+
+  // Fungsi Inisialisasi state sidebar dari localStorage
   const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(() => {
     if (typeof window !== 'undefined') {
       const isMobile = window.innerWidth < 640;
