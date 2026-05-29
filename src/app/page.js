@@ -18,7 +18,7 @@ async function ambilDataLanding() {
     settings.forEach(row => pengaturan[row.nama_key] = row.nilai);
     
     // 2. Ambil Lomba
-    const [lombaRows] = await db.query('SELECT * FROM lomba ORDER BY id ASC');
+    const [lombaRows] = await db.query('SELECT * FROM lomba_landing_page ORDER BY id ASC');
     const dataLomba = lombaRows.map(l => ({
       ...l,
       // Parse labels yang sekarang ada di kolom tunggal sebagai JSON

@@ -1,20 +1,13 @@
-import { hubungkanDB } from '@/lib/db';
+import { verifikasiUser } from '@/lib/auth';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
-import jwt from 'jsonwebtoken';
-
-const SECRET_KEY = 'sgdrc-rahasia-banget';
 
 export async function POST(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) return new Response(JSON.stringify({ pesan: "Sesi Berakhir" }), { status: 401 });
+    const { decoded, db, error } = await verifikasiUser(req);
+    if (error) return error;
     
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
     const userId = decoded.id;
-
-    const db = await hubungkanDB();
 
     // Verifikasi user masih ada
     const [userExist] = await db.query('SELECT id FROM users WHERE id = ?', [userId]);

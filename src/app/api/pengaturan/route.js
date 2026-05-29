@@ -63,25 +63,3 @@ export async function GET() {
     return NextResponse.json({ error: 'Gagal mengambil data' }, { status: 500 });
   }
 }
-
-export async function POST(request) {
-  try {
-    const data = await request.json();
-    const db = await hubungkanDB();
-
-    // Update setiap key yang dikirim
-    for (const [key, nilai] of Object.entries(data)) {
-      const [cek] = await db.query('SELECT nama_key FROM pengaturan WHERE nama_key = ?', [key]);
-      if (cek.length > 0) {
-        await db.query('UPDATE pengaturan SET nilai = ? WHERE nama_key = ?', [nilai, key]);
-      } else {
-        await db.query('INSERT INTO pengaturan (nama_key, nilai) VALUES (?, ?)', [key, nilai]);
-      }
-    }
-
-    return NextResponse.json({ pesan: 'Berhasil diperbarui' });
-  } catch (error) {
-    console.error('Error Save:', error);
-    return NextResponse.json({ error: 'Gagal menyimpan data' }, { status: 500 });
-  }
-}

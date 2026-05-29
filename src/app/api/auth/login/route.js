@@ -2,7 +2,7 @@ import { hubungkanDB } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = 'sgdrc-rahasia-banget'; // Gunakan .env nantinya
+import { SECRET_KEY } from '@/lib/auth';
 
 export async function POST(req) {
   try {

@@ -53,7 +53,7 @@ CREATE TABLE `lomba_landing_page` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `lomba` (`id`, `judul`, `deskripsi`, `gambar`, `labels`) VALUES
+INSERT INTO `lomba_landing_page` (`id`, `judul`, `deskripsi`, `gambar`, `labels`) VALUES
 (1, 'FAST BUILDING', 'Kompetisi merakit project dalam waktu terbatas untuk menguji kecepatan dan ketepatan.', '/aset/lomba/fast building.png', '[{"teks":"Junior","sub":"(Maks 7 Tahun)"},{"teks":"Senior","sub":"(Maks 9 Tahun)"}]'),
 (2, 'ROBOT SOCCER', 'Kompetisi permainan sepak bola antar robot dalam tim yang terdiri dari 2 peserta.', '/aset/lomba/soccer.png', '[{"teks":"Junior","sub":"(SD)"},{"teks":"Senior","sub":"(SMP & SMA)"}]'),
 (3, 'PROJECT INNOVATIVE', 'Kompetisi menciptakan atau mengembangkan inovasi teknologi dalam menjawab permasalahan', '/aset/lomba/project innovative.png', '[{"teks":"Junior","sub":"(SMP)"},{"teks":"Senior","sub":"(SMA & Mhsw)"}]'),

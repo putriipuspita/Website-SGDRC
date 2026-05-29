@@ -1,29 +1,18 @@
-import { hubungkanDB } from '@/lib/db';
-import jwt from 'jsonwebtoken';
+import { verifikasiAdmin, simpanBerkasUpload } from '@/lib/auth';
 
-const SECRET_KEY = 'sgdrc-rahasia-banget';
-
-// 1. Ambil Data Peserta (dengan Search & Filter Slug)
+// Fungsi mengambil data peserta
 export async function GET(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) return new Response(JSON.stringify({ pesan: "Sesi habis" }), { status: 401 });
-    
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    
-    const db = await hubungkanDB();
+    // Verifikasi admin
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
-    // Cek apakah user masih ada dan rolenya admin di DB
-    const [user] = await db.query('SELECT role FROM users WHERE id = ?', [decoded.id]);
-    if (user.length === 0 || user[0].role !== 'admin') {
-      return new Response(JSON.stringify({ pesan: "Akses ditolak" }), { status: 403 });
-    }
-
+    // Ambil Parameter URL
     const { searchParams } = new URL(req.url);
-    const slug = searchParams.get('slug'); 
+    const slug = searchParams.get('slug');
     const cari = searchParams.get('search');
-    
+
+    // Ambil data peserta
     let query = `
       SELECT p.*, u.email, l.nama as nama_lomba 
       FROM pendaftaran p
@@ -31,15 +20,17 @@ export async function GET(req) {
       LEFT JOIN lomba_dashboard l ON p.lomba_id = l.id
       WHERE 1=1
     `;
-    
+
     let params = [];
-    
+
+    // Filter berdasarka nama lomba
     if (slug) {
       const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
       query += ` AND l.nama = ?`;
       params.push(namaLombaDB);
     }
 
+    // Filter Pencarian Peserta
     if (cari) {
       query += ` AND (
         p.nama_tim LIKE ? OR 
@@ -51,16 +42,18 @@ export async function GET(req) {
       const keyword = `%${cari}%`;
       params.push(keyword, keyword, keyword, keyword, keyword);
     }
-    
-    query += ` ORDER BY p.tanggal_pendaftaran DESC`;
 
+    // Urutkan Berdasarkan Tanggal Pendaftaran
+    query += ` ORDER BY p.tanggal_pendaftaran DESC`;
     const [rows] = await db.query(query, params);
-    
+
+    // Respons Berhasi;
     return new Response(JSON.stringify(rows), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
 
+    // Error Server
   } catch (error) {
     console.error("Error Admin Fetch Peserta:", error);
     return new Response(JSON.stringify({ pesan: "Gagal mengambil data" }), { status: 500 });
@@ -69,125 +62,105 @@ export async function GET(req) {
 
 import { kirimEmailNotifikasi } from '@/lib/email';
 
-// Helper Hapus File
+// Fungsi menghapus file
 async function hapusFileFisik(pathRelatif) {
-    if (!pathRelatif || !pathRelatif.startsWith('/uploads/')) return;
-    try {
-        const { unlink } = await import('fs/promises');
-        const { join } = await import('path');
-        const fullPath = join(process.cwd(), 'public', pathRelatif);
-        await unlink(fullPath);
-    } catch (err) {
-        console.error(`Gagal hapus file: ${pathRelatif}`, err.message);
-    }
+  if (!pathRelatif || !pathRelatif.startsWith('/uploads/')) return;
+  try {
+    const { unlink } = await import('fs/promises');
+    const { join } = await import('path');
+    const fullPath = join(process.cwd(), 'public', pathRelatif);
+    await unlink(fullPath);
+  } catch (err) {
+    console.error(`Gagal hapus file: ${pathRelatif}`, err.message);
+  }
 }
 
-// 2. Update Status Pendaftaran (Dukungan Upload Bukti Refund)
+// Fungsi update status pendaftaran
 export async function PATCH(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) return new Response(JSON.stringify({ pesan: "Sesi habis" }), { status: 401 });
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    const db = await hubungkanDB();
-
-    const [user] = await db.query('SELECT role FROM users WHERE id = ?', [decoded.id]);
-    if (user.length === 0 || user[0].role !== 'admin') return new Response(null, { status: 403 });
-
+    // Ambil data input
     const formData = await req.formData();
     const id = formData.get('id');
     const status = formData.get('status');
     const catatan = formData.get('catatan') || '';
     const fileRefund = formData.get('buktiRefund');
 
+    // Ambil data peserta
     const [peserta] = await db.query(
       `SELECT p.nama_tim, p.nama_peserta1, u.email 
        FROM pendaftaran p 
        JOIN users u ON p.user_id = u.id 
-       WHERE p.id = ?`, 
+       WHERE p.id = ?`,
       [id]
     );
 
+    // Validasi peserta
     if (peserta.length === 0) return new Response(JSON.stringify({ pesan: "Data tidak ditemukan" }), { status: 404 });
 
+    // Logika reset status
     const resetRefund = formData.get('resetRefund');
     const [pesertaFull] = await db.query(`SELECT status_pendaftaran, file_bukti_refund FROM pendaftaran WHERE id = ?`, [id]);
     const isKoreksi = status === 'refund' && pesertaFull[0].status_pendaftaran === 'refund';
 
-    // 1. Logika RESET (Kembali ke Terverifikasi)
+    // Logika reset (kembali terverfikasi)
     if (resetRefund === 'true') {
-        // HAPUS FILE FISIK REFUND LAMA
-        if (pesertaFull[0].file_bukti_refund) await hapusFileFisik(pesertaFull[0].file_bukti_refund);
-        
-        await db.query(`UPDATE pendaftaran SET status_pendaftaran = 'success', file_bukti_refund = NULL WHERE id = ?`, [id]);
-        return new Response(JSON.stringify({ pesan: "Status berhasil di-reset ke Terverifikasi" }), { status: 200 });
+      if (pesertaFull[0].file_bukti_refund) await hapusFileFisik(pesertaFull[0].file_bukti_refund);
+
+      // Update status database
+      await db.query(`UPDATE pendaftaran SET status_pendaftaran = 'success', file_bukti_refund = NULL WHERE id = ?`, [id]);
+      return new Response(JSON.stringify({ pesan: "Status berhasil di-reset ke Terverifikasi" }), { status: 200 });
     }
 
+    // Query update status
     let query = `UPDATE pendaftaran SET status_pendaftaran = ?, catatan_admin = ?`;
     let params = [status, catatan];
 
-    // Jika ada file refund
+    // Upload Bukti Refund Baru
     if (fileRefund && typeof fileRefund !== 'string') {
-        // HAPUS FILE FISIK REFUND LAMA JIKA ADA (SEBELUM GANTI BARU)
-        if (pesertaFull[0].file_bukti_refund) await hapusFileFisik(pesertaFull[0].file_bukti_refund);
+      // Hapus File Refund Lama
+      if (pesertaFull[0].file_bukti_refund) await hapusFileFisik(pesertaFull[0].file_bukti_refund);
 
-        const { writeFile } = await import('fs/promises');
-        const { join } = await import('path');
-        const bytes = await fileRefund.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const fileName = `${Date.now()}-refund-${fileRefund.name.replace(/\s+/g, '_')}`;
-        const pathBukti = `/uploads/pendaftaran/${fileName}`;
-        const fullPath = join(process.cwd(), 'public', pathBukti);
-        await writeFile(fullPath, buffer);
-        
+      const pathBukti = await simpanBerkasUpload(fileRefund, 'refund');
+      if (pathBukti) {
         query += `, file_bukti_refund = ?`;
         params.push(pathBukti);
+      }
     }
 
+    // Jalankan Update Database
     query += ` WHERE id = ?`;
     params.push(id);
     await db.query(query, params);
 
+    // Kirim email notifikasi
     const host = req.headers.get('host');
     const linkBukti = status === 'refund' ? (params.length > 2 ? params[2] : pesertaFull[0].file_bukti_refund) : null;
-    
     kirimEmailNotifikasi(peserta[0].email, peserta[0].nama_tim || peserta[0].nama_peserta1, status, catatan, host, linkBukti, isKoreksi);
 
+    // Respons Berhasil
     return new Response(JSON.stringify({ pesan: "Status berhasil diupdate" }), { status: 200 });
+
+    // Error Server
   } catch (error) {
     console.error("Gagal update status:", error);
     return new Response(JSON.stringify({ pesan: "Gagal update status" }), { status: 500 });
   }
 }
 
-// 3. Edit Data Peserta
+// Edit Data Peserta
 export async function PUT(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    const db = await hubungkanDB();
-
-    const [user] = await db.query('SELECT role FROM users WHERE id = ?', [decoded.id]);
-    if (user.length === 0 || user[0].role !== 'admin') return new Response(null, { status: 403 });
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
     const formData = await req.formData();
     const id = formData.get('id');
 
-    let pathBuktiBaru = null;
     const file = formData.get('buktiTransfer');
-    if (file && typeof file !== 'string') {
-        const { writeFile, mkdir } = await import('fs/promises');
-        const { join, dirname } = await import('path');
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const fileName = `${Date.now()}-edit-${file.name.replace(/\s+/g, '_')}`;
-        pathBuktiBaru = `/uploads/pendaftaran/${fileName}`;
-        const fullPath = join(process.cwd(), 'public', pathBuktiBaru);
-        await mkdir(dirname(fullPath), { recursive: true });
-        await writeFile(fullPath, buffer);
-    }
+    const pathBuktiBaru = await simpanBerkasUpload(file, 'edit');
 
     let query = `
       UPDATE pendaftaran SET 
@@ -218,23 +191,17 @@ export async function PUT(req) {
 // 4. Hapus Pendaftaran (Auto-Delete Files)
 export async function DELETE(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) return new Response(JSON.stringify({ pesan: "Sesi Berakhir" }), { status: 401 });
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    const db = await hubungkanDB();
-
-    const [user] = await db.query('SELECT role FROM users WHERE id = ?', [decoded.id]);
-    if (user.length === 0 || user[0].role !== 'admin') return new Response(null, { status: 403 });
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
     const { id } = await req.json();
 
     // AMBIL PATH SELURUH FILE SEBELUM DIHAPUS
     const [pendaftar] = await db.query(
-      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE id = ?", 
+      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE id = ?",
       [id]
     );
-    
+
     // HAPUS DARI DATABASE
     await db.query("DELETE FROM pendaftaran WHERE id = ?", [id]);
 
@@ -242,10 +209,10 @@ export async function DELETE(req) {
     if (pendaftar.length > 0) {
       const p = pendaftar[0];
       const filePaths = [
-        p.file_bukti_bayar, 
-        p.file_bukti_refund, 
-        p.file_kartu_siswa, 
-        p.file_follow_ig, 
+        p.file_bukti_bayar,
+        p.file_bukti_refund,
+        p.file_kartu_siswa,
+        p.file_follow_ig,
         p.file_follow_ig_robotika,
         p.file_follow_tiktok
       ];
@@ -264,23 +231,18 @@ export async function DELETE(req) {
 // 5. Tambah Peserta Manual
 export async function POST(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    const db = await hubungkanDB();
-
-    const [userAdmin] = await db.query('SELECT role FROM users WHERE id = ?', [decoded.id]);
-    if (userAdmin.length === 0 || userAdmin[0].role !== 'admin') return new Response(null, { status: 403 });
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
     const formData = await req.formData();
     const slug = formData.get('slug');
     const email = formData.get('email');
-    
+
     let lombaId = null;
     if (slug) {
-        const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
-        const [lomba] = await db.query("SELECT id FROM lomba_dashboard WHERE nama = ?", [namaLombaDB]);
-        if (lomba.length > 0) lombaId = lomba[0].id;
+      const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
+      const [lomba] = await db.query("SELECT id FROM lomba_dashboard WHERE nama = ?", [namaLombaDB]);
+      if (lomba.length > 0) lombaId = lomba[0].id;
     }
 
     if (!lombaId) return new Response(JSON.stringify({ pesan: "Lomba tidak valid" }), { status: 400 });
@@ -288,19 +250,8 @@ export async function POST(req) {
     const [user] = await db.query("SELECT id FROM users WHERE email = ?", [email]);
     if (user.length === 0) return new Response(JSON.stringify({ pesan: "User tidak ditemukan" }), { status: 400 });
 
-    let pathBukti = null;
     const file = formData.get('buktiTransfer');
-    if (file && typeof file !== 'string') {
-        const { writeFile, mkdir } = await import('fs/promises');
-        const { join, dirname } = await import('path');
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const fileName = `${Date.now()}-admin-${file.name.replace(/\s+/g, '_')}`;
-        pathBukti = `/uploads/pendaftaran/${fileName}`;
-        const fullPath = join(process.cwd(), 'public', pathBukti);
-        await mkdir(dirname(fullPath), { recursive: true });
-        await writeFile(fullPath, buffer);
-    }
+    const pathBukti = await simpanBerkasUpload(file, 'admin');
 
     await db.query(
       `INSERT INTO pendaftaran (
@@ -308,9 +259,9 @@ export async function POST(req) {
         asal_instansi, jenjang, whatsapp, file_bukti_bayar, status_pendaftaran, tanggal_pendaftaran
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'success', NOW())`,
       [
-        user[0].id, lombaId, formData.get('nama_tim') || null, formData.get('nama_peserta1'), 
+        user[0].id, lombaId, formData.get('nama_tim') || null, formData.get('nama_peserta1'),
         formData.get('nama_peserta2') || null, formData.get('nama_peserta3') || null,
-        formData.get('asal_instansi'), formData.get('jenjang'), formData.get('whatsapp'), 
+        formData.get('asal_instansi'), formData.get('jenjang'), formData.get('whatsapp'),
         pathBukti
       ]
     );

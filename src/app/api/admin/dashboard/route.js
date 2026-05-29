@@ -1,62 +1,40 @@
-import { hubungkanDB } from '@/lib/db';
-import jwt from 'jsonwebtoken';
+import { verifikasiAdmin } from '@/lib/auth';
 
-const SECRET_KEY = 'sgdrc-rahasia-banget';
-
+// Endpoint GET statistik dashboard admin
 export async function GET(req) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ pesan: "Sesi habis, silakan login ulang" }), { 
-        status: 401,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    const { db, error } = await verifikasiAdmin(req);
+    if (error) return error;
 
-    const token = authHeader.split(' ')[1];
-    let decoded;
     try {
-      decoded = jwt.verify(token, SECRET_KEY);
-    } catch (err) {
-      return new Response(JSON.stringify({ pesan: "Token tidak valid" }), { 
-        status: 401,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    if (decoded.role !== 'admin') {
-      return new Response(JSON.stringify({ pesan: "Akses ditolak" }), { 
-        status: 403,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
-    const db = await hubungkanDB();
-    
-    // Pastikan koneksi database aman
-    try {
-      // 1. Total Pendaftar (Hanya yang user-nya masih ada)
+      // Statistik total pendaftar
       const [totalRows] = await db.query(`
         SELECT COUNT(*) as jumlah FROM pendaftaran p 
         WHERE EXISTS (SELECT 1 FROM users u WHERE u.id = p.user_id)
       `);
+
+      // Statistik pendaftar sukses
       const [successRows] = await db.query(`
         SELECT COUNT(*) as jumlah FROM pendaftaran p 
         WHERE status_pendaftaran = 'success' 
         AND EXISTS (SELECT 1 FROM users u WHERE u.id = p.user_id)
       `);
+
+      // Statistik pendaftar pending
       const [pendingRows] = await db.query(`
         SELECT COUNT(*) as jumlah FROM pendaftaran p 
         WHERE status_pendaftaran = 'pending' 
         AND EXISTS (SELECT 1 FROM users u WHERE u.id = p.user_id)
       `);
+
+      // Statistik pendaftar refund
       const [refundRows] = await db.query(`
         SELECT COUNT(*) as jumlah FROM pendaftaran p 
         WHERE status_pendaftaran = 'refund' 
         AND EXISTS (SELECT 1 FROM users u WHERE u.id = p.user_id)
       `);
 
-      // 2. Statistik Per Lomba (Hanya hitung yang Terverifikasi/Success)
+      // Data pendaftar tiap lomba
       const [lombaStats] = await db.query(`
         SELECT l.nama, COUNT(p.id) as jumlah 
         FROM lomba_dashboard l
@@ -65,6 +43,7 @@ export async function GET(req) {
         GROUP BY l.id
       `);
 
+      // Response berhasil
       return new Response(JSON.stringify({
         statistikUtama: {
           total: totalRows[0].jumlah,
@@ -73,21 +52,24 @@ export async function GET(req) {
           refund: refundRows[0].jumlah
         },
         statistikLomba: lombaStats
-      }), { 
+      }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
+
+      // Error database
     } catch (dbError) {
       console.error("DB Error Dashboard:", dbError);
-      return new Response(JSON.stringify({ pesan: "Database bermasalah: " + dbError.message }), { 
+      return new Response(JSON.stringify({ pesan: "Database bermasalah: " + dbError.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
+    // Error server
   } catch (error) {
     console.error("Dashboard Error:", error);
-    return new Response(JSON.stringify({ pesan: "Terjadi kesalahan server internal" }), { 
+    return new Response(JSON.stringify({ pesan: "Terjadi kesalahan server internal" }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

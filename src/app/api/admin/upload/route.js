@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs/promises';
+import { verifikasiAdmin } from '@/lib/auth';
 
 export async function POST(request) {
   try {
+    const { error } = await verifikasiAdmin(request);
+    if (error) return error;
+
     const formData = await request.formData();
     const file = formData.get('file');
     const folder = formData.get('folder') || 'umum';
