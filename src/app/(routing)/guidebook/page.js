@@ -13,6 +13,7 @@ async function ambilDataGuidebook() {
   }
 }
 
+// Halaman GuideBook
 export default async function Page() {
   const dataAwal = await ambilDataGuidebook();
 
