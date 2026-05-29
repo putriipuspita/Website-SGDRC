@@ -198,7 +198,7 @@ const PesertaLomba = () => {
     }
   };
 
-  const { apakahSolo, apakahJunkbotInovatif } = cekTipeLomba(slug);
+  const { apakahSolo, apakahKelompokMaks3 } = cekTipeLomba(slug, lombaInfo);
 
   // Logika Filter Data Jenjang
   const dapatkanOpsiJenjang = () => {
@@ -390,7 +390,7 @@ const PesertaLomba = () => {
                 ...(!apakahSolo ? [{ label: 'Nama Tim' }] : []),
                 { label: 'Peserta 1' },
                 ...(!apakahSolo ? [{ label: 'Peserta 2' }] : []),
-                ...(apakahJunkbotInovatif ? [{ label: 'Peserta 3' }] : []),
+                ...(apakahKelompokMaks3 ? [{ label: 'Peserta 3' }] : []),
                 { label: 'WhatsApp' },
                 { label: 'Jenjang' },
                 { label: 'Asal Instansi' },
@@ -414,7 +414,7 @@ const PesertaLomba = () => {
                   {/* Nama Peserta */}
                   <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta1}</td>
                   {!apakahSolo && <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
-                  {apakahJunkbotInovatif && <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
+                  {apakahKelompokMaks3 && <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
                   <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.whatsapp}</td>
@@ -495,7 +495,7 @@ const PesertaLomba = () => {
             </TableBase>
 
             {/* Container Paginasi */}
-            <div className="px-6 py-5 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="px-6 py-3 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-[11px] font-bold text-slate-600">
                 Menampilkan {indeksPertama + 1} - {Math.min(indeksTerakhir, dataTerfilter.length)} dari {dataTerfilter.length} data
               </p>

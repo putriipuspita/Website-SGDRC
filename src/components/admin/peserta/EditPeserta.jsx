@@ -133,7 +133,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
     }
   };
 
-  const { apakahSolo, apakahJunkbotInovatif } = cekTipeLomba(slugLomba);
+  const { apakahSolo, apakahKelompokMaks3 } = cekTipeLomba(slugLomba, lombaInfo);
 
   return (
     // Komponen Modal
@@ -194,7 +194,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
         )}
 
         {/* Input Nama Peserta 3 */}
-        {apakahJunkbotInovatif && (
+        {apakahKelompokMaks3 && (
           <FormInput
             label="Peserta 3"
             icon={Users}
@@ -248,7 +248,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
         </div>
 
         {/* Area Bukti Transfer */}
-        <div className={`space-y-3 pt-2 ${apakahJunkbotInovatif ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
+        <div className={`space-y-3 pt-2 ${apakahKelompokMaks3 ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
           <div className="flex items-center justify-between px-1">
             {/* Label */}
             <label className="text-slate-700 text-[12.5px] font-semibold flex items-center gap-2">
@@ -269,9 +269,9 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
           </div>
 
           {/* Container Pratinjau Saat Ini */}
-          <div className={`flex gap-3 ${apakahJunkbotInovatif ? 'flex-row' : 'flex-col'}`}>
+          <div className={`flex gap-3 ${apakahKelompokMaks3 ? 'flex-row' : 'flex-col'}`}>
 
-            <div className={`${apakahJunkbotInovatif ? 'w-48' : 'w-full'} aspect-video rounded-xl border border-slate-200 overflow-hidden relative group bg-slate-50`}>
+            <div className={`${apakahKelompokMaks3 ? 'w-48' : 'w-full'} aspect-video rounded-xl border border-slate-200 overflow-hidden relative group bg-slate-50`}>
               <img src={buktiTransfer ? URL.createObjectURL(buktiTransfer) : (dataPeserta?.bukti || "/aset/legal/bukti.jpg")} alt="Bukti Sekarang" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
 
               {/* Icon */}

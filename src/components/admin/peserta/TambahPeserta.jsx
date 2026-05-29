@@ -151,7 +151,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
     return [...new Set(daftar)];
   };
 
-  const { apakahSolo, apakahJunkbotInovatif } = cekTipeLomba(slugLomba);
+  const { apakahSolo, apakahKelompokMaks3 } = cekTipeLomba(slugLomba, lombaInfo);
 
   return (
     // Modal Utama
@@ -249,7 +249,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         )}
 
         {/* Nama Peserta 3 */}
-        {apakahJunkbotInovatif && (
+        {apakahKelompokMaks3 && (
           <FormInput
             label="Peserta 3"
             icon={Users}
@@ -306,7 +306,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         </div>
 
         {/* Container Bukti Transfer */}
-        <div className={`space-y-2 pt-1 ${apakahJunkbotInovatif ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
+        <div className={`space-y-2 pt-1 ${apakahKelompokMaks3 ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
           {/* Label */}
           <label className="text-slate-700 text-[12.5px] font-semibold ml-1">Bukti Transfer</label>
 
@@ -332,7 +332,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
               <div className="flex items-center justify-center gap-2">
                 <Upload size={14} className="text-slate-400 group-hover:text-[#0B255D]" />
                 <span className="text-[11px] font-semibold text-slate-600 truncate max-w-[200px]">
-                  {buktiTransfer ? buktiTransfer.name : (apakahJunkbotInovatif ? 'Klik untuk mengunggah bukti pembayaran' : 'Unggah Bukti')}
+                  {buktiTransfer ? buktiTransfer.name : (apakahKelompokMaks3 ? 'Klik untuk mengunggah bukti pembayaran' : 'Unggah Bukti')}
                 </span>
               </div>
             </div>

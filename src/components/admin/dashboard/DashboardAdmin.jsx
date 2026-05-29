@@ -202,7 +202,7 @@ const DashboardAdmin = () => {
                   </div>
 
                   {/* Container Tombol Pagination */}
-                  <div className="mt-auto px-8 py-5 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                  <div className="mt-auto px-8 py-3 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
                     {/* Deskripsi */}
                     <p className="text-[11px] font-medium text-slate-600">Menampilkan {akunTampil.length} dari {daftarAkun.length} akun</p>
 

@@ -1,8 +1,8 @@
 import mysql from 'mysql2/promise';
 
-// Gunakan global agar pool tidak dibuat ulang saat hot reload di Next.js
 let pool = global.dbPool;
 
+// Fungsi Mengubungkan Ke Database
 export const hubungkanDB = async () => {
   if (!pool) {
     pool = mysql.createPool({
