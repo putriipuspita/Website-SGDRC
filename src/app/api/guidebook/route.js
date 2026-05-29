@@ -1,6 +1,7 @@
 import { hubungkanDB } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+// Fungsi mengambil data guidebook
 export async function GET() {
   try {
     const db = await hubungkanDB();

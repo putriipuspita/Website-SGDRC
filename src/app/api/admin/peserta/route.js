@@ -159,28 +159,35 @@ export async function PUT(req) {
     const formData = await req.formData();
     const id = formData.get('id');
 
+    // Upload Bukti Transfer
     const file = formData.get('buktiTransfer');
     const pathBuktiBaru = await simpanBerkasUpload(file, 'edit');
 
+    // Query Update Data
     let query = `
       UPDATE pendaftaran SET 
         nama_tim = ?, nama_peserta1 = ?, nama_peserta2 = ?, nama_peserta3 = ?, 
         asal_instansi = ?, jenjang = ?, whatsapp = ?, peringkat = ?, is_sertifikat_siap = ?
     `;
+
+    // Variabel Parameter Update
     let params = [
       formData.get('nama_tim'), formData.get('nama_peserta1'), formData.get('nama_peserta2'), formData.get('nama_peserta3'),
       formData.get('asal_instansi'), formData.get('jenjang'), formData.get('whatsapp'),
       formData.get('peringkat') || null, formData.get('is_sertifikat_siap') || 0
     ];
 
+    // Upload Bukti Transfer
     if (pathBuktiBaru) {
       query += `, file_bukti_bayar = ?`;
       params.push(pathBuktiBaru);
     }
 
+    // Execute Query
     query += ` WHERE id = ?`;
     params.push(id);
 
+    // Update Database
     await db.query(query, params);
     return new Response(JSON.stringify({ pesan: "Data berhasil diperbarui" }), { status: 200 });
   } catch (error) {
@@ -188,7 +195,7 @@ export async function PUT(req) {
   }
 }
 
-// 4. Hapus Pendaftaran (Auto-Delete Files)
+// Fungsi Hapus Pendaftaran
 export async function DELETE(req) {
   try {
     const { db, error } = await verifikasiAdmin(req);
@@ -196,16 +203,16 @@ export async function DELETE(req) {
 
     const { id } = await req.json();
 
-    // AMBIL PATH SELURUH FILE SEBELUM DIHAPUS
+    // Ambil Seluruh File Peserta
     const [pendaftar] = await db.query(
       "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE id = ?",
       [id]
     );
 
-    // HAPUS DARI DATABASE
+    // Hapus Dari Database
     await db.query("DELETE FROM pendaftaran WHERE id = ?", [id]);
 
-    // HAPUS FILE FISIK JIKA ADA
+    // Hapus File Fisik
     if (pendaftar.length > 0) {
       const p = pendaftar[0];
       const filePaths = [
@@ -222,37 +229,44 @@ export async function DELETE(req) {
       }
     }
 
+    // Respon Berhasil dan Error
     return new Response(JSON.stringify({ pesan: "Data dan seluruh berkas berhasil dihapus permanen" }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ pesan: "Gagal menghapus data" }), { status: 500 });
   }
 }
 
-// 5. Tambah Peserta Manual
+// Fungsi Tambah Peserta Manual
 export async function POST(req) {
   try {
     const { db, error } = await verifikasiAdmin(req);
     if (error) return error;
 
+    // Ambil Data Form
     const formData = await req.formData();
     const slug = formData.get('slug');
     const email = formData.get('email');
 
     let lombaId = null;
+    // Ambil ID Lomba Berdasarakan Slug
     if (slug) {
       const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
       const [lomba] = await db.query("SELECT id FROM lomba_dashboard WHERE nama = ?", [namaLombaDB]);
       if (lomba.length > 0) lombaId = lomba[0].id;
     }
 
+    // Validasi Lomba
     if (!lombaId) return new Response(JSON.stringify({ pesan: "Lomba tidak valid" }), { status: 400 });
 
+    // Cari User Berdasarkan Email
     const [user] = await db.query("SELECT id FROM users WHERE email = ?", [email]);
     if (user.length === 0) return new Response(JSON.stringify({ pesan: "User tidak ditemukan" }), { status: 400 });
 
+    // Upload Bukti Transfer
     const file = formData.get('buktiTransfer');
     const pathBukti = await simpanBerkasUpload(file, 'admin');
 
+    // Simpan Data Peserta Baru
     await db.query(
       `INSERT INTO pendaftaran (
         user_id, lomba_id, nama_tim, nama_peserta1, nama_peserta2, nama_peserta3, 
@@ -266,6 +280,7 @@ export async function POST(req) {
       ]
     );
 
+    // Respon Berhasil dan Error
     return new Response(JSON.stringify({ pesan: "Peserta berhasil ditambahkan" }), { status: 201 });
   } catch (error) {
     return new Response(JSON.stringify({ pesan: "Gagal menambah peserta" }), { status: 500 });

@@ -7,8 +7,8 @@ export async function GET() {
   try {
     const db = await hubungkanDB();
     const [baris] = await db.query('SELECT * FROM pengaturan');
-    
-    // Logika Self-Healing: Jika kunci belum ada atau nilainya NULL/kosong, isi dengan default
+
+    // Nilai default
     const keysPenting = {
       deskripsi_hero: '“Beyond Competition : With Small Action, Make Your Creation Become A Champion”',
       tanggal_event: '2026-08-15 08:00:00',
@@ -23,9 +23,8 @@ export async function GET() {
       path_logo_sgdrc: '/aset/logo/logo.jpg'
     };
 
+    // Gabungkan data database dengan default
     const pengaturan = { ...keysPenting };
-
-    // Proses data dari DB
     baris.forEach(item => {
       if (item.nilai) {
         pengaturan[item.nama_key] = item.nilai;
@@ -35,12 +34,11 @@ export async function GET() {
     // Perbarui DB jika ada yang kosong/NULL
     for (const [key, nilai] of Object.entries(keysPenting)) {
       const dataDB = baris.find(item => item.nama_key === key);
-      
+
+      // Jika belum ada barisnya
       if (!dataDB) {
-        // Jika belum ada barisnya sama sekali
         await db.query('INSERT INTO pengaturan (nama_key, nilai) VALUES (?, ?)', [key, nilai]);
       } else if (!dataDB.nilai || dataDB.nilai === 'NULL' || dataDB.nilai === '') {
-        // Jika barisnya ada tapi nilainya NULL atau kosong (seperti di screenshot)
         await db.query('UPDATE pengaturan SET nilai = ? WHERE nama_key = ?', [nilai, key]);
       }
     }
@@ -57,6 +55,7 @@ export async function GET() {
       }
     }
 
+    // Respons
     return NextResponse.json(pengaturan);
   } catch (error) {
     console.error('Error Database:', error);

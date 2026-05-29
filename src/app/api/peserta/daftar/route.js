@@ -2,21 +2,23 @@ import { verifikasiUser } from '@/lib/auth';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
+// Fungsi proses pendaftaran
 export async function POST(req) {
   try {
     const { decoded, db, error } = await verifikasiUser(req);
     if (error) return error;
-    
+
     const userId = decoded.id;
 
-    // Verifikasi user masih ada
+    // Verifikasi user masih ada di database
     const [userExist] = await db.query('SELECT id FROM users WHERE id = ?', [userId]);
     if (userExist.length === 0) {
       return new Response(JSON.stringify({ pesan: "Akun tidak ditemukan" }), { status: 401 });
     }
 
     const formData = await req.formData();
-    
+
+    // Ambil data
     const data = {
       user_id: userId,
       lomba_id: formData.get('lomba_id'),
@@ -29,9 +31,11 @@ export async function POST(req) {
       whatsapp: formData.get('whatsapp'),
     };
 
+    // File upload handling
     const fileKeys = ['kartuSiswa', 'ikutiInstagram', 'ikutiInstagramRobotika', 'ikutiTiktok', 'buktiBayar'];
     const paths = {};
 
+    // Simpan file ke database
     for (const key of fileKeys) {
       const file = formData.get(key);
       if (file && typeof file !== 'string') {
@@ -45,7 +49,7 @@ export async function POST(req) {
       }
     }
 
-    // SIMPAN KE DATABASE (PASTIKAN TIDAK ADA DEFINISI DB LAGI)
+    // Simpan data pendaftaran ke database
     await db.query(
       `INSERT INTO pendaftaran (
         user_id, lomba_id, nama_tim, nama_peserta1, nama_peserta2, nama_peserta3, 
@@ -59,6 +63,7 @@ export async function POST(req) {
       ]
     );
 
+    // Respons sukses
     return new Response(JSON.stringify({ pesan: "Pendaftaran berhasil!" }), { status: 201 });
 
   } catch (error) {

@@ -3,16 +3,20 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { kirimEmailVerifikasi } from '@/lib/email';
 
+// Fungsi register
 export async function POST(req) {
   try {
     const { nama, email, password } = await req.json();
 
+    // Validasi input
     if (!nama || !email || !password) {
       return new Response(JSON.stringify({ pesan: "Data tidak lengkap" }), { status: 400 });
     }
 
+    // Koneksi database
     const db = await hubungkanDB();
 
+    // Cek user apakah sudah ada
     const [userAda] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
     if (userAda.length > 0) {
       return new Response(JSON.stringify({ pesan: "Email sudah terdaftar" }), { status: 400 });
@@ -29,15 +33,16 @@ export async function POST(req) {
       [nama, email, hashedPassword, tokenVerifikasi, 'peserta']
     );
 
-    // KIRIM EMAIL MENGGUNAKAN LIB EMAIL
+    // Ambil host dan protocol untuk link verifikasi
     const host = req.headers.get('host');
     const protocol = req.headers.get('x-forwarded-proto') || 'http';
     const linkVerifikasi = `${protocol}://${host}/api/auth/verify?token=${tokenVerifikasi}`;
-    
-    // Panggil fungsi pusat dari lib/email.js
+
+    // Kirim email verifikasi
     kirimEmailVerifikasi(email, nama, linkVerifikasi).catch(err => console.error("Gagal kirim email verifikasi:", err));
 
-    return new Response(JSON.stringify({ 
+    // Respons
+    return new Response(JSON.stringify({
       pesan: "Registrasi berhasil! Silakan cek email Anda."
     }), { status: 201 });
 
