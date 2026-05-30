@@ -139,7 +139,7 @@ const DataPeserta = () => {
             id: d.id,
             lomba: d.nama_lomba,
             tim: d.nama_tim,
-            peserta: [d.nama_peserta1, d.nama_peserta2, d.nama_peserta3],
+            peserta: [formatJudul(d.nama_peserta1), formatJudul(d.nama_peserta2), formatJudul(d.nama_peserta3)],
             instansi: d.asal_instansi,
             jenjang: d.jenjang,
             status: (d.status_pendaftaran || "").toLowerCase() === 'success' ? 'TERVERIFIKASI' :

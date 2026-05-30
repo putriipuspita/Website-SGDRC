@@ -1,8 +1,11 @@
 'use client';
-import { useParams } from 'next/navigation';
-import PesertaLomba from '@/components/admin/peserta/PesertaLomba';
+import dynamic from 'next/dynamic';
+
+const PesertaLomba = dynamic(
+  () => import('@/components/admin/peserta/PesertaLomba'),
+  { ssr: false }
+);
 
 export default function Page() {
-  const params = useParams();
   return <PesertaLomba />;
 }

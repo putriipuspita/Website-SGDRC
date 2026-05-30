@@ -21,7 +21,7 @@ import { TableBase } from '../../element/TableBase';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
-import { cekTipeLomba } from '../../../lib/formatHelper';
+import { cekTipeLomba, formatJudul } from '../../../lib/formatHelper';
 
 // Komponen Utama Peserta Lomba
 const PesertaLomba = () => {
@@ -80,9 +80,9 @@ const PesertaLomba = () => {
         const dataTerformat = data.map(p => ({
           id: p.id,
           namaTim: p.nama_tim,
-          peserta1: p.nama_peserta1,
-          peserta2: p.nama_peserta2,
-          peserta3: p.nama_peserta3,
+          peserta1: formatJudul(p.nama_peserta1),
+          peserta2: formatJudul(p.nama_peserta2),
+          peserta3: formatJudul(p.nama_peserta3),
           instansi: p.asal_instansi,
           jenjang: p.jenjang,
           whatsapp: p.whatsapp,
