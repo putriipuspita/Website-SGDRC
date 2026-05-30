@@ -55,7 +55,7 @@ export default function DaftarLomba({ dataAwal = [] }) {
         </h2>
 
         {/* Container Daftar Lomba */}
-        <div className={`grid gap-3 md:gap-4 px-0 w-full ${gridColsClass}`}>
+        <div className={`grid gap-3 md:gap-4 gap-y-6 md:gap-y-9 px-0 w-full ${gridColsClass}`}>
           {Array.isArray(dataLombaRender) && dataLombaRender.map((lomba, indeks) => {
             // Tentukan Warna Kotak
             const warnaTema = indeks % 2 === 0 ? '#0B255D' : '#E40011';
