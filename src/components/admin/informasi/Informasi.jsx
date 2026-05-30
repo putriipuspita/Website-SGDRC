@@ -293,7 +293,7 @@ const Informasi = () => {
     try {
       setSedangMenyimpan(true);
       for (const lomba of daftarLombaLanding) {
-        // Filter out labels that don't have text
+        // Filter 
         const labelsBersih = (lomba.label || []).filter(lbl => lbl && lbl.teks && lbl.teks.trim() !== '');
         await fetchDenganToken('/api/admin/informasi', {
           method: 'POST',

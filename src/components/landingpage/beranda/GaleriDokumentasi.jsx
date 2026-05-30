@@ -1,7 +1,36 @@
+'use client';
+import { useState, useEffect, useRef } from 'react';
+
 // Galeri Dokumentasi
 export default function GaleriDokumentasi() {
-  // Simpan foto
-  const galeriAsli = [
+  // State untuk menyimpan daftar foto secara dinamis
+  const [daftarFoto, setDaftarFoto] = useState([]);
+
+  // Ref untuk kontrol animasi
+  const refKontainer = useRef(null);
+  const refPosisiScroll = useRef(0);
+  const refFrameAnimasi = useRef(null);
+  const refApakahJeda = useRef(false);
+  const refLebarSetengah = useRef(0);
+  const refWaktuTerakhir = useRef(0);
+
+  // Kecepatan scroll
+  const KECEPATAN = 120;
+
+  // Mengambil daftar foto dari API otomatis saat halaman dimuat
+  useEffect(() => {
+    fetch('/api/dokumentasi')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setDaftarFoto(data);
+        }
+      })
+      .catch(err => console.error("Gagal memuat galeri otomatis:", err));
+  }, []);
+
+  // Fallback default jika API belum memberikan data
+  const galeriAsli = daftarFoto.length > 0 ? daftarFoto : [
     "/aset/dokumentasi/IMG_0077.JPG",
     "/aset/dokumentasi/IMG_0090.JPG",
     "/aset/dokumentasi/IMG_5693.JPG",
@@ -13,6 +42,77 @@ export default function GaleriDokumentasi() {
     "/aset/dokumentasi/LNS00866.JPG"
   ];
   const galeriGanda = [...galeriAsli, ...galeriAsli];
+
+  // Hitung lebar separuh galeri saat komponen dimuat atau ukuran berubah
+  useEffect(() => {
+    const kontainer = refKontainer.current;
+    if (!kontainer) return;
+
+    const hitungLebar = () => {
+      refLebarSetengah.current = kontainer.scrollWidth / 2;
+    };
+
+    hitungLebar();
+
+    const observer = new ResizeObserver(hitungLebar);
+    observer.observe(kontainer);
+    return () => observer.disconnect();
+  }, [daftarFoto]);
+
+  // Animasi utama 
+  useEffect(() => {
+    const animasikan = (stempelWaktu) => {
+      const kontainer = refKontainer.current;
+      if (!kontainer) {
+        refFrameAnimasi.current = requestAnimationFrame(animasikan);
+        return;
+      }
+
+      // Inisialisasi waktu pertama kali
+      if (refWaktuTerakhir.current === 0) {
+        refWaktuTerakhir.current = stempelWaktu;
+        refFrameAnimasi.current = requestAnimationFrame(animasikan);
+        return;
+      }
+
+      // Hitung delta time
+      const selisihWaktu = Math.min((stempelWaktu - refWaktuTerakhir.current) / 1000, 0.1);
+      refWaktuTerakhir.current = stempelWaktu;
+
+      if (!refApakahJeda.current) {
+        // Gerakkan berdasarkan waktu
+        refPosisiScroll.current += KECEPATAN * selisihWaktu;
+
+        // Reset posisi
+        if (refLebarSetengah.current > 0 && refPosisiScroll.current >= refLebarSetengah.current) {
+          refPosisiScroll.current -= refLebarSetengah.current;
+        }
+
+        // Bulatkan ke pixel
+        const posisi = Math.round(refPosisiScroll.current);
+        kontainer.style.transform = 'translate3d(-' + posisi + 'px, 0, 0)';
+      }
+
+      refFrameAnimasi.current = requestAnimationFrame(animasikan);
+    };
+
+    refWaktuTerakhir.current = 0;
+    refPosisiScroll.current = 0;
+    refFrameAnimasi.current = requestAnimationFrame(animasikan);
+
+    return () => {
+      if (refFrameAnimasi.current) {
+        cancelAnimationFrame(refFrameAnimasi.current);
+      }
+    };
+  }, [daftarFoto]);
+
+  // Tangani pause saat hover
+  const tanganiKursorMasuk = () => { refApakahJeda.current = true; };
+  const tanganiKursorKeluar = () => {
+    refApakahJeda.current = false;
+    refWaktuTerakhir.current = 0;
+  };
 
   return (
     // Bagian Galeri Dokumentasi
@@ -26,22 +126,31 @@ export default function GaleriDokumentasi() {
         </h2>
 
         {/* Container Foto Dokumentasi */}
-        <div className="w-full flex overflow-hidden py-4">
-          {/* Roda Slide Otomatis Bebas Geser (Marquee) */}
-          <div className="flex gap-4 md:gap-8 animate-marquee min-w-max hover:[animation-play-state:paused] cursor-grab active:cursor-grabbing">
+        <div className="w-full overflow-hidden py-4">
+          {/* Roda Slide Otomatis - Digerakkan oleh JavaScript */}
+          <div
+            ref={refKontainer}
+            className="flex gap-4 md:gap-8 min-w-max cursor-grab active:cursor-grabbing"
+            style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}
+            onMouseEnter={tanganiKursorMasuk}
+            onMouseLeave={tanganiKursorKeluar}
+          >
             {galeriGanda.map((foto, indeks) => (
 
               // Kartu Dokumentasi
               <div
                 key={indeks}
-                className="w-[85vw] md:w-[380px] lg:w-[400px] h-[200px] md:h-[230px] lg:h-[220px] bg-white rounded-2xl border border-slate-200 hover:border-blue-400 shadow-md hover:shadow-xl transition-all overflow-hidden relative group"
+                className="w-[85vw] md:w-[380px] lg:w-[400px] h-[200px] md:h-[230px] lg:h-[220px] bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden relative flex-shrink-0"
+                style={{ contain: 'layout style paint' }}
               >
 
                 {/* Foto Dokumentasi */}
                 <img
                   src={foto}
                   alt={`Dokumentasi SGDRC ${indeks}`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  draggable="false"
                 />
               </div>
             ))}
