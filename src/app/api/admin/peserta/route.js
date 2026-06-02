@@ -1,4 +1,5 @@
 import { verifikasiAdmin, simpanBerkasUpload } from '@/lib/auth';
+import { sinkronisasiSemuaPendaftaran } from '@/lib/sheetHelper';
 
 // Fungsi mengambil data peserta
 export async function GET(req) {
@@ -111,6 +112,7 @@ export async function PATCH(req) {
 
       // Update status database
       await db.query(`UPDATE pendaftaran SET status_pendaftaran = 'success', file_bukti_refund = NULL WHERE id = ?`, [id]);
+      sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat reset status:", err));
       return new Response(JSON.stringify({ pesan: "Status berhasil di-reset ke Terverifikasi" }), { status: 200 });
     }
 
@@ -134,6 +136,8 @@ export async function PATCH(req) {
     query += ` WHERE id = ?`;
     params.push(id);
     await db.query(query, params);
+
+    sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat update status:", err));
 
     // Kirim email notifikasi
     const host = req.headers.get('host');
@@ -189,6 +193,7 @@ export async function PUT(req) {
 
     // Update Database
     await db.query(query, params);
+    sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat edit data:", err));
     return new Response(JSON.stringify({ pesan: "Data berhasil diperbarui" }), { status: 200 });
   } catch (error) {
     return new Response(JSON.stringify({ pesan: "Gagal update data" }), { status: 500 });
@@ -211,6 +216,7 @@ export async function DELETE(req) {
 
     // Hapus Dari Database
     await db.query("DELETE FROM pendaftaran WHERE id = ?", [id]);
+    sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat hapus data:", err));
 
     // Hapus File Fisik
     if (pendaftar.length > 0) {

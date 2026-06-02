@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { verifikasiAdmin } from '@/lib/auth';
+import { sinkronisasiSemuaPendaftaran } from '@/lib/sheetHelper';
 import bcrypt from 'bcryptjs';
 
 // Fungsi Ambil daftar akun peserta
@@ -58,6 +59,19 @@ export async function POST(req) {
   }
 }
 
+// Fungsi menghapus file fisik
+async function hapusFileFisik(pathRelatif) {
+  if (!pathRelatif || !pathRelatif.startsWith('/uploads/')) return;
+  try {
+    const { unlink } = await import('fs/promises');
+    const { join } = await import('path');
+    const fullPath = join(process.cwd(), 'public', pathRelatif);
+    await unlink(fullPath);
+  } catch (err) {
+    console.error(`Gagal hapus file: ${pathRelatif}`, err.message);
+  }
+}
+
 // Fungsi Hapus akun peserta
 export async function DELETE(req) {
   try {
@@ -72,9 +86,34 @@ export async function DELETE(req) {
       return NextResponse.json({ pesan: "Tidak bisa menghapus akun sendiri" }, { status: 400 });
     }
 
+    // Ambil Seluruh File Pendaftaran dari user ini sebelum dihapus
+    const [daftarPendaftaran] = await db.query(
+      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE user_id = ?",
+      [id]
+    );
+
     // Hapus data pendaftaran
     await db.query("DELETE FROM pendaftaran WHERE user_id = ?", [id]);
     await db.query("DELETE FROM users WHERE id = ?", [id]);
+
+    // Sinkronisasi perubahan ke Google Sheets
+    sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat hapus user:", err));
+
+    // Hapus seluruh file fisik berkas pendaftaran user tersebut
+    for (const p of daftarPendaftaran) {
+      const filePaths = [
+        p.file_bukti_bayar,
+        p.file_bukti_refund,
+        p.file_kartu_siswa,
+        p.file_follow_ig,
+        p.file_follow_ig_robotika,
+        p.file_follow_tiktok
+      ];
+
+      for (const path of filePaths) {
+        if (path) await hapusFileFisik(path);
+      }
+    }
 
     return NextResponse.json({ pesan: "User berhasil dihapus" });
   } catch (error) {

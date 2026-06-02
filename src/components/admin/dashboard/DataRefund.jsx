@@ -90,7 +90,7 @@ const DataRefund = () => {
               notFoundText="Data tidak ditemukan"
               headers={[
                 { label: 'Jenis Lomba' },
-                { label: 'Nama Tim / Peserta' },
+                { label: 'Nama Tim / Peserta', className: 'min-w-[185px]' },
                 { label: 'Nomor WhatsApp' },
                 { label: 'Asal Instansi' },
                 { label: 'Bukti' }
@@ -99,27 +99,27 @@ const DataRefund = () => {
               {dataTampil.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                   {/* Jenis Lomba */}
-                  <td className="px-6 py-3 border-r border-slate-200 text-center leading-relaxed">
-                    <span className="text-[10.3px] font-black text-[#16B9FF] uppercase tracking-wider bg-blue-50 px-3 py-1 rounded-lg">{p.nama_lomba}</span>
+                  <td className="px-6 py-2 border-r border-slate-200 text-center leading-relaxed">
+                    <span className="text-[9.9px] font-black text-[#16B9FF] uppercase tracking-tight block text-center leading-normal">{p.nama_lomba}</span>
                   </td>
 
                   {/* Nama Tim */}
-                  <td className="px-6 py-3 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase min-w-[185px]">
                     {p.nama_tim || p.nama_peserta1}
                   </td>
 
                   {/* Nomor WhatsApp */}
-                  <td className="px-6 py-3 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">
                     {p.whatsapp}
                   </td>
 
                   {/* Asal Instansi */}
-                  <td className="px-6 py-3 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase">
                     {p.asal_instansi}
                   </td>
 
                   {/* Tombol Lihat Bukti */}
-                  <td className="px-6 py-3 text-center leading-relaxed">
+                  <td className="px-6 py-2 text-center leading-relaxed">
                     <button
                       onClick={() => {
                         setDataVerifikasi({
@@ -132,9 +132,9 @@ const DataRefund = () => {
                         });
                         setApakahVerifikasiTerbuka(true);
                       }}
-                      className="w-8 h-8 inline-flex items-center justify-center bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 rounded-md transition-all border border-orange-500/20 mx-auto"
+                      className="w-7 h-7 inline-flex items-center justify-center bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 rounded-md transition-all border border-orange-500/20 mx-auto"
                     >
-                      <FileText size={15} />
+                      <FileText size={14} />
                     </button>
                   </td>
                 </tr>

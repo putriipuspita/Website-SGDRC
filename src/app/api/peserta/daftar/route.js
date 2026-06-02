@@ -1,6 +1,7 @@
 import { verifikasiUser } from '@/lib/auth';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import { kirimKeSpreadsheet } from '@/lib/sheetHelper';
 
 // Fungsi proses pendaftaran
 export async function POST(req) {
@@ -50,7 +51,7 @@ export async function POST(req) {
     }
 
     // Simpan data pendaftaran ke database
-    await db.query(
+    const [hasilDb] = await db.query(
       `INSERT INTO pendaftaran (
         user_id, lomba_id, nama_tim, nama_peserta1, nama_peserta2, nama_peserta3, 
         asal_instansi, jenjang, whatsapp, 
@@ -62,6 +63,30 @@ export async function POST(req) {
         paths.kartuSiswa, paths.ikutiInstagram, paths.ikutiInstagramRobotika, paths.ikutiTiktok, paths.buktiBayar
       ]
     );
+
+    const idBaru = hasilDb.insertId;
+
+    // Ambil nama lomba untuk dikirim ke Google Sheets
+    const [lombaRow] = await db.query('SELECT nama FROM lomba_dashboard WHERE id = ?', [data.lomba_id]);
+    const namaLomba = lombaRow.length > 0 ? lombaRow[0].nama : 'Lainnya';
+
+    // Kirim data ke Google Sheets secara real-time
+    const dataSpreadsheet = {
+      id: idBaru,
+      lomba_id: data.lomba_id,
+      lomba: namaLomba,
+      tim: data.nama_tim,
+      peserta1: data.nama_peserta1,
+      peserta2: data.nama_peserta2,
+      peserta3: data.nama_peserta3,
+      whatsapp: data.whatsapp,
+      jenjang: data.jenjang,
+      instansi: data.asal_instansi,
+      status: 'Belum Terverifikasi'
+    };
+
+    // Kirim secara async di background
+    kirimKeSpreadsheet(dataSpreadsheet).catch(err => console.error("Gagal sinkronisasi otomatis ke Google Sheets:", err));
 
     // Respons sukses
     return new Response(JSON.stringify({ pesan: "Pendaftaran berhasil!" }), { status: 201 });

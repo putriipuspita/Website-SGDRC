@@ -16,7 +16,7 @@ import Verifikasi from './Verifikasi';
 import EditPeserta from './EditPeserta';
 import Konfirmasi from '../../element/Konfirmasi';
 
-// Import Element Reusable
+// Import Element
 import { TableBase } from '../../element/TableBase';
 
 // Import Utility
@@ -142,59 +142,33 @@ const PesertaLomba = () => {
     }
   };
 
-  // Fungsi Export ke Excel
+  // Fungsi Sinkronisasi dan Buka Google Sheets
   const eksporData = async () => {
     try {
-      toast.loading("Mengekspor data ke Excel...", { id: "export" });
-      const res = await fetchDenganToken('/api/admin/peserta');
-
-      // Jika Gagal
-      if (!res.ok) throw new Error("Gagal mengambil data peserta");
-      const data = await res.json();
-
-      // Jika Tidak Ada Data
-      if (!data || data.length === 0) {
-        toast.error("Tidak ada data peserta", { id: "export" });
-        return;
-      }
-
-      // Kelompokkan Berdasarkan Nama Lomba
-      const groupedData = data.reduce((acc, p) => {
-        const lombaName = p.nama_lomba || "Lainnya";
-        if (!acc[lombaName]) acc[lombaName] = [];
-        acc[lombaName].push({
-          "Tanggal": new Date(p.tanggal_pendaftaran).toLocaleString('id-ID'),
-          "Nama Tim": p.nama_tim || "-",
-          "Peserta 1": p.nama_peserta1 || "-",
-          "Peserta 2": p.nama_peserta2 || "-",
-          "Peserta 3": p.nama_peserta3 || "-",
-          "WhatsApp": p.whatsapp || "-",
-          "Jenjang": p.jenjang || "-",
-          "Instansi": p.asal_instansi || "-",
-          "Status": p.status_pendaftaran || "-",
-        });
-        return acc;
-      }, {});
-
-      // Impor Library & Buat Workbook
-      const XLSX = await import('xlsx');
-      const workbook = XLSX.utils.book_new();
-
-      // Buat Sheet Untuk Tiap Lomba
-      Object.keys(groupedData).forEach(lombaName => {
-        let safeSheetName = lombaName.replace(/[\\/?*[\]]/g, '').substring(0, 31);
-        const worksheet = XLSX.utils.json_to_sheet(groupedData[lombaName]);
-        XLSX.utils.book_append_sheet(workbook, worksheet, safeSheetName);
+      toast.loading("Sinkronisasi data ke Google Sheets...", { id: "export" });
+      const respon = await fetchDenganToken('/api/admin/sheet-sync', {
+        method: 'POST'
       });
 
-      // Tambahkan Sheet Ke Workbook
-      XLSX.writeFile(workbook, "Data_Peserta_Semua_Lomba.xlsx");
-      toast.success("Berhasil ekspor ke Excel!", { id: "export" });
+      // Jika Gagal
+      if (!respon.ok) throw new Error("Gagal melakukan sinkronisasi");
+      const hasil = await respon.json();
+
+      if (hasil.sukses) {
+        toast.success("Berhasil sinkronisasi Google Sheets!", { id: "export" });
+        if (hasil.urlSpreadsheet) {
+          window.open(hasil.urlSpreadsheet, '_blank');
+        } else {
+          toast.error("URL Spreadsheet belum di-set di server", { id: "export" });
+        }
+      } else {
+        toast.error(hasil.pesan || "Gagal sinkronisasi", { id: "export" });
+      }
 
       // Jika Gagal
-    } catch (err) {
-      console.error(err);
-      toast.error("Gagal mengekspor data", { id: "export" });
+    } catch (kesalahan) {
+      console.error(kesalahan);
+      toast.error("Gagal sinkronisasi data ke Google Sheets", { id: "export" });
     }
   };
 
@@ -440,27 +414,27 @@ const PesertaLomba = () => {
                 <tr key={p.id} className={`transition-colors group ${p.status === 'REFUNDED' ? 'bg-slate-100 opacity-70' : 'hover:bg-slate-50/50'}`}>
 
                   {/* Tanggal */}
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.tanggal}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.tanggal}</td>
 
                   {/* Nama Tim */}
                   {!apakahSolo && (
-                    <td className="px-4 py-2.5 border-r border-slate-200 text-center text-[10.8px] font-black text-[#16B9FF] uppercase tracking-wider leading-relaxed">
+                    <td className="px-4 py-2 border-r border-slate-200 text-center text-[10.8px] font-black text-[#16B9FF] uppercase tracking-wider leading-relaxed">
                       {p.namaTim || '-'}
                     </td>
                   )}
 
                   {/* Nama Peserta */}
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta1}</td>
-                  {!apakahSolo && <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
-                  {apakahKelompokMaks3 && <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
+                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta1}</td>
+                  {!apakahSolo && <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
+                  {apakahKelompokMaks3 && <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.whatsapp}</td>
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.jenjang}</td>
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.instansi}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.whatsapp}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.jenjang}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.instansi}</td>
 
                   {/* Status */}
-                  <td className="px-4 py-2.5 border-r border-slate-200 text-center leading-tight">
+                  <td className="px-4 py-2 border-r border-slate-200 text-center leading-tight">
                     <span className={`text-[9.8px] font-black uppercase tracking-wider leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
                       p.status === 'Ditolak' ? 'text-red-500' :
                         p.status === 'Refunded' ? 'text-orange-500' :
