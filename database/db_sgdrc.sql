@@ -20,26 +20,38 @@ CREATE TABLE `pengaturan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
-(1, 'tanggal_event', '2026-07-07 08:00:00', 'Target hitung mundur'),
+-- Umum
+(1, 'judul_hero', 'SGDRC 2026', NULL),
 (2, 'deskripsi_hero', '“Beyond Competition : With Small Action, Make Your Creation Become A Champion”', 'Slogan di bawah judul utama'),
-(5, 'wa_link_umum', 'https://wa.me/6289653263531', NULL),
-(6, 'bank_nama', 'Bank BSI (Bank Syariah Indonesia)', NULL),
-(7, 'bank_rekening', '1234567890', NULL),
-(8, 'bank_atas_nama', 'SGD RC 2026', NULL),
-(12, 'sertifikat_peserta', '/uploads/sertifikat/1778154062800-fna5j0q.png', NULL),
-(13, 'sertifikat_juara', '/uploads/sertifikat/1778154067582-u6v0ktn.png', NULL),
-(14, 'sertifikat_nomor_mulai', '0001', NULL),
-(15, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI/', NULL),
-(16, 'sertifikat_config_peserta', '{"y_nomor":33,"y_nama":42,"y_status":50,"y_kategori":72,"size_nomor":12,"size_nama":25,"size_status":15,"size_kategori":13,"font_nama":"Cinzel"}', NULL),
-(17, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":25,"size_status":16,"size_kategori":13}', NULL),
-(18, 'judul_hero', 'SGDRC 2026', NULL),
-(19, 'ketua_pelaksana', 'Nur Hidayat Saputra', NULL),
-(20, 'ketua_nim', '12345678910', NULL),
-(21, 'path_ttd', '/aset/legal/ttd putra.png', NULL),
-(22, 'path_cap', '/aset/legal/cap sgdrc.png', NULL),
-(23, 'path_logo_robotika', '/aset/logo/robotika.png', NULL),
-(24, 'path_logo_sgdrc', '/aset/logo/logo.jpg', NULL),
-(25, 'sponsor_list', '[{"id":5,"nama":"Lee Mineralle","logo":"/aset/sponsor/lee mineralle.png"},{"id":4,"nama":"Telkom Indonesia","logo":"/aset/sponsor/telkom.png"},{"id":3,"nama":"BNI","logo":"/aset/sponsor/bni.png"},{"id":2,"nama":"CNC","logo":"/aset/sponsor/cnc.png"},{"id":1,"nama":"BSI","logo":"/aset/sponsor/bsi.png"}]', NULL);
+(3, 'tanggal_event', '2026-06-30 08:00:00', 'Target hitung mundur'),
+(4, 'wa_link_umum', 'https://wa.me/6289653263532', NULL),
+
+-- Rekening Bank
+(5, 'bank_nama', 'Bank BSI (Bank Syariah Indonesia)', NULL),
+(6, 'bank_rekening', '1234567890', NULL),
+(7, 'bank_atas_nama', 'SGD RC 2026', NULL),
+
+-- Legalitas
+(8, 'ketua_pelaksana', 'Nur Hidayat Saputra', NULL),
+(9, 'ketua_nim', '12345678910', NULL),
+(10, 'path_ttd', '/aset/legal/ttd putra.png', NULL),
+(11, 'path_cap', '/aset/legal/cap sgdrc.png', NULL),
+(12, 'path_logo_robotika', '/aset/logo/robotika.png', NULL),
+(13, 'path_logo_sgdrc', '/aset/logo/logo.jpg', NULL),
+
+-- Sertifikat
+(14, 'sertifikat_peserta', '/uploads/sertifikat/1779081867426-9olvce9.png', NULL),
+(15, 'sertifikat_juara', '/uploads/sertifikat/1779081878877-mgd2ozn.png', NULL),
+(16, 'sertifikat_nomor_mulai', '0001', NULL),
+(17, 'sertifikat_nomor_mulai_juara', '001', NULL),
+(18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI/', NULL),
+(19, 'sertifikat_config_peserta', '{"y_nomor":33,"y_nama":43,"y_status":50,"y_kategori":72,"size_nomor":12,"size_nama":31,"size_status":15,"size_kategori":13,"font_nama":"Cormorant Garamond"}', NULL),
+(20, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":28,"size_status":16,"size_kategori":13,"font_nama":"UnifrakturMaguntia"}', NULL),
+
+-- Timeline dan Sponsor
+(21, 'poster_utama', '/aset/logo/poster.png', NULL),
+(22, 'sponsor_list', '[{"id":5,"nama":"Lee Mineralle","logo":"/aset/sponsor/lee mineralle.png"},{"id":4,"nama":"Telkom Indonesia","logo":"/aset/sponsor/telkom.png"},{"id":3,"nama":"BNI","logo":"/aset/sponsor/bni.png"},{"id":2,"nama":"CNC","logo":"/aset/sponsor/cnc.png"},{"id":1,"nama":"BSI","logo":"/aset/sponsor/bsi.png"}]', NULL),
+(23, 'timeline_list', '[{"id":1,"label":"Pendaftaran Batch 1","tanggal":"1 - 23 Mei 2026","status":"Selesai","mulai":"2026-05-01","selesai":"2026-05-23"},{"id":2,"label":"Pendaftaran Batch 2","tanggal":"24 Mei - 11 Juni 2026","status":"Sedang Berlangsung","mulai":"2026-05-24","selesai":"2026-06-11"},{"id":3,"label":"Pengumpulan Proposal (Khusus Project Innovative)","tanggal":"1 - 11 Juni 2026","status":"Akan Datang","mulai":"2026-06-01","selesai":"2026-06-11"},{"id":4,"label":"Pengumuman Proposal","tanggal":"17 Juni 2026","status":"Akan Datang","mulai":"2026-06-17","selesai":"2026-06-17"},{"id":5,"label":"Technical Meeting","tanggal":"27 Juni 2026","status":"Akan Datang","mulai":"2026-06-27","selesai":"2026-06-27"},{"id":6,"label":"Pelaksanaan Lomba (Robot Soccer, Fast Building, Junkbot)","tanggal":"4 Juli 2026","status":"Akan Datang","mulai":"2026-07-04","selesai":"2026-07-04"},{"id":1778740157309,"label":"Pelaksanaan Lomba (Project Innovative)","tanggal":"5 Juli 2026","status":"Akan Datang","mulai":"2026-07-05","selesai":"2026-07-05"}]', NULL);
 
 -- ===================================================
 --              TABEL LOMBA LANDING PAGE
