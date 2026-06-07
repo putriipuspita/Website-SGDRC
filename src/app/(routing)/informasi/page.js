@@ -40,12 +40,12 @@ export default async function HalamanInformasiPublik() {
   const data = await ambilDataInformasi();
 
   return (
-    <div className="w-full min-h-screen bg-white overflow-x-hidden relative font-montserrat">
+    <div className="w-full min-h-screen bg-white overflow-x-hidden relative font-montserrat flex flex-col">
       {/* Navigasi */}
       <NavigasiUtama />
 
       {/* Konten */}
-      <main className="w-full px-4 md:px-16 pt-24 pb-16 relative z-10">
+      <main className="w-full px-4 md:px-16 pt-24 pb-16 relative z-10 flex-grow">
         <div className="w-full max-w-[1400px] mx-auto">
           <TampilanInformasi data={data} />
         </div>

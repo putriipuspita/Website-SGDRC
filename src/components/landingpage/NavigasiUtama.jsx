@@ -24,14 +24,14 @@ export default function NavigasiUtama() {
 
   return (
     // Navigasi Bar
-    <nav className="w-full h-[56px] flex justify-center border-b border-white/10 fixed top-0 z-[110] transition-colors duration-300 bg-[#0B255D] shadow-lg px-4 md:px-6 lg:px-16">
+    <nav className="w-full h-[48px] md:h-[56px] flex justify-center border-b border-white/10 fixed top-0 z-[110] transition-colors duration-300 bg-[#0B255D] shadow-lg px-4 md:px-6 lg:px-16">
 
       {/* Kontainer */}
       <div className="max-w-[1400px] flex items-center justify-between relative w-full">
 
         {/* Logo */}
         <Link href="/" onClick={tutupMenu} className="flex items-center gap-2 cursor-pointer z-20">
-          <h1 className="font-logo text-[22px] md:text-[30px] italic tracking-[0.05rem]">
+          <h1 className="font-logo text-[18px] md:text-[30px] italic tracking-[0.05rem]">
             <span className="text-[#E40011]">SGD</span>
             <span className="text-[#0B255D]" style={{ WebkitTextStroke: '0.8px rgba(255, 255, 255, 0.9)' }}>RC</span>
           </h1>
@@ -81,12 +81,28 @@ export default function NavigasiUtama() {
         </ul>
 
         {/* Kontainer Kanan (Tombol & Hamburger) */}
-        <div className="flex items-center gap-4 z-20">
+        <div className="flex items-center gap-2 md:gap-4 z-20">
 
-          {/* Tombol Daftar (Tampilan Laptop) */}
+          {/* Tombol Login & Daftar (Tampilan Tablet iPad Air & Mini) */}
+          <div className="hidden md:flex lg:hidden items-center gap-2">
+            <Link
+              href="/login"
+              className="border border-white/20 hover:bg-white/10 text-white font-bold py-1.5 px-3 rounded-md text-[9px] uppercase items-center whitespace-nowrap transition-all"
+            >
+              LOGIN
+            </Link>
+            <Link
+              href="/register"
+              className="bg-[#E40011] hover:bg-red-700 text-white font-bold py-1.5 px-3.5 rounded-md text-[9px] uppercase items-center whitespace-nowrap transition-all shadow-md hover:shadow-lg"
+            >
+              DAFTAR
+            </Link>
+          </div>
+
+          {/* Tombol Daftar Lomba Asli (Tampilan Laptop & iPad Pro) */}
           <Link
             href="/register"
-            className="bg-[#E40011] hover:bg-red-700 text-white font-bold py-2 md:px-3 lg:px-6 rounded-md transition-all md:flex hidden md:text-[9px] lg:text-[10px] uppercase items-center whitespace-nowrap shadow-md hover:shadow-lg"
+            className="bg-[#E40011] hover:bg-red-700 text-white font-bold py-2 px-6 rounded-md transition-all lg:flex hidden text-[10px] uppercase items-center whitespace-nowrap shadow-md hover:shadow-lg"
           >
             DAFTAR LOMBA
           </Link>
@@ -97,18 +113,18 @@ export default function NavigasiUtama() {
             className="md:hidden text-white p-2 focus:outline-none transition-transform active:scale-90"
             aria-label="Toggle navigation menu"
           >
-            <Menu size={26} className="text-white" />
+            <Menu size={22} className="text-white" />
           </button>
         </div>
 
         {/* Kotak Hamburger Menu */}
         <div
-          className={`md:hidden fixed inset-0 top-[56px] bg-black/30 transition-opacity duration-300 z-[10] ${apakahMenuTerbuka ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+          className={`md:hidden fixed inset-0 top-[48px] md:top-[56px] bg-black/30 transition-opacity duration-300 z-[10] ${apakahMenuTerbuka ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
           onClick={tutupMenu}
         ></div>
 
         {/* Kontainer Sidebar (Tampilan HP) */}
-        <div className={`md:hidden fixed top-[56px] left-0 w-full overflow-hidden z-[100] transition-all duration-300 ${apakahMenuTerbuka ? 'h-fit' : 'h-0'}`}>
+        <div className={`md:hidden fixed top-[48px] md:top-[56px] left-0 w-full overflow-hidden z-[100] transition-all duration-300 ${apakahMenuTerbuka ? 'h-fit' : 'h-0'}`}>
 
           {/* Sidebar Container */}
           <div className={`

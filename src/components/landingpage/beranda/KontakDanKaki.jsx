@@ -91,7 +91,7 @@ export default function KontakDanKaki() {
           <p className="text-slate-500 text-[13.5px] md:text-[14.5px] mb-6 md:mb-8 leading-relaxed">Punya pertanyaan ? Hubungi kami melalui kontak berikut!.</p>
 
           {/* Container Daftar Kontak */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 lg:landscape:grid-cols-6 gap-4 w-full">
             {daftarKontak.map((kontak, indeks) => (
               <a
                 key={indeks}

@@ -39,10 +39,10 @@ const hitungStatus = (item) => {
 export default function TampilanInformasi({ data }) {
   return (
     // Bagian Poster & Timeline
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+    <div className="grid grid-cols-1 lg:grid-cols-1 lg:landscape:grid-cols-12 gap-10 lg:gap-12 items-start">
 
       {/* Container Kolom Poster */}
-      <div className="lg:col-span-6">
+      <div className="lg:col-span-1 lg:landscape:col-span-6">
         {/* Poster Tetep Terlihat Ketika Scrool */}
         <div className="sticky top-28 space-y-6">
           <div className="relative group">
@@ -69,7 +69,7 @@ export default function TampilanInformasi({ data }) {
       </div>
 
       {/* Container Timeline */}
-      <div className="lg:col-span-6 space-y-8">
+      <div className="lg:col-span-1 lg:landscape:col-span-6 space-y-8">
         {/* Container Judul Timeline */}
         <div className="flex flex-col items-center md:items-start space-y-1 ml-2">
           <div className="w-fit flex flex-col items-start">

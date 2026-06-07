@@ -39,7 +39,7 @@ export default function DaftarLomba({ dataAwal = [] }) {
   } else if (totalLomba === 4) {
     gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-[1270px] mx-auto";
   } else if (totalLomba === 5) {
-    gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5";
+    gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:landscape:grid-cols-5";
   }
 
   return (

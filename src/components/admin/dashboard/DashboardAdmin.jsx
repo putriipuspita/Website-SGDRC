@@ -131,7 +131,7 @@ const DashboardAdmin = () => {
           <div className="max-w-[1400px] mx-auto space-y-8">
 
             {/* Container Statistik Utama */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:landscape:grid-cols-4 gap-6">
               {statistikCards.map((item) => (
                 // Container Kotak
                 <div key={item.id} onClick={() => item.link && router.push(item.link)} className={`bg-white py-4 px-4 h-24 rounded-2xl shadow-sm border border-slate-100 border-b-4 ${item.borderColor} relative group hover:shadow-md transition-all duration-300 ${item.link ? 'cursor-pointer active:scale-95' : ''}`}>
@@ -152,9 +152,9 @@ const DashboardAdmin = () => {
             </div>
 
             {/* Container Grafik dan Daftar Akun */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-1 lg:landscape:grid-cols-12 gap-6 items-stretch">
               {/* Container Daftar Akun */}
-              <div className="lg:col-span-8 flex flex-col">
+              <div className="lg:col-span-1 lg:landscape:col-span-8 flex flex-col">
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
 
                   {/* Container Judul dan Tombol Tambah Akun */}
@@ -217,7 +217,7 @@ const DashboardAdmin = () => {
               </div>
 
               {/* Container Grafik Pendaftar Tiap Lomba */}
-              <div className="lg:col-span-4 flex flex-col">
+              <div className="lg:col-span-1 lg:landscape:col-span-4 flex flex-col">
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 h-full">
 
                   {/* Judul */}

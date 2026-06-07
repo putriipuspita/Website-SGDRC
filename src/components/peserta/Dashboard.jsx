@@ -159,7 +159,7 @@ const DashboardPeserta = () => {
                 ) : (
 
                   /* Container Kartu Lomba */
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-14 pb-32">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 lg:landscape:grid-cols-4 gap-6 gap-y-14 pb-32">
                     {daftarLomba.map((lomba) => (
 
                       // Kartu Lomba
