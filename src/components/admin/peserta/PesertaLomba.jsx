@@ -291,7 +291,7 @@ const PesertaLomba = () => {
             {/* Container Filter & Search */}
             <div className="flex flex-col md:flex-row items-center gap-3 w-full">
               {/* Container Search Bar */}
-              <div className="relative group w-full md:w-72">
+              <div className="relative group w-full md:w-40 lg:w-72">
                 {/* Icon */}
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={13} />
 
