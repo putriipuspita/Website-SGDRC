@@ -152,9 +152,9 @@ const DashboardAdmin = () => {
             </div>
 
             {/* Container Grafik dan Daftar Akun */}
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               {/* Container Daftar Akun */}
-              <div className="xl:col-span-8 flex flex-col">
+              <div className="lg:col-span-8 flex flex-col">
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-full">
 
                   {/* Container Judul dan Tombol Tambah Akun */}
@@ -217,7 +217,7 @@ const DashboardAdmin = () => {
               </div>
 
               {/* Container Grafik Pendaftar Tiap Lomba */}
-              <div className="xl:col-span-4 flex flex-col">
+              <div className="lg:col-span-4 flex flex-col">
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 h-full">
 
                   {/* Judul */}

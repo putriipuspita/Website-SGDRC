@@ -42,7 +42,7 @@ const HalamanGuideBook = ({ dataAwal = [] }) => {
         <div className="w-full max-w-[1400px] mx-auto">
 
           {/* Kartu */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {daftarGuideBook.map((data) => (
               // Mengatur Warna Kotak Guide Book
               <div

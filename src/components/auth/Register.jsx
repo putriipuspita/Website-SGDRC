@@ -72,7 +72,7 @@ const Register = () => {
     // Halaman Bagian Register
     <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-montserrat">
       {/* Container Formulir Register */}
-      <div className="w-full max-w-[350px] px-4 md:px-0 md:w-[450px] lg:w-[450px] xl:w-[310px] md:min-w-[450px] lg:min-w-[450px] xl:min-w-[310px] relative z-10 animate-fade-in py-4">
+      <div className="w-full max-w-[350px] px-4 md:px-0 md:w-[450px] lg:w-[310px] xl:w-[310px] md:min-w-[450px] lg:min-w-[310px] xl:min-w-[310px] relative z-10 animate-fade-in py-4">
 
         {/* Card Utama */}
         <div className="bg-white rounded-[22px] p-5 pt-5 pb-6 md:p-6 md:pt-6 md:pb-8 shadow-[0_20px_50px_rgba(15,23,42,0.05)] border border-slate-100 relative">

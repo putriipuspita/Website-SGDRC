@@ -236,7 +236,7 @@ const DataPeserta = () => {
           <div className="w-full">
 
             {/* Container Judul & Kontrol Halaman*/}
-            <div className={`mb-8 flex flex-col ${apakahSidebarTerbuka ? 'lg:flex-col' : 'lg:flex-row'} xl:flex-row items-start ${apakahSidebarTerbuka ? 'lg:items-start' : 'lg:items-center'} xl:items-center justify-between gap-4 lg:gap-6`}>
+            <div className="mb-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-6">
               {/* Judul dan Deskripsi */}
               <div className="text-left border-l-4 border-[#E40011] pl-6 animate-in slide-in-from-left duration-700 min-w-fit">
                 <h1 className="text-xl font-black mb-1 tracking-normal text-slate-800 uppercase whitespace-normal md:whitespace-nowrap text-left leading-relaxed md:leading-tight">Data Peserta Terdaftar</h1>
@@ -244,29 +244,29 @@ const DataPeserta = () => {
               </div>
 
               {/* Container Pencarian dan Filter */}
-              <div className={`flex flex-col md:flex-row items-center gap-3 w-full ${apakahSidebarTerbuka ? 'lg:w-full' : 'lg:w-auto'} xl:w-auto lg:pl-0 lg:pr-0 md:mt-2 ${apakahSidebarTerbuka ? 'lg:mt-2' : 'lg:mt-0'} xl:mt-0`}>
+              <div className="flex flex-col md:flex-row items-center gap-3 w-full lg:w-auto md:mt-2 lg:mt-0">
                 {/* Input Pencarian */}
-                <div className={`relative group w-full md:flex-1 ${apakahSidebarTerbuka ? 'lg:flex-1' : 'lg:w-auto lg:flex-none'} xl:w-auto xl:flex-none`}>
+                <div className="relative group w-full md:flex-1 lg:w-auto lg:flex-none">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
                   <input
                     type="text"
                     placeholder="Cari Tim..."
                     value={kataKunciCari}
                     onChange={(e) => setKataKunciCari(e.target.value)}
-                    className={`pl-8 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11px] md:text-[11px] lg:text-[9.5px] w-full ${apakahSidebarTerbuka ? 'lg:w-full' : 'lg:w-[160px]'} xl:w-[160px] font-bold text-slate-800 placeholder:text-slate-600 shadow-sm`}
+                    className="pl-8 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11px] md:text-[11px] lg:text-[9.5px] w-full lg:w-[160px] font-bold text-slate-800 placeholder:text-slate-600 shadow-sm"
                   />
                 </div>
 
                 {/* Container Filter */}
-                <div className={`flex flex-row gap-2 w-full md:flex-[2] ${apakahSidebarTerbuka ? 'lg:flex-[2]' : 'lg:w-auto'} xl:w-auto`}>
+                <div className="flex flex-row gap-2 w-full lg:w-auto">
 
                   {/* Filter Pilihan Lomba */}
-                  <div className={`relative flex-1 md:flex-1 ${apakahSidebarTerbuka ? 'lg:flex-1' : 'lg:flex-none'} xl:flex-none`}>
+                  <div className="relative flex-1 md:flex-1 lg:flex-none">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                     <select
                       value={lombaFilter}
                       onChange={(e) => setLombaFilter(e.target.value)}
-                      className={`pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full ${apakahSidebarTerbuka ? 'lg:w-full' : 'lg:w-[160px]'} xl:w-[160px] shadow-sm`}
+                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full lg:w-[160px] shadow-sm"
                     >
                       <option value="Semua">{isHp ? "Semua Lomba" : "Semua Lomba"}</option>
                       {daftarJenisLomba.map(l => <option key={l} value={l}>{formatJudul(l)}</option>)}
@@ -275,12 +275,12 @@ const DataPeserta = () => {
                   </div>
 
                   {/* Filter Status Verifikasi */}
-                  <div className={`relative flex-1 md:flex-1 ${apakahSidebarTerbuka ? 'lg:flex-1' : 'lg:flex-none'} xl:flex-none`}>
+                  <div className="relative flex-1 md:flex-1 lg:flex-none">
                     <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className={`pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full ${apakahSidebarTerbuka ? 'lg:w-full' : 'lg:w-[160px]'} xl:w-[160px] shadow-sm`}
+                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full lg:w-[160px] shadow-sm"
                     >
                       <option value="Semua">{isHp ? "Semua Status" : "Semua Status"}</option>
                       <option value="TERVERIFIKASI">Terverifikasi</option>

@@ -69,7 +69,7 @@ const Login = () => {
     // Halaman Bagian Login
     <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-montserrat">
       {/* Container Formulir Login */}
-      <div className="w-[310px] md:w-[450px] lg:w-[450px] xl:w-[310px] min-w-[310px] md:min-w-[450px] lg:min-w-[450px] xl:min-w-[310px] relative z-10 animate-fade-in py-6">
+      <div className="w-[310px] md:w-[450px] lg:w-[310px] xl:w-[310px] min-w-[310px] md:min-w-[450px] lg:min-w-[310px] xl:min-w-[310px] relative z-10 animate-fade-in py-6">
 
         {/* Card Utama */}
         <div className="bg-white rounded-[22px] p-5 pt-6 pb-8 md:p-6 md:pt-8 md:pb-10 shadow-[0_20px_50px_rgba(15,23,42,0.05)] border border-slate-100 relative">
