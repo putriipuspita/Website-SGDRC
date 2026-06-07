@@ -1,8 +1,10 @@
 import PenyediaNotifikasi from "@/components/element/PenyediaNotifikasi";
 import "./globals.css";
 
+const tahun = new Date().getFullYear();
+
 export const metadata = {
-  title: "SGDRC 2026 - Sunan Gunung Djati Robotic Competition",
+  title: `SGDRC ${tahun} - Sunan Gunung Djati Robotic Competition`,
   description: "Beyond Competition: With Small Action, Make Your Creation Become A Champion",
 };
 

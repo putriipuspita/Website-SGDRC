@@ -27,11 +27,11 @@ async function ambilDataInformasi() {
     return {
       poster: pengaturan.poster_utama || '',
       timeline: timelineList,
-      judulEvent: pengaturan.judul_hero || 'SGDRC 2026'
+      judulEvent: pengaturan.judul_hero || `SGDRC ${new Date().getFullYear()}`
     };
   } catch (error) {
     console.error("Gagal ambil data informasi:", error);
-    return { poster: '', timeline: [], judulEvent: 'SGDRC 2026' };
+    return { poster: '', timeline: [], judulEvent: `SGDRC ${new Date().getFullYear()}` };
   }
 }
 
@@ -54,7 +54,7 @@ export default async function HalamanInformasiPublik() {
       {/* Footer */}
       <footer className="w-full bg-[#0B255D] py-4 md:py-5 text-center border-t border-white/5 z-10 relative">
         <p className="text-[9px] text-white/40 tracking-wider font-medium">
-          © 2026 Sunan Gunung Djati Robotic Competition. All Rights Reserved.
+          © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </footer>
     </div>

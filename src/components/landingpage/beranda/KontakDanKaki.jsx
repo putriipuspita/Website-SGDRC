@@ -68,7 +68,7 @@ export default function KontakDanKaki() {
       tipe: 'Lokasi',
       label: 'LOKASI',
       tautan: "https://share.google/wdlo8bthb2AMhGYhc",
-      teks: 'Aula Abdjan Soelaeman',
+      teks: 'UIN Sunan Gunung Djati Bandung',
       ikon: '/aset/icon/lokasi.png',
       target: '_blank',
       hoverBorder: 'hover:border-brand-red/80'
@@ -119,7 +119,7 @@ export default function KontakDanKaki() {
       {/* Container Footer */}
       <div className="w-full bg-[#0B255D] py-4 md:py-5 text-center z-10 relative">
         <p className="text-[9px] text-white/50 tracking-wide font-medium">
-          © 2026 Sunan Gunung Djati Robotic Competition. All Rights Reserved.
+          © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </div>
     </footer>

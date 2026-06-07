@@ -37,9 +37,9 @@ export default function BagianTentang({ dataAwal = {} }) {
           {/* Container Deskripsi */}
           <div className="w-full lg:w-[75%]">
             <p className="text-slate-700 leading-[2.2em] lg:leading-[2em] text-[14px] lg:text-[15.5px] text-justify indent-[30px] md:indent-[50px] lg:-mt-3">
-              Sunan Gunung Djati Robotic Competition (SGD RC) merupakan ajang kompetisi robotika tingkat nasional yang menjadi wadah bagi generasi muda Indonesia untuk mengembangkan kreativitas, inovasi, serta kemampuan di bidang teknologi dan robotika.
-              Kompetisi ini menghadirkan berbagai kategori lomba yang dapat diikuti oleh peserta dari berbagai jenjang pendidikan, mulai dari Taman Kanak-Kanak (TK), Sekolah Dasar (SD), Sekolah Menengah Pertama (SMP), Sekolah Menengah Atas(SMA), hingga Mahasiswa.
-              <strong>Kegiatan ini telah terkurasi oleh Pusat Prestasi Nasional (Puspresnas) di bawah naungan Kemendikbudristek</strong> sehingga pelaksanaannya mengacu pada standar kompetisi nasional yang mendukung pengembangan prestasi, karakter, serta daya saing peserta di tingkat yang lebih tinggi.
+              Sunan Gunung Djati Robotic Competition (SGDRC) merupakan ajang kompetisi robotika tingkat nasional yang menjadi wadah bagi generasi muda Indonesia untuk mengembangkan kreativitas, inovasi, serta kemampuan di bidang teknologi dan robotika.
+              Kompetisi ini menghadirkan berbagai kategori lomba yang dapat diikuti oleh peserta dari berbagai jenjang pendidikan, mulai dari Taman Kanak-Kanak (TK), Sekolah Dasar (SD), Sekolah Menengah Pertama (SMP), Sekolah Menengah Atas (SMA), hingga Mahasiswa.
+              <strong> Kegiatan ini telah terkurasi oleh Pusat Prestasi Nasional (Puspresnas) di bawah naungan Kemendikbudristek</strong> sehingga pelaksanaannya mengacu pada standar kompetisi nasional yang mendukung pengembangan prestasi, karakter, serta daya saing peserta di tingkat yang lebih tinggi.
             </p>
           </div>
 

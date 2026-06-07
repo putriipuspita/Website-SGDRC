@@ -11,10 +11,10 @@ export async function GET() {
     // Nilai default
     const keysPenting = {
       deskripsi_hero: '“Beyond Competition : With Small Action, Make Your Creation Become A Champion”',
-      tanggal_event: '2026-08-15 08:00:00',
+      tanggal_event: `${new Date().getFullYear()}-08-15 08:00:00`,
       bank_nama: 'Bank BSI (Bank Syariah Indonesia)',
       bank_rekening: '1234567890',
-      bank_atas_nama: 'SGD RC 2026',
+      bank_atas_nama: `SGD RC ${new Date().getFullYear()}`,
       wa_link_umum: 'https://wa.me/628123456789',
       ketua_pelaksana: 'Sarah Nurul Yakin',
       path_ttd: '/aset/legal/ttd putra.png',

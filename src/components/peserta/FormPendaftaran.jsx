@@ -406,7 +406,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
               <div className="space-y-0.5 relative z-10">
                 <p className="text-[12px] font-bold text-[#225AA1]">{pengaturan?.bank_nama || 'Bank BSI (Bank Syariah Indonesia)'}</p>
                 <p className="text-xl font-black text-[#0B255D] tracking-wider">{pengaturan?.bank_rekening || '1234567890'}</p>
-                <p className="text-[11px] font-black text-[#225AA1] uppercase">a.n. {pengaturan?.bank_atas_nama || 'SGD RC 2026'}</p>
+                <p className="text-[11px] font-black text-[#225AA1] uppercase">a.n. {pengaturan?.bank_atas_nama || `SGD RC ${new Date().getFullYear()}`}</p>
               </div>
               <p className="mt-3 text-[9px] font-bold text-[#1E3A5F]/60 italic">* Setelah membayar, upload bukti pada kolom di atas (Format: Gambar/Foto).</p>
             </div>

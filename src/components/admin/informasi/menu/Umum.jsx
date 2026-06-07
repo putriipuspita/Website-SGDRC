@@ -64,7 +64,7 @@ const Umum = ({
               disabled={!modeEditUmum}
               value={umum.judul_hero}
               onChange={(e) => setUmum({ ...umum, judul_hero: e.target.value })}
-              placeholder="Contoh: SGDRC 2026"
+              placeholder={`Contoh: SGDRC ${new Date().getFullYear()}`}
             />
 
             {/* Input Tagline */}

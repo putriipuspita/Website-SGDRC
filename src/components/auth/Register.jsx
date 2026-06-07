@@ -98,7 +98,7 @@ const Register = () => {
           {/* Deskripsi */}
           <p className="text-slate-500 text-[10.5px] text-center mb-5 lg:mb-4 xl:mb-3 font-medium">
             Daftar untuk mengikuti
-            SGD-RC 2026
+            SGD-RC {new Date().getFullYear()}
           </p>
 
           {/* Form Register */}

@@ -201,7 +201,7 @@ const Sertifikat = () => {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 animate-in slide-in-from-left duration-700">
               <div className="text-left border-l-4 border-[#E40011] pl-6">
                 <h1 className="text-xl font-black mb-1 tracking-normal text-slate-800 uppercase leading-relaxed md:leading-tight">Sertifikat Elektronik</h1>
-                <p className="text-slate-500 text-[9.5px] font-bold tracking-normal uppercase leading-relaxed">Pencapaian Resmi SGDRC 2026</p>
+                <p className="text-slate-500 text-[9.5px] font-bold tracking-normal uppercase leading-relaxed">Pencapaian Resmi SGDRC {new Date().getFullYear()}</p>
               </div>
 
               {/* Container Filter & Search */}

@@ -116,7 +116,7 @@ export default function BagianHero({ dataAwal = {} }) {
                   <span className="text-[#E40011]">SGD</span>
                   <span className="text-[#0B255D]" style={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.9)' }}>RC</span>
                   {' '}
-                  <span className="text-[#0B255D]" style={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.9)' }}>2026</span>
+                  <span className="text-[#0B255D]" style={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.9)' }}>{new Date().getFullYear()}</span>
                 </>
               )}
             </div>
