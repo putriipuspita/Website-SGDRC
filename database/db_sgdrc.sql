@@ -48,7 +48,7 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (19, 'sertifikat_config_peserta', '{"y_nomor":33,"y_nama":43,"y_status":50,"y_kategori":72,"size_nomor":12,"size_nama":31,"size_status":15,"size_kategori":13,"font_nama":"Cormorant Garamond"}', NULL),
 (20, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":28,"size_status":16,"size_kategori":13,"font_nama":"UnifrakturMaguntia"}', NULL),
 
--- Timeline dan Sponsor
+-- Poster dan Sponsor
 (21, 'poster_utama', '/aset/logo/poster.png', NULL),
 (22, 'sponsor_list', '[{"id":5,"nama":"Lee Mineralle","logo":"/aset/sponsor/lee mineralle.png"},{"id":4,"nama":"Telkom Indonesia","logo":"/aset/sponsor/telkom.png"},{"id":3,"nama":"BNI","logo":"/aset/sponsor/bni.png"},{"id":2,"nama":"CNC","logo":"/aset/sponsor/cnc.png"},{"id":1,"nama":"BSI","logo":"/aset/sponsor/bsi.png"}]', NULL),
 (23, 'timeline_list', '[{"id":1,"label":"Pendaftaran Batch 1","tanggal":"1 - 23 Mei 2026","status":"Selesai","mulai":"2026-05-01","selesai":"2026-05-23"},{"id":2,"label":"Pendaftaran Batch 2","tanggal":"24 Mei - 11 Juni 2026","status":"Sedang Berlangsung","mulai":"2026-05-24","selesai":"2026-06-11"},{"id":3,"label":"Pengumpulan Proposal (Khusus Project Innovative)","tanggal":"1 - 11 Juni 2026","status":"Akan Datang","mulai":"2026-06-01","selesai":"2026-06-11"},{"id":4,"label":"Pengumuman Proposal","tanggal":"17 Juni 2026","status":"Akan Datang","mulai":"2026-06-17","selesai":"2026-06-17"},{"id":5,"label":"Technical Meeting","tanggal":"27 Juni 2026","status":"Akan Datang","mulai":"2026-06-27","selesai":"2026-06-27"},{"id":6,"label":"Pelaksanaan Lomba (Robot Soccer, Fast Building, Junkbot)","tanggal":"4 Juli 2026","status":"Akan Datang","mulai":"2026-07-04","selesai":"2026-07-04"},{"id":1778740157309,"label":"Pelaksanaan Lomba (Project Innovative)","tanggal":"5 Juli 2026","status":"Akan Datang","mulai":"2026-07-05","selesai":"2026-07-05"}]', NULL);
@@ -172,7 +172,7 @@ CREATE TABLE `pendaftaran` (
   `file_follow_ig_robotika` varchar(255) DEFAULT NULL,
   `file_follow_tiktok` varchar(255) DEFAULT NULL,
   `file_bukti_bayar` varchar(255) DEFAULT NULL,
-  `file_bukti_refund` varchar(255) DEFAULT NULL,
+  `file_bukti_refund` varchar(255) DEFAULT NULL,  
   `status_pendaftaran` enum('pending','success','rejected','refund') DEFAULT 'pending',
   `catatan_admin` text DEFAULT NULL,
   `peringkat` varchar(50) DEFAULT NULL,
