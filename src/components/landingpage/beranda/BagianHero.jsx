@@ -91,7 +91,7 @@ export default function BagianHero({ dataAwal = {} }) {
               SUNAN GUNUNG DJATI
             </h2>
             <h3 className="text-[12px] sm:text-[22px] md:text-[26px] lg:text-[30px] lg:landscape:text-[38px] xl:text-[38px] font-semibold tracking-wide text-white mb-0 leading-tight uppercase">
-              ROBOTIC COMPETITION
+              ROBOTICS COMPETITION
             </h3>
 
             {/* Singkatan Judul */}
