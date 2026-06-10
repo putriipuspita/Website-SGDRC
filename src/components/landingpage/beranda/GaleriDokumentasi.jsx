@@ -127,7 +127,7 @@ export default function GaleriDokumentasi() {
 
         {/* Container Foto Dokumentasi */}
         <div className="w-full overflow-hidden py-4">
-          {/* Roda Slide Otomatis - Digerakkan oleh JavaScript */}
+          {/* Roda Slide Otomatis */}
           <div
             ref={refKontainer}
             className="flex gap-4 md:gap-8 min-w-max cursor-grab active:cursor-grabbing"

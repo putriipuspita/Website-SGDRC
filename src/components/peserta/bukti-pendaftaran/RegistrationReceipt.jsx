@@ -123,7 +123,7 @@ const KwitansiPendaftaran = ({ data, pengaturan = {} }) => {
                   <td className="border border-gray-400 px-3 pt-2 pb-6 font-bold bg-gray-50 font-serif" style={{ verticalAlign: 'middle' }}>Nama Peserta</td>
                   <td className="border border-gray-400 px-3 pt-2 pb-6 font-bold capitalize" style={{ verticalAlign: 'middle' }}>
                     <div className="space-y-1">
-                      {data.peserta.filter(n => n && n.trim() !== "").map((nama, i, arr) => (
+                      {data.peserta.filter(n => n && n.trim() !== "" && n.trim() !== "-").map((nama, i, arr) => (
                         <div key={i} className="flex gap-2 leading-tight">
                           {arr.length > 1 && <span className="w-5 shrink-0 font-bold">{i + 1}.</span>}
                           <span className="font-bold">{nama}</span>

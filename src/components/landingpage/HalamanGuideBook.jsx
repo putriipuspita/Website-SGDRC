@@ -99,7 +99,7 @@ const HalamanGuideBook = ({ dataAwal = [] }) => {
       {/* Footer */}
       <footer className="w-full bg-[#0B255D] py-4 md:py-5 text-center border-t border-white/5 z-10 relative">
         <p className="text-[9px] text-white/40 tracking-wide font-medium">
-          © {new Date().getFullYear()} Sunan Gunung Djati Robotic Competition.
+          © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </footer>
     </div>
