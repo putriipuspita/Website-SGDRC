@@ -55,7 +55,9 @@ const Informasi = () => {
     path_logo_robotika: '',
     path_logo_sgdrc: '',
     sponsor_list: [],
-    whatsapp_list: []
+    whatsapp_list: [],
+    link_dokumentasi: '',
+    foto_dokumentasi_list: '[]'
   });
 
   // Fungsi Ambil Data
@@ -103,7 +105,11 @@ const Informasi = () => {
 
           // Poster dan Timeline
           poster_utama: data.poster_utama || '',
-          timeline_list: data.timeline_list || '[]'
+          timeline_list: data.timeline_list || '[]',
+
+          // Dokumentasi
+          link_dokumentasi: data.link_dokumentasi || '',
+          foto_dokumentasi_list: data.foto_dokumentasi_list || '[]'
         }));
       }
 
@@ -204,18 +210,18 @@ const Informasi = () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
-    const toastId = toast.loading(pesanLoading);
+    const toastId = pesanLoading ? toast.loading(pesanLoading) : null;
     try {
       const res = await fetchDenganToken('/api/admin/upload', { method: 'POST', body: formData });
       if (res.ok) {
         const data = await res.json();
-        toast.dismiss(toastId);
+        if (toastId) toast.dismiss(toastId);
         return data.path;
       }
-      toast.error("Gagal Mengunggah", { id: toastId });
+      if (toastId) toast.error("Gagal Mengunggah", { id: toastId });
       return null;
     } catch (error) {
-      toast.error("Gagal Mengunggah: Terjadi kesalahan sistem", { id: toastId });
+      if (toastId) toast.error("Gagal Mengunggah: Terjadi kesalahan sistem", { id: toastId });
       return null;
     }
   };
@@ -518,6 +524,7 @@ const Informasi = () => {
                 setTabAktif={setTabAktif}
                 daftarLombaDashboard={daftarLombaDashboard}
                 handleUpdateLombaDashboardLocal={handleUpdateLombaDashboardLocal}
+                prosesUploadFile={prosesUploadFile}
               />
             )}
 

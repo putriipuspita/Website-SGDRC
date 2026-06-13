@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, UserCircle, FileBadge, LogOut } from 'lucide-react';
+import { LayoutDashboard, UserCircle, FileBadge, LogOut, Camera } from 'lucide-react';
 
 // Sidebar Halaman Peserta
 const Sidebar = ({ apakahSidebarTerbuka }) => {
@@ -14,6 +14,7 @@ const Sidebar = ({ apakahSidebarTerbuka }) => {
     { nama: 'Dashboard', ikon: LayoutDashboard, jalur: '/peserta/dashboard' },
     { nama: 'Data Peserta', ikon: UserCircle, jalur: '/peserta/data' },
     { nama: 'Sertifikat', ikon: FileBadge, jalur: '/peserta/sertifikat' },
+    { nama: 'Dokumentasi', ikon: Camera, jalur: '/peserta/dokumentasi' },
   ];
 
   // Fungsi Keluar

@@ -195,8 +195,8 @@ const Sertifikat = () => {
         <Sidebar apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Konten Sertifikat */}
-        <div className="flex-1 bg-slate-50 overflow-y-auto px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
-          <div className="w-full">
+        <div className="flex-1 bg-slate-50 overflow-y-auto peserta-scrollbar px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
+          <div className="w-full flex-1 flex flex-col">
             {/* Judul, Deskripsi & Filter Controls*/}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 animate-in slide-in-from-left duration-700">
               <div className="text-left border-l-4 border-[#E40011] pl-6">
@@ -259,7 +259,7 @@ const Sertifikat = () => {
 
             {/* Tampilan Loading */}
             {sedangMemuat ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="flex-1 flex flex-col items-center justify-center py-20 text-center">
                 <Loader2 className="w-10 h-10 text-[#16B9FF] animate-spin mb-4 mx-auto" />
                 <p className="text-slate-400 font-bold tracking-normal text-[10px]">Menyiapkan Sertifikat...</p>
               </div>
@@ -267,24 +267,28 @@ const Sertifikat = () => {
 
               // Tampilan Jika Data Kosong
               daftarSertifikat.length === 0 ? (
-                <StateKosong
-                  Ikon={Award}
-                  judul="Belum Ada Sertifikat"
-                  deskripsi="Sertifikat akan diterbitkan secara otomatis oleh admin setelah seluruh rangkaian acara selesai."
-                  className="mt-16 flex flex-1 flex-col items-center justify-center p-4"
-                />
+                <div className="flex-grow flex flex-col items-center justify-center py-12">
+                  <StateKosong
+                    Ikon={Award}
+                    judul="Belum Ada Sertifikat"
+                    deskripsi="Sertifikat akan diterbitkan secara otomatis oleh admin setelah seluruh rangkaian acara selesai."
+                    className="flex flex-col items-center justify-center p-4 text-center"
+                  />
+                </div>
               ) : (
 
-                <>
+                <div className="flex-1 flex flex-col">
 
                   {/* Menampilkan Data Sertifikat */}
                   {sertifikatTersaring.length === 0 ? (
-                    <StateKosong
-                      Ikon={Award}
-                      judul="Sertifikat Tidak Ditemukan"
-                      deskripsi="Tidak ada sertifikat yang cocok dengan pencarian atau filter Anda."
-                      className="mt-8 flex flex-col items-center justify-center p-4"
-                    />
+                    <div className="flex-grow flex flex-col items-center justify-center py-12">
+                      <StateKosong
+                        Ikon={Award}
+                        judul="Sertifikat Tidak Ditemukan"
+                        deskripsi="Tidak ada sertifikat yang cocok dengan pencarian atau filter."
+                        className="flex flex-col items-center justify-center p-4 text-center"
+                      />
+                    </div>
                   ) : (
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 pb-32">
                       {sertifikatTersaring.map((item) => (
@@ -368,7 +372,7 @@ const Sertifikat = () => {
                       ))}
                     </div>
                   )}
-                </>
+                </div>
               )}
           </div>
         </div>

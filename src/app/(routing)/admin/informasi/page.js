@@ -10,7 +10,7 @@ export default function HalamanInformasi() {
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
       {/* Navbar Admin */}
       <NavbarAdmin
         apakahSidebarTerbuka={apakahSidebarTerbuka}
@@ -20,11 +20,11 @@ export default function HalamanInformasi() {
       />
 
       {/* Sidebar */}
-      <div className="flex flex-1 pt-14">
+      <div className="flex flex-1 pt-14 overflow-hidden">
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Konten */}
-        <main className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 scrollbar-hide transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 peserta-scrollbar transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1400px] mx-auto">
             <Informasi />
           </div>

@@ -58,13 +58,13 @@ const DataRefund = () => {
 
   return (
     // Halaman Bagian Data Refund
-    <div className="min-h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
       <NavbarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} setApakahSidebarTerbuka={setApakahSidebarTerbuka} apakahProfilTerbuka={apakahProfilTerbuka} setApakahProfilTerbuka={setApakahProfilTerbuka} />
-      <div className="flex flex-1 pt-14">
+      <div className="flex flex-1 pt-14 overflow-hidden">
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Konten Main */}
-        <main className={`flex-1 overflow-y-auto p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1100px] mx-auto space-y-8">
 
             {/* Container Judul dan Search */}

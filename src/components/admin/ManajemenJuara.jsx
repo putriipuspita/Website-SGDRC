@@ -371,7 +371,7 @@ const ManajemenJuara = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
       <style>{`
         @media (min-width: 768px) and (max-width: 1024px) {
           .winner-filters-grid {
@@ -388,12 +388,12 @@ const ManajemenJuara = () => {
       {/* Navbar Atas */}
       <NavbarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} setApakahSidebarTerbuka={setApakahSidebarTerbuka} apakahProfilTerbuka={apakahProfilTerbuka} setApakahProfilTerbuka={setApakahProfilTerbuka} />
 
-      <div className="flex flex-1 pt-14">
+      <div className="flex flex-1 pt-14 overflow-hidden">
         {/* Sidebar Kiri */}
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Konten Utama */}
-        <main className={`flex-1 overflow-y-auto p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1500px] mx-auto space-y-8 animate-in fade-in duration-700">
             {/* Judul */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

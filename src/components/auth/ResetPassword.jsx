@@ -101,6 +101,7 @@ const ResetPasswordForm = () => {
                 onChange={(e) => setPasswordBaru(e.target.value)}
                 placeholder="Masukkan Password Baru"
                 className="w-full bg-[#F8FAFC] border border-slate-200 focus:border-[#E40011] focus:bg-white text-slate-800 text-sm rounded-2xl py-3.5 pl-5 pr-12 outline-none transition-all duration-300 focus:ring-2 focus:ring-red-500/10 placeholder:text-slate-400"
+                suppressHydrationWarning
               />
 
               {/* Icon Mata */}
@@ -108,6 +109,7 @@ const ResetPasswordForm = () => {
                 type="button"
                 onClick={() => setTampilkanSandi(!tampilkanSandi)}
                 className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                suppressHydrationWarning
               >
                 {tampilkanSandi ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -131,6 +133,7 @@ const ResetPasswordForm = () => {
                 onChange={(e) => setKonfirmasiPassword(e.target.value)}
                 placeholder="Ulangi Password Baru"
                 className="w-full bg-[#F8FAFC] border border-slate-200 focus:border-[#E40011] focus:bg-white text-slate-800 text-sm rounded-2xl py-3.5 pl-5 pr-12 outline-none transition-all duration-300 focus:ring-2 focus:ring-red-500/10 placeholder:text-slate-400"
+                suppressHydrationWarning
               />
 
               {/* Icon Mata */}
@@ -138,6 +141,7 @@ const ResetPasswordForm = () => {
                 type="button"
                 onClick={() => setTampilkanSandi(!tampilkanSandi)}
                 className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                suppressHydrationWarning
               >
                 {tampilkanSandi ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -148,6 +152,7 @@ const ResetPasswordForm = () => {
           <button
             disabled={apakahLoading}
             className="w-full bg-[#E40011] hover:bg-[#c4000e] text-white font-black py-3.5 rounded-xl shadow-md shadow-red-500/10 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 uppercase text-[13px] tracking-wider"
+            suppressHydrationWarning
           >
             {apakahLoading ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto" />

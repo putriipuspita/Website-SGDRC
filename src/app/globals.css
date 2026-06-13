@@ -57,6 +57,105 @@
     background: #94a3b8;
   }
 
+  /* Kustomisasi Scrollbar Vertical */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  .peserta-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track,
+  .peserta-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb,
+  .peserta-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+    border: 2.5px solid #f1f5f9;
+    transition: all 0.3s;
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover,
+  .peserta-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* Tombol Panah Segitiga Atas & Bawah */
+  html::-webkit-scrollbar-button,
+  body::-webkit-scrollbar-button,
+  .peserta-scrollbar::-webkit-scrollbar-button {
+    display: block;
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-color: #f1f5f9;
+  }
+
+  /* Vertikal - Atas */
+  html::-webkit-scrollbar-button:vertical:start:decrement,
+  body::-webkit-scrollbar-button:vertical:start:decrement,
+  .peserta-scrollbar::-webkit-scrollbar-button:vertical:start:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,15 5,85 95,85' fill='%23788898'/%3E%3C/svg%3E");
+    height: 12px;
+    background-position: bottom center;
+  }
+
+  html::-webkit-scrollbar-button:vertical:start:decrement:hover,
+  body::-webkit-scrollbar-button:vertical:start:decrement:hover,
+  .peserta-scrollbar::-webkit-scrollbar-button:vertical:start:decrement:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,15 5,85 95,85' fill='%234b5563'/%3E%3C/svg%3E");
+  }
+
+  /* Vertikal - Bawah */
+  html::-webkit-scrollbar-button:vertical:end:increment,
+  body::-webkit-scrollbar-button:vertical:end:increment,
+  .peserta-scrollbar::-webkit-scrollbar-button:vertical:end:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,85 5,15 95,15' fill='%23788898'/%3E%3C/svg%3E");
+    height: 12px;
+    background-position: top center;
+  }
+
+  html::-webkit-scrollbar-button:vertical:end:increment:hover,
+  body::-webkit-scrollbar-button:vertical:end:increment:hover,
+  .peserta-scrollbar::-webkit-scrollbar-button:vertical:end:increment:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,85 5,15 95,15' fill='%234b5563'/%3E%3C/svg%3E");
+  }
+
+  /* Horizontal - Kiri */
+  html::-webkit-scrollbar-button:horizontal:start:decrement,
+  body::-webkit-scrollbar-button:horizontal:start:decrement,
+  .peserta-scrollbar::-webkit-scrollbar-button:horizontal:start:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='15,50 85,15 85,85' fill='%23788898'/%3E%3C/svg%3E");
+    width: 12px;
+    background-position: right center;
+  }
+
+  html::-webkit-scrollbar-button:horizontal:start:decrement:hover,
+  body::-webkit-scrollbar-button:horizontal:start:decrement:hover,
+  .peserta-scrollbar::-webkit-scrollbar-button:horizontal:start:decrement:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='15,50 85,15 85,85' fill='%234b5563'/%3E%3C/svg%3E");
+  }
+
+  /* Horizontal - Kanan */
+  html::-webkit-scrollbar-button:horizontal:end:increment,
+  body::-webkit-scrollbar-button:horizontal:end:increment,
+  .peserta-scrollbar::-webkit-scrollbar-button:horizontal:end:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='85,50 15,15 15,85' fill='%23788898'/%3E%3C/svg%3E");
+    width: 12px;
+    background-position: left center;
+  }
+
+  html::-webkit-scrollbar-button:horizontal:end:increment:hover,
+  body::-webkit-scrollbar-button:horizontal:end:increment:hover,
+  .peserta-scrollbar::-webkit-scrollbar-button:horizontal:end:increment:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='85,50 15,15 15,85' fill='%234b5563'/%3E%3C/svg%3E");
+  }
+
   .bg-stars {
     background-image:
       radial-gradient(1.5px 1.5px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
@@ -68,8 +167,6 @@
     background-size: 180px 180px;
     background-repeat: repeat;
   }
-
-  /* Animasi marquee sekarang dijalankan oleh JavaScript di GaleriDokumentasi.jsx */
 
   /* Animasi Mengambang (Floating) */
   .animate-float {

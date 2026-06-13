@@ -145,6 +145,8 @@ CREATE TABLE `users` (
   `role` enum('admin','peserta') DEFAULT 'peserta',
   `status_verifikasi` tinyint(1) DEFAULT 0,
   `token_verifikasi` varchar(255) DEFAULT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_expires` datetime DEFAULT NULL,
   `tanggal_daftar` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)

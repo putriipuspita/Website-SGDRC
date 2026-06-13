@@ -122,7 +122,7 @@ const DashboardPeserta = () => {
         {!lombaTerpilih && <Sidebar apakahSidebarTerbuka={apakahSidebarTerbuka} />}
 
         {/* Container Isi Dashboard*/}
-        <div className="flex-1 bg-slate-50 overflow-y-auto scrollbar-hide border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] flex flex-col px-6 md:px-10 py-8 relative z-20">
+        <div className="flex-1 bg-slate-50 overflow-y-auto peserta-scrollbar border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] flex flex-col px-6 md:px-10 py-8 relative z-20">
           <div className="w-full">
 
             {/* Judul Dashboard */}

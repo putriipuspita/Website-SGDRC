@@ -232,7 +232,7 @@ const DataPeserta = () => {
         <Sidebar apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Isi Data Peserta */}
-        <div className="flex-1 bg-slate-50 overflow-y-auto px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
+        <div className="flex-1 bg-slate-50 overflow-y-auto peserta-scrollbar px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
           <div className="w-full">
 
             {/* Container Judul & Kontrol Halaman*/}

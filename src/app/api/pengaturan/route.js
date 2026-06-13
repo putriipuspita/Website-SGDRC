@@ -20,7 +20,9 @@ export async function GET() {
       path_ttd: '/aset/legal/ttd putra.png',
       path_cap: '/aset/legal/cap sgdrc.png',
       path_logo_robotika: '/aset/logo/robotika.png',
-      path_logo_sgdrc: '/aset/logo/logo.jpg'
+      path_logo_sgdrc: '/aset/logo/logo.jpg',
+      link_dokumentasi: '',
+      foto_dokumentasi_list: '[]'
     };
 
     // Gabungkan data database dengan default

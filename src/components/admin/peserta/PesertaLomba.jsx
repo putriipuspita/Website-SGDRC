@@ -227,7 +227,7 @@ const PesertaLomba = () => {
 
   // Layout
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; border-radius: 10px; }
@@ -252,11 +252,11 @@ const PesertaLomba = () => {
       />
 
 
-      <div className="flex flex-1 pt-14">
+      <div className="flex flex-1 pt-14 overflow-hidden">
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Konten */}
-        <main className={`flex-1 overflow-y-auto p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1500px] mx-auto space-y-8">
 
             {/* Container Judul, Export dan Tambah */}
