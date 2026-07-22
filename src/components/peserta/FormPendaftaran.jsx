@@ -250,7 +250,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
               {/* Jenis Lomba */}
               <div>
                 <label className="block text-[12.5px] font-bold text-black tracking-normal mb-2">Jenis Lomba yang Dipilih</label>
-                <div className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 font-sans font-bold text-[12.5px] text-[#E40011] uppercase tracking-wider">
+                <div className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 font-sans font-bold text-[12.5px] text-[#E40011] uppercase tracking-normal">
                   {lomba?.nama || 'Lomba Tidak Terdeteksi'}
                 </div>
               </div>
@@ -438,15 +438,15 @@ const FormPendaftaran = ({ lomba, kembali }) => {
             {/* Container Info Pembayaran*/}
             <div className="bg-[#DEEAFB] p-5 rounded-2xl border border-[#BDD5F7] mb-6 relative overflow-hidden shadow-sm">
               {/* Judul */}
-              <h3 className="text-[9px] font-black text-[#1E3A5F] uppercase tracking-[0.1em] mb-2">Informasi Pembayaran</h3>
+              <h3 className="text-[9.5px] lg:text-[9px] font-black text-[#1E3A5F] uppercase tracking-[0.1em] mb-2">Informasi Pembayaran</h3>
 
               {/* Info Pembayaran */}
               <div className="space-y-0.5 relative z-10">
-                <p className="text-[12px] font-bold text-[#225AA1]">{pengaturan?.bank_nama || 'Bank BSI (Bank Syariah Indonesia)'}</p>
-                <p className="text-xl font-black text-[#0B255D] tracking-wider">{pengaturan?.bank_rekening || '1234567890'}</p>
-                <p className="text-[11px] font-black text-[#225AA1] uppercase">a.n. {pengaturan?.bank_atas_nama || `SGD RC ${new Date().getFullYear()}`}</p>
+                <p className="text-[12.5px] lg:text-[12px] font-bold text-[#225AA1]">{pengaturan?.bank_nama || 'Bank BSI (Bank Syariah Indonesia)'}</p>
+                <p className="text-[20.5px] lg:text-xl font-black text-[#0B255D] tracking-wider">{pengaturan?.bank_rekening || '1234567890'}</p>
+                <p className="text-[11.5px] lg:text-[11px] font-black text-[#225AA1] uppercase">a.n. {pengaturan?.bank_atas_nama || `SGD RC ${new Date().getFullYear()}`}</p>
               </div>
-              <p className="mt-3 text-[9px] font-bold text-[#1E3A5F]/60 italic">* Setelah membayar, upload bukti pada kolom di atas (Format: Gambar/Foto).</p>
+              <p className="mt-3 text-[10px] lg:text-[9.5px] font-bold text-[#1E3A5F]/60 italic">* Setelah membayar, upload bukti pada kolom di atas (Format: Gambar/Foto).</p>
             </div>
 
             {/* Pesan Error */}

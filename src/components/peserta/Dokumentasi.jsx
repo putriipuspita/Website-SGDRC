@@ -131,42 +131,35 @@ const Dokumentasi = () => {
               // Tampilan Ketika Ada Data
               <div className="w-full flex-1 flex flex-col gap-5 min-h-0 justify-between">
                 {/* Container Banner */}
-                <div className="w-full bg-[#0B255D] text-white rounded-xl p-4 md:p-5 shadow-md border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden shrink-0 animate-in slide-in-from-top duration-700">
+                <div className="w-full bg-[#0B255D] text-white rounded-xl p-4 md:p-5 shadow-md border border-white/10 relative overflow-hidden shrink-0 animate-in slide-in-from-top duration-700">
                   {/* Efek Glow di Latar Belakang */}
                   <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#16B9FF] rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
 
-                  {/* Container Judul dan Deksripsi */}
-                  <div className="space-y-1.5 text-center md:text-left relative z-10 shrink-0">
-                    {/* Judul */}
-                    <h2 className="text-[19px] md:text-[22px] font-black uppercase tracking-normal text-white leading-none">
-                      DOKUMENTASI
-                    </h2>
-
-                    {/* Judul Logo */}
-                    <div className="font-logo text-[16px] md:text-[19px] italic tracking-tight drop-shadow-md leading-none">
-                      <span className="text-[#E40011]">SGD</span>
-                      <span className="text-[#0B255D]" style={{ WebkitTextStroke: '0.8px rgba(255, 255, 255, 0.9)' }}>RC</span>
-                      {' '}
-                      <span className="text-[#0B255D]" style={{ WebkitTextStroke: '0.8px rgba(255, 255, 255, 0.9)' }}>2026</span>
+                  <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row lg:items-center lg:justify-between gap-4 md:gap-y-3 md:items-center lg:gap-4">
+                    {/* Header: Judul */}
+                    <div className="flex flex-col items-center md:items-start lg:items-start justify-center md:justify-start md:col-start-1 md:row-start-1">
+                      <h2 className="text-[25px] md:text-[28px] lg:text-[22px] font-black uppercase tracking-normal text-white leading-none">
+                        DOKUMENTASI
+                      </h2>
                     </div>
-                  </div>
 
-                  {/* Deskripsi Singkat */}
-                  <p className="text-white/70 text-[9.5px] md:text-[11px] font-medium leading-relaxed max-w-[500px] text-center md:text-left relative z-10">
-                    Seluruh foto dan video kegiatan SGD RC 2026 telah dikumpulkan dalam satu folder Google Drive resmi panitia. Silakan klik tombol di samping untuk membukanya.
-                  </p>
+                    {/* Deskripsi Singkat */}
+                    <p className="text-white/70 text-[10.5px] md:text-[11.5px] lg:text-[11px] font-medium leading-relaxed max-w-[650px] lg:max-w-[500px] text-center md:text-left md:col-span-2 md:col-start-1 md:row-start-2 lg:flex-1 lg:mx-6">
+                      Seluruh foto dan video kegiatan SGD RC 2026 telah dikumpulkan dalam satu folder Google Drive resmi panitia. Silakan klik tombol di samping untuk membukanya.
+                    </p>
 
-                  {/* Tombol Aksi */}
-                  <div className="relative z-10 shrink-0 w-full md:w-auto flex justify-center">
-                    <a
-                      href={linkDrive}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full md:w-auto px-6 py-3 bg-[#0066da] hover:bg-[#005bbf] text-white rounded-xl font-black text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                    >
-                      <FolderOpen className="w-4 h-4 mr-2" />
-                      BUKA DOKUMENTASI
-                    </a>
+                    {/* Tombol Aksi */}
+                    <div className="w-full md:w-auto flex justify-center md:justify-end md:col-start-2 md:row-start-1 lg:shrink-0">
+                      <a
+                        href={linkDrive}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center w-full md:w-auto px-6 py-3.5 lg:py-3 bg-[#0066da] hover:bg-[#005bbf] text-white rounded-xl font-black text-[11px] lg:text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                      >
+                        <FolderOpen className="w-4 h-4 mr-2" />
+                        BUKA DOKUMENTASI
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -201,12 +194,12 @@ const PhotoCard = ({ src, idx }) => {
 
   return (
     <div
-      className="bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm hover:scale-[1.03] transition-all duration-300 transform origin-center flex flex-col h-full min-h-0 relative"
+      className="bg-white p-1.5 rounded-xl border border-slate-200 shadow-sm hover:scale-[1.03] transition-all duration-300 transform origin-center flex flex-col relative overflow-hidden"
     >
-      <div className="flex-1 rounded-sm overflow-hidden bg-slate-100 min-h-0 relative">
+      <div className="rounded-lg overflow-hidden bg-slate-50 relative w-full h-auto">
         {/* Efek Shimmer */}
         {!apakahSelesaiDimuat && (
-          <div className="absolute inset-0 bg-slate-200 animate-pulse flex items-center justify-center">
+          <div className="absolute inset-0 bg-slate-200 animate-pulse flex items-center justify-center aspect-[4/3]">
             {/* Animasi shimmer */}
             <div className="w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_1.5s_infinite] absolute inset-0"></div>
           </div>
@@ -214,7 +207,7 @@ const PhotoCard = ({ src, idx }) => {
         <img
           src={src}
           alt={`SGDRC-Dokumentasi-${idx}`}
-          className={`w-full h-full object-cover transition-opacity duration-700 ${apakahSelesaiDimuat ? 'opacity-100' : 'opacity-0'
+          className={`w-full h-auto block transition-opacity duration-700 ${apakahSelesaiDimuat ? 'opacity-100' : 'opacity-0'
             }`}
           onLoad={tanganiSelesaiMuat}
           decoding="async"
@@ -238,7 +231,7 @@ const PhotoCard = ({ src, idx }) => {
 // Komponen Helper untuk render grid Photo Card
 const GridPhotoCards = ({ photos }) => {
   return (
-    <div className="grid grid-cols-4 gap-3 h-full">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {photos.map((src, idx) => (
         <PhotoCard key={idx} src={src} idx={idx} />
       ))}

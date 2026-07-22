@@ -8,6 +8,11 @@ import { LayoutDashboard, UserCircle, FileBadge, LogOut, Camera } from 'lucide-r
 const Sidebar = ({ apakahSidebarTerbuka }) => {
   const lokasi = usePathname();
   const navigasi = useRouter();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Daftar Menu Yang Ditampilkan
   const daftarMenu = [
@@ -28,14 +33,11 @@ const Sidebar = ({ apakahSidebarTerbuka }) => {
     // Bagian Sidebar Peserta
     <aside
       suppressHydrationWarning
-      className={`
-    ${apakahSidebarTerbuka
-          ? 'w-52 z-[60] sm:z-0' :
-          'w-0 invisible pointer-events-none z-[60] sm:z-0'
-        } 
-    bg-slate-50 flex flex-col fixed sm:relative top-14 sm:top-0 
-    h-[calc(100vh-3.5rem)] sm:h-full 
-    transition-all duration-500 ease-in-out overflow-hidden`}>
+      className={!mounted
+        ? 'w-0 lg:w-52 max-lg:invisible bg-slate-50 flex flex-col fixed sm:relative top-14 sm:top-0 h-[calc(100vh-3.5rem)] sm:h-full transition-all duration-500 ease-in-out overflow-hidden'
+        : `${apakahSidebarTerbuka ? 'w-52 z-[60] sm:z-0' : 'w-0 invisible pointer-events-none z-[60] sm:z-0'} bg-slate-50 flex flex-col fixed sm:relative top-14 sm:top-0 h-[calc(100vh-3.5rem)] sm:h-full transition-all duration-500 ease-in-out overflow-hidden`
+      }
+    >
 
       {/* Container Menu Navigasi */}
       <nav className="px-4 py-8 relative z-10 w-52 flex flex-col justify-between h-full border-r border-slate-100">

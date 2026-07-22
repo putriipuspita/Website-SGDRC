@@ -11,11 +11,11 @@ import { TableBase } from '../../element/TableBase';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
-import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
+import useSidebar from '../../../hooks/useSidebar';
 
 // Komponen Utama Belum Terverifikasi
 const DataPending = () => {
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebar('sidebarAdmin');
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [daftarPeserta, setDaftarPeserta] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +63,7 @@ const DataPending = () => {
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Konten */}
-        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main suppressHydrationWarning className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'lg:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1100px] mx-auto space-y-8">
 
             {/* Container Judul dan Cari */}

@@ -15,7 +15,7 @@ const NavbarAdmin = ({ apakahSidebarTerbuka, setApakahSidebarTerbuka }) => {
       <div className="flex items-center w-full h-full">
 
         {/* Container Logo dan Hamburger Menu */}
-        <div className={`flex items-center px-8 relative h-full shrink-0 transition-all duration-300 ${apakahSidebarTerbuka ? 'w-56' : 'w-20'} border-b border-white/10`}>
+        <div suppressHydrationWarning className={`flex items-center px-8 relative h-full shrink-0 transition-all duration-300 ${apakahSidebarTerbuka ? 'w-56' : 'w-20'} border-b border-white/10`}>
           {/* Logo SGDRC */}
           <Link href="/" className="flex items-center gap-2 cursor-pointer min-w-max">
             <h1 className="font-logo text-3xl italic tracking-[0.05rem] leading-none">
@@ -26,6 +26,7 @@ const NavbarAdmin = ({ apakahSidebarTerbuka, setApakahSidebarTerbuka }) => {
 
           {/* Tombol Hamburger Menu */}
           <button
+            suppressHydrationWarning
             onClick={() => setApakahSidebarTerbuka(!apakahSidebarTerbuka)}
             className="absolute left-[205px] top-1/2 -translate-y-1/2 p-2 text-[#16B9FF] hover:text-[#00A3FF] transition-all z-[60]"
           >

@@ -18,12 +18,12 @@ import SidebarAdmin from './navigasi/SidebarAdmin';
 import { formatJudul } from '../../lib/formatHelper';
 import { gambarTeksSertifikat, muatFontSertifikat } from '../../lib/pdfHelper';
 import { fetchDenganToken } from '../../lib/apiClient';
-import useSidebarAdmin from '../../hooks/useSidebarAdmin';
+import useSidebar from '../../hooks/useSidebar';
 
 // Komponen Utama Manajemen Juara & Sertifikat Pemenang
 const ManajemenJuara = () => {
   // State Utama Halaman
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebar('sidebarAdmin');
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [kategoriTerpilih, setKategoriTerpilih] = useState('');
   const [daftarLomba, setDaftarLomba] = useState([]);
@@ -396,7 +396,7 @@ const ManajemenJuara = () => {
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Konten Utama */}
-        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main suppressHydrationWarning className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'lg:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1500px] mx-auto space-y-8 animate-in fade-in duration-700">
             {/* Judul */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -410,8 +410,8 @@ const ManajemenJuara = () => {
                 {/* Icon */}
                 <LayoutGrid className="absolute left-3 top-1/2 -translate-y-1/2 text-[#16B9FF]" size={14} />
 
-                {/* Dropdown */}
-                <select value={kategoriTerpilih} onChange={(e) => setKategoriTerpilih(e.target.value)} className="w-full pl-9 pr-10 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 appearance-none shadow-sm uppercase">
+                 {/* Dropdown */}
+                <select suppressHydrationWarning value={kategoriTerpilih} onChange={(e) => setKategoriTerpilih(e.target.value)} className="w-full pl-9 pr-10 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 appearance-none shadow-sm uppercase">
                   {daftarLomba.map(lomba => (
                     <option key={lomba.id} value={lomba.nama.toUpperCase()}>
                       {lomba.nama.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.substring(1)).join(' ')}
@@ -424,13 +424,14 @@ const ManajemenJuara = () => {
               {/* Pencarian */}
               <div className="relative group">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-950 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
-                <input type="text" placeholder="Cari Nama..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 placeholder:text-slate-950 shadow-sm" />
+                <input suppressHydrationWarning type="text" placeholder="Cari Nama..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 placeholder:text-slate-950 shadow-sm" />
               </div>
 
               {/* Container Tombol Aksi */}
               <div className="flex gap-2 h-full">
                 {/* Tombol Aktifkan / Nonaktifkan Semua Sertifikat */}
                 <button
+                  suppressHydrationWarning
                   onClick={() => {
                     const targetState = apakahSemuaAktif ? 0 : 1;
                     setDaftarPemenang(prev => prev.map(p => (p.nama_lomba || "").toUpperCase() === kategoriTerpilih.toUpperCase() ? { ...p, is_sertifikat_siap: targetState } : p));
@@ -445,6 +446,7 @@ const ManajemenJuara = () => {
                 <div className="relative flex-1">
                   {/* Dropdown Menu Unduh */}
                   <button
+                    suppressHydrationWarning
                     onClick={() => setApakahMenuUnduhTerbuka(!apakahMenuUnduhTerbuka)}
                     disabled={sedangUnduh || sedangUnduhZIP}
                     className="w-full h-full bg-[#E40011] hover:bg-red-700 text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50 uppercase"
@@ -476,7 +478,7 @@ const ManajemenJuara = () => {
                 </div>
 
                 {/* Tombol Simpan Konfigurasi */}
-                <button onClick={simpanSemua} disabled={sedangMenyimpan} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50 uppercase">
+                <button suppressHydrationWarning onClick={simpanSemua} disabled={sedangMenyimpan} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50 uppercase">
                   {sedangMenyimpan ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={13} />}
                   Simpan
                 </button>

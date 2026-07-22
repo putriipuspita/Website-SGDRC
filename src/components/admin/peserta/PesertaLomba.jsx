@@ -22,12 +22,12 @@ import { TableBase } from '../../element/TableBase';
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
 import { cekTipeLomba, formatJudul } from '../../../lib/formatHelper';
-import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
+import useSidebar from '../../../hooks/useSidebar';
 
 // Komponen Utama Peserta Lomba
 const PesertaLomba = () => {
   const { slug } = useParams();
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebar('sidebarAdmin');
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [apakahTambahTerbuka, setApakahTambahTerbuka] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -258,7 +258,7 @@ const PesertaLomba = () => {
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Konten */}
-        <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main suppressHydrationWarning className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'lg:ml-56' : 'ml-0'}`}>
           <style>{`
             @media (min-width: 768px) and (max-width: 1024px) {
               /* Baris Judul & Tombol */

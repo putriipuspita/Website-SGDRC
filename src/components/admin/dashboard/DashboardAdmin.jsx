@@ -16,12 +16,12 @@ import toast from 'react-hot-toast';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
-import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
+import useSidebar from '../../../hooks/useSidebar';
 
 // Komponen Dashboard Admin
 const DashboardAdmin = () => {
   const router = useRouter();
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebar('sidebarAdmin');
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [apakahModalTambahTerbuka, setApakahModalTambahTerbuka] = useState(false);
   const [apakahModalHapusTerbuka, setApakahModalHapusTerbuka] = useState(false);
@@ -130,7 +130,7 @@ const DashboardAdmin = () => {
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Isi Konten */}
-        <main className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 peserta-scrollbar transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main suppressHydrationWarning className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 peserta-scrollbar transition-all duration-500 ${apakahSidebarTerbuka ? 'lg:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1400px] mx-auto space-y-8">
 
             {/* Container Statistik Utama */}

@@ -140,7 +140,7 @@ export default function GaleriDokumentasi() {
               // Kartu Dokumentasi
               <div
                 key={indeks}
-                className="w-[85vw] md:w-[380px] lg:w-[400px] h-[200px] md:h-[230px] lg:h-[220px] bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden relative flex-shrink-0"
+                className="w-[85vw] md:w-[380px] lg:w-[400px] h-[200px] md:h-[230px] lg:h-[220px] bg-slate-950 rounded-2xl border border-slate-200 shadow-md overflow-hidden relative flex-shrink-0"
                 style={{ contain: 'layout style paint' }}
               >
 
@@ -148,7 +148,7 @@ export default function GaleriDokumentasi() {
                 <img
                   src={foto}
                   alt={`Dokumentasi SGDRC ${indeks}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   loading="eager"
                   draggable="false"
                 />

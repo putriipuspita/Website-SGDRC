@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import NavbarAdmin from '@/components/admin/navigasi/NavbarAdmin';
 import SidebarAdmin from '@/components/admin/navigasi/SidebarAdmin';
 import Informasi from '@/components/admin/informasi/Informasi';
-import useSidebarAdmin from '@/hooks/useSidebarAdmin';
+import useSidebar from '@/hooks/useSidebar';
 
 // Halaman utama menu informasi
 export default function HalamanInformasi() {
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebar('sidebarAdmin');
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
 
 
@@ -27,7 +27,7 @@ export default function HalamanInformasi() {
         <SidebarAdmin apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Konten */}
-        <main className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 peserta-scrollbar transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+        <main suppressHydrationWarning className={`flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-6 peserta-scrollbar transition-all duration-500 ${apakahSidebarTerbuka ? 'lg:ml-56' : 'ml-0'}`}>
           <div className="max-w-[1400px] mx-auto">
             <Informasi />
           </div>

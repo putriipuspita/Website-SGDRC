@@ -2,32 +2,51 @@
 import { useState, useEffect } from 'react';
 
 // Fungsi Buka Tutup Sidebar
-const useSidebar = () => {
-
-  // Fungsi Inisialisasi state sidebar dari localStorage
+const useSidebar = (keyLocalStorage = 'sidebarTerbuka') => {
+  // Fungsi Inisialisasi state sidebar dari localStorage (instan pada client)
   const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(() => {
     if (typeof window !== 'undefined') {
-      const isMobile = window.innerWidth < 640;
-      if (isMobile) {
+      const isMobileOrTablet = window.innerWidth < 1024;
+      if (isMobileOrTablet) {
         return false;
       }
-
-      // Ambil Status Terakhir Kondisi Sidebar
-      const tersimpan = localStorage.getItem('sidebarTerbuka');
-      if (tersimpan !== null) {
-        return JSON.parse(tersimpan);
+      if (keyLocalStorage) {
+        const tersimpan = localStorage.getItem(keyLocalStorage);
+        if (tersimpan !== null) {
+          return JSON.parse(tersimpan);
+        }
       }
       return true;
     }
-    return true;
+    return true; // Server-side default
   });
 
-  // Simpan Status Sidebar Saat Berubah
+  // Listener untuk resize layar (tutup di tablet/HP, sesuaikan di laptop)
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth >= 640) {
-      localStorage.setItem('sidebarTerbuka', JSON.stringify(apakahSidebarTerbuka));
+    const aturSidebar = () => {
+      if (window.innerWidth < 1024) {
+        setApakahSidebarTerbuka(false);
+      } else {
+        if (keyLocalStorage) {
+          const tersimpan = localStorage.getItem(keyLocalStorage);
+          if (tersimpan !== null) {
+            setApakahSidebarTerbuka(JSON.parse(tersimpan));
+            return;
+          }
+        }
+        setApakahSidebarTerbuka(true);
+      }
+    };
+    window.addEventListener('resize', aturSidebar);
+    return () => window.removeEventListener('resize', aturSidebar);
+  }, [keyLocalStorage]);
+
+  // Simpan Status Sidebar Saat Berubah di Laptop
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024 && keyLocalStorage) {
+      localStorage.setItem(keyLocalStorage, JSON.stringify(apakahSidebarTerbuka));
     }
-  }, [apakahSidebarTerbuka]);
+  }, [apakahSidebarTerbuka, keyLocalStorage]);
 
   return [apakahSidebarTerbuka, setApakahSidebarTerbuka];
 };

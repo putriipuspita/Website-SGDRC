@@ -12,6 +12,11 @@ import { formatJudul } from '../../../lib/formatHelper';
 const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
   const lokasi = usePathname();
   const [apakahPesertaTerbuka, setApakahPesertaTerbuka] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Daftar Menu Dashboard
   const menuDashboard = [
@@ -53,7 +58,13 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
 
   return (
     // Halaman Bagian Sidebar
-    <aside className={`${apakahSidebarTerbuka ? 'w-56' : 'w-0'} bg-[#0B255D] flex flex-col fixed top-14 left-0 h-[calc(100vh-56px)] transition-all duration-500 ease-in-out z-50 overflow-y-auto scrollbar-hide border-r border-white/5`}>
+    <aside
+      suppressHydrationWarning
+      className={!mounted
+        ? 'w-0 lg:w-56 max-lg:invisible bg-[#0B255D] flex flex-col fixed top-14 left-0 h-[calc(100vh-56px)] transition-all duration-500 ease-in-out z-50 overflow-y-auto scrollbar-hide border-r border-white/5'
+        : `${apakahSidebarTerbuka ? 'w-56' : 'w-0 max-lg:invisible'} bg-[#0B255D] flex flex-col fixed top-14 left-0 h-[calc(100vh-56px)] transition-all duration-500 ease-in-out z-50 overflow-y-auto scrollbar-hide border-r border-white/5`
+      }
+    >
       <nav className="flex flex-col justify-between h-full py-6 w-56 px-0">
         {/* Container Menu Sidebar */}
         <div>

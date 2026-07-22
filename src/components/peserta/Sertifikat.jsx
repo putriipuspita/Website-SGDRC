@@ -312,12 +312,12 @@ const Sertifikat = () => {
 
                               {/* Container Jenis Sertifikat dan Jenis Lomba */}
                               <div className="flex flex-col">
-                                <span className={`px-2 py-0.5 ${item.jenis === 'JUARA' ? 'bg-amber-100 border-amber-400 text-amber-700' : 'bg-[#16B9FF]/20 border-[#16B9FF]/40 text-[#16B9FF]'} border rounded-md text-[7px] font-black uppercase tracking-wider mb-3 w-fit`}>
+                                <span className={`px-2 py-0.5 ${item.jenis === 'JUARA' ? 'bg-amber-100 border-amber-400 text-amber-700' : 'bg-[#16B9FF]/20 border-[#16B9FF]/40 text-[#16B9FF]'} border rounded-md text-[9px] md:text-[8.5px] lg:text-[7.5px] font-black uppercase tracking-normal mb-3 w-fit`}>
                                   {item.jenis === 'JUARA'
                                     ? `E-CERTIFICATE ${item.peringkat.toUpperCase().includes('JUARA') ? item.peringkat.toUpperCase() : `JUARA ${item.peringkat.toUpperCase()}`}`
                                     : 'E-CERTIFICATE'}
                                 </span>
-                                <h4 className={`text-[11px] font-black ${item.jenis === 'JUARA' ? 'text-amber-700' : 'text-[#16B9FF]'} uppercase tracking-wider leading-tight`}>{item.lomba}</h4>
+                                <h4 className={`text-[12.5px] md:text-[12px] lg:text-[11px] font-black ${item.jenis === 'JUARA' ? 'text-amber-700' : 'text-[#16B9FF]'} uppercase tracking-normal leading-tight break-words`}>{item.lomba}</h4>
                               </div>
 
                               {/* Icon */}
@@ -327,11 +327,11 @@ const Sertifikat = () => {
                             </div>
 
                             {/* Container Informasi Sertifikat */}
-                            <div className="space-y-2 mb-6 relative z-10">
+                            <div className="space-y-2 mb-4 relative z-10">
                               {/* Nama */}
                               <div>
-                                <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Diberikan Kepada</p>
-                                <h3 className="text-lg font-black text-slate-950 uppercase tracking-tight leading-tight">
+                                <p className="text-[9px] md:text-[8.5px] lg:text-[7.5px] font-bold text-slate-950 uppercase tracking-normal mb-1">Diberikan Kepada</p>
+                                <h3 className="text-[19px] lg:text-[18.5px] font-black text-slate-950 uppercase tracking-tight leading-tight break-words">
                                   {item.nama}
                                 </h3>
                               </div>
@@ -340,14 +340,14 @@ const Sertifikat = () => {
                               <div className="grid grid-cols-2 gap-4 pt-1">
                                 {/* Tim */}
                                 <div>
-                                  <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Tim</p>
-                                  <p className={`text-[11px] font-bold ${item.jenis === 'JUARA' ? 'text-amber-700' : 'text-[#16B9FF]'} truncate`}>{item.tim || '-'}</p>
+                                  <p className="text-[9px] md:text-[8.5px] lg:text-[7.5px] font-bold text-slate-950 uppercase tracking-normal mb-1">Tim</p>
+                                  <p className={`text-[12.5px] md:text-[12px] lg:text-[11px] font-bold ${item.jenis === 'JUARA' ? 'text-amber-700' : 'text-[#16B9FF]'} break-words`}>{item.tim || '-'}</p>
                                 </div>
 
                                 {/* Instansi */}
                                 <div>
-                                  <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Instansi</p>
-                                  <p className="text-[11px] font-bold text-slate-950 truncate">{item.instansi}</p>
+                                  <p className="text-[9px] md:text-[8.5px] lg:text-[7.5px] font-bold text-slate-950 uppercase tracking-normal mb-1">Instansi</p>
+                                  <p className="text-[12.5px] md:text-[12px] lg:text-[11px] font-bold text-slate-950 break-words">{item.instansi}</p>
                                 </div>
                               </div>
                             </div>
@@ -355,7 +355,7 @@ const Sertifikat = () => {
                             {/* Tombol Unduh Sertifikat */}
                             <button
                               onClick={() => tanganiUnduh(item)}
-                              className={`mt-auto w-full flex items-center justify-center gap-2 py-2.5 ${item.jenis === 'JUARA' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-[#16B9FF] hover:bg-[#1299d4]'} text-white rounded-lg font-black text-[9px] uppercase tracking-wider transition-all active:scale-95`}
+                              className={`mt-auto w-full flex items-center justify-center gap-2 py-2.5 ${item.jenis === 'JUARA' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-[#16B9FF] hover:bg-[#1299d4]'} text-white rounded-lg font-black text-[10.5px] md:text-[10px] lg:text-[9px] uppercase tracking-normal transition-all active:scale-95`}
                             >
                               <Download size={14} className="text-white" />
                               Unduh Sertifikat {item.jenis === 'JUARA' ? 'Juara' : 'Peserta'}

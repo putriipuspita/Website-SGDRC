@@ -38,7 +38,7 @@ export default function NavigasiUtama() {
         </Link>
 
         {/* Menu Desktop & Ipad */}
-        <ul className="hidden md:flex items-center md:gap-4 lg:gap-8 md:text-[9px] lg:text-[10.3px] font-bold tracking-wide mx-auto whitespace-nowrap">
+        <ul className="hidden md:flex items-center md:gap-4 lg:gap-8 md:text-[9px] lg:text-[10.3px] font-bold tracking-wide mx-auto lg:absolute lg:left-1/2 lg:-translate-x-1/2 whitespace-nowrap">
           {daftarMenu.map((menu, idx) => {
             // Menentukan Menu Aktif
             const aktif = jalur === menu.href;

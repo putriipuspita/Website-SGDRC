@@ -484,12 +484,12 @@ const Umum = ({
                   </div>
 
                   {/* Grid 4x2 */}
-                  <div className="grid grid-cols-4 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
                     {listFoto.map((foto, idx) => (
-                      <div key={idx} className="relative aspect-video rounded-lg overflow-hidden bg-slate-200 border border-slate-300 group flex items-center justify-center">
+                      <div key={idx} className={`relative rounded-lg overflow-hidden bg-slate-50 border border-slate-300 group flex items-center justify-center w-full ${foto ? 'h-auto' : 'aspect-video'}`}>
                         {foto ? (
                           <>
-                            <img src={foto} className="w-full h-full object-cover" alt={`Dokumentasi ${idx + 1}`} />
+                            <img src={foto} className="w-full h-auto block" alt={`Dokumentasi ${idx + 1}`} />
                             {modeEditUmum && (
                               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 z-10">
                                 <button
