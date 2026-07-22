@@ -362,13 +362,13 @@ const FormPendaftaran = ({ lomba, kembali }) => {
 
             {/* Container Upload Berkas */}
             <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/60 mb-6 animate-in zoom-in-95 duration-700">
-              <div className="space-y-4">
+               <div className="space-y-4">
                 {/* Upload Kartu Tanda Siswa */}
                 <InputFilePendaftaran
                   id="kartuSiswa"
                   label="Foto Kartu Tanda Siswa"
                   file={berkas.kartuSiswa}
-                  ikonSrc="/aset/icon/kartu.png"
+                  ikonSrc="/aset/icon/kartu.webp"
                   ikonAlt="Kartu"
                   bgIkon="bg-[#EBF5FF]"
                   accept="image/*,application/pdf"
@@ -382,7 +382,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   id="followIg"
                   label="Bukti Follow Instagram SGDRC"
                   file={berkas.ikutiInstagram}
-                  ikonSrc="/aset/icon/instagram.png"
+                  ikonSrc="/aset/icon/instagram.webp"
                   ikonAlt="Instagram"
                   bgIkon="bg-[#FFF0F0]"
                   accept="image/*,application/pdf"
@@ -396,7 +396,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   id="followIgRobotika"
                   label="Bukti Follow Instagram Robotika"
                   file={berkas.ikutiInstagramRobotika}
-                  ikonSrc="/aset/icon/instagram.png"
+                  ikonSrc="/aset/icon/instagram.webp"
                   ikonAlt="Instagram"
                   bgIkon="bg-[#FFF0F0]"
                   accept="image/*,application/pdf"
@@ -410,7 +410,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   id="followTiktok"
                   label="Bukti Follow TikTok"
                   file={berkas.ikutiTiktok}
-                  ikonSrc="/aset/icon/tiktok.jpg"
+                  ikonSrc="/aset/icon/tiktok.webp"
                   ikonAlt="TikTok"
                   bgIkon="bg-black"
                   accept="image/*,application/pdf"
@@ -424,7 +424,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   id="buktiBayar"
                   label="Bukti Pembayaran"
                   file={berkas.buktiBayar}
-                  ikonSrc="/aset/icon/bukti.png"
+                  ikonSrc="/aset/icon/bukti.webp"
                   ikonAlt="Bukti"
                   bgIkon="bg-[#E6FFFA]"
                   accept="image/*"

@@ -22,7 +22,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       label: 'EMAIL',
       tautan: `mailto:${pengaturan?.email_kontak || 'adminsgdrc@gmail.com'}`,
       teks: pengaturan?.email_kontak || 'adminsgdrc@gmail.com',
-      ikon: '/aset/icon/gmail.png',
+      ikon: '/aset/icon/gmail.webp',
       target: '_self',
       hoverBorder: 'hover:border-brand-blue/80'
     },
@@ -33,7 +33,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       label: 'IG Official',
       tautan: pengaturan?.ig_official || "https://www.instagram.com/sgdrc_?igsh=NHRjN3A2YjFvbDIw",
       teks: '@sgdrc_',
-      ikon: '/aset/icon/instagram.png',
+      ikon: '/aset/icon/instagram.webp',
       target: '_blank',
       hoverBorder: 'hover:border-pink-500/80'
     },
@@ -44,7 +44,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       label: 'IG Robotika',
       tautan: "https://www.instagram.com/robotika_uinsgd?igsh=MWkxZHRzeG1rdjdldA==",
       teks: '@robotika_uinbdg',
-      ikon: '/aset/icon/instagram.png',
+      ikon: '/aset/icon/instagram.webp',
       target: '_blank',
       hoverBorder: 'hover:border-pink-500/80'
     },
@@ -73,7 +73,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
         }
         return '+' + cleanNum;
       })(),
-      ikon: '/aset/icon/whatsapp.png',
+      ikon: '/aset/icon/whatsapp.webp',
       target: '_blank',
       hoverBorder: 'hover:border-green-500/80'
     },
@@ -84,7 +84,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       label: 'TIKTOK',
       tautan: "https://www.tiktok.com/@sgdrc_?_r=1&_t=ZS-95e32F4S3Ij",
       teks: '@sgdrc_',
-      ikon: '/aset/icon/tiktok.jpg',
+      ikon: '/aset/icon/tiktok.webp',
       target: '_blank',
       hoverBorder: 'hover:border-slate-800',
       imgClass: 'rounded-sm'
@@ -96,7 +96,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       label: 'LOKASI',
       tautan: "https://share.google/wdlo8bthb2AMhGYhc",
       teks: 'UIN Sunan Gunung Djati Bandung',
-      ikon: '/aset/icon/lokasi.png',
+      ikon: '/aset/icon/lokasi.webp',
       target: '_blank',
       hoverBorder: 'hover:border-brand-red/80'
     }

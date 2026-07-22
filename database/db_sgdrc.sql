@@ -29,14 +29,13 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 -- Legalitas
 (8, 'ketua_pelaksana', 'Nur Hidayat Saputra', NULL),
 (9, 'ketua_nim', '12345678910', NULL),
-(10, 'path_ttd', '/aset/legal/ttd putra.png', NULL),
-(11, 'path_cap', '/aset/legal/cap sgdrc.png', NULL),
-(12, 'path_logo_robotika', '/aset/logo/robotika.png', NULL),
-(13, 'path_logo_sgdrc', '/aset/logo/logo.jpg', NULL),
-
+(10, 'path_ttd', '/aset/legal/ttd putra.webp', NULL),
+(11, 'path_cap', '/aset/legal/cap sgdrc.webp', NULL),
+(12, 'path_logo_robotika', '/aset/logo/robotika.webp', NULL),
+(13, 'path_logo_sgdrc', '/aset/logo/logo.webp', NULL),
 -- Sertifikat
-(14, 'sertifikat_peserta', '/aset/legal/peserta.png', NULL),
-(15, 'sertifikat_juara', '/aset/legal/juara.png', NULL),
+(14, 'sertifikat_peserta', '/aset/legal/peserta.webp', NULL),
+(15, 'sertifikat_juara', '/aset/legal/juara.webp', NULL),
 (16, 'sertifikat_nomor_mulai', '0001', NULL),
 (17, 'sertifikat_nomor_mulai_juara', '0001', NULL),
 (18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI', NULL),
@@ -44,8 +43,8 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (20, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":28,"size_status":16,"size_kategori":13,"font_nama":"UnifrakturMaguntia"}', NULL),
 
 -- Poster dan Sponsor
-(21, 'poster_utama', '/aset/logo/poster.png', NULL),
-(22, 'sponsor_list', '[{"id":5,"nama":"Lee Mineralle","logo":"/aset/sponsor/lee mineralle.png"},{"id":4,"nama":"Telkom Indonesia","logo":"/aset/sponsor/telkom.png"},{"id":3,"nama":"BNI","logo":"/aset/sponsor/bni.png"},{"id":2,"nama":"CNC","logo":"/aset/sponsor/cnc.png"},{"id":1,"nama":"BSI","logo":"/aset/sponsor/bsi.png"}]', NULL),
+(21, 'poster_utama', '/aset/logo/poster.webp', NULL),
+(22, 'sponsor_list', '[{"id":5,"nama":"Lee Mineralle","logo":"/aset/sponsor/lee mineralle.webp"},{"id":4,"nama":"Telkom Indonesia","logo":"/aset/sponsor/telkom.webp"},{"id":3,"nama":"BNI","logo":"/aset/sponsor/bni.webp"},{"id":2,"nama":"CNC","logo":"/aset/sponsor/cnc.webp"},{"id":1,"nama":"BSI","logo":"/aset/sponsor/bsi.webp"}]', NULL),
 (23, 'timeline_list', '[{"id":1,"label":"Pendaftaran Batch 1","tanggal":"1 - 23 Mei 2026","status":"Selesai","mulai":"2026-05-01","selesai":"2026-05-23"},{"id":2,"label":"Pendaftaran Batch 2","tanggal":"24 Mei - 11 Juni 2026","status":"Sedang Berlangsung","mulai":"2026-05-24","selesai":"2026-06-11"},{"id":3,"label":"Pengumpulan Proposal (Project Innovative)","tanggal":"1 - 11 Juni 2026","status":"Akan Datang","mulai":"2026-06-01","selesai":"2026-06-11"},{"id":4,"label":"Pengumuman Proposal","tanggal":"17 Juni 2026","status":"Akan Datang","mulai":"2026-06-17","selesai":"2026-06-17"},{"id":5,"label":"Technical Meeting","tanggal":"27 Juni 2026","status":"Akan Datang","mulai":"2026-06-27","selesai":"2026-06-27"},{"id":6,"label":"Pelaksanaan Lomba (Robot Soccer, Fast Building, Junkbot)","tanggal":"4 Juli 2026","status":"Akan Datang","mulai":"2026-07-04","selesai":"2026-07-04"},{"id":1778740157309,"label":"Pelaksanaan Lomba (Project Innovative)","tanggal":"5 Juli 2026","status":"Akan Datang","mulai":"2026-07-05","selesai":"2026-07-05"}]', NULL);
 
 -- ===================================================
@@ -106,11 +105,11 @@ CREATE TABLE `sponsor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `sponsor` (`id`, `nama`, `gambarLogo`) VALUES
-(1, 'BSI', '/aset/sponsor/bsi.png'),
-(2, 'CNC', '/aset/sponsor/cnc.png'),
-(3, 'BNI', '/aset/sponsor/bni.png'),
-(4, 'Telkom Indonesia', '/aset/sponsor/telkom.png'),
-(5, 'Lee Mineralle', '/aset/sponsor/lee mineralle.png');
+(1, 'BSI', '/aset/sponsor/bsi.webp'),
+(2, 'CNC', '/aset/sponsor/cnc.webp'),
+(3, 'BNI', '/aset/sponsor/bni.webp'),
+(4, 'Telkom Indonesia', '/aset/sponsor/telkom.webp'),
+(5, 'Lee Mineralle', '/aset/sponsor/lee mineralle.webp');
 
 -- ===================================================
 --                 TABEL GUIDEBOOK

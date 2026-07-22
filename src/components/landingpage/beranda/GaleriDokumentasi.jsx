@@ -148,7 +148,7 @@ export default function GaleriDokumentasi() {
                 <img
                   src={foto}
                   alt={`Dokumentasi SGDRC ${indeks}`}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                   loading="eager"
                   draggable="false"
                 />

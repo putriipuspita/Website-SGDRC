@@ -17,7 +17,7 @@ const VerifikasiEmail = () => {
             {/* Logo */}
             <div className="relative group bg-white rounded-full p-4 shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100">
               <img
-                src="/aset/icon/email.png"
+                src="/aset/icon/email.webp"
                 alt="Verifikasi Email"
                 className="w-16 h-16 md:w-24 md:h-24 lg:w-[85px] lg:h-[85px] min-[1200px]:w-16 min-[1200px]:h-16 object-contain animate-float drop-shadow-sm"
               />

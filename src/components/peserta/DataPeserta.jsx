@@ -445,7 +445,7 @@ const DataPeserta = () => {
                                               rel="noreferrer"
                                               className="w-6 h-6 flex items-center justify-center bg-emerald-500/10 hover:bg-emerald-500/20 rounded-md transition-all border border-emerald-500/30 overflow-hidden focus:outline-none"
                                             >
-                                              <img src="/aset/icon/whatsapp.png" alt="WhatsApp" className="w-full h-full object-cover scale-150" />
+                                              <img src="/aset/icon/whatsapp.webp" alt="WhatsApp" className="w-full h-full object-cover scale-150" />
                                             </a>
                                             <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-emerald-600 text-white text-[9px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
                                               Join Grup
