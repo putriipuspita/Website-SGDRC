@@ -35,11 +35,11 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (13, 'path_logo_sgdrc', '/aset/logo/logo.jpg', NULL),
 
 -- Sertifikat
-(14, 'sertifikat_peserta', '/uploads/sertifikat/1779081867426-9olvce9.png', NULL),
-(15, 'sertifikat_juara', '/uploads/sertifikat/1779081878877-mgd2ozn.png', NULL),
+(14, 'sertifikat_peserta', '/aset/legal/peserta.png', NULL),
+(15, 'sertifikat_juara', '/aset/legal/juara.png', NULL),
 (16, 'sertifikat_nomor_mulai', '0001', NULL),
-(17, 'sertifikat_nomor_mulai_juara', '001', NULL),
-(18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI/', NULL),
+(17, 'sertifikat_nomor_mulai_juara', '0001', NULL),
+(18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI', NULL),
 (19, 'sertifikat_config_peserta', '{"y_nomor":33,"y_nama":43,"y_status":50,"y_kategori":72,"size_nomor":12,"size_nama":31,"size_status":15,"size_kategori":13,"font_nama":"Cormorant Garamond"}', NULL),
 (20, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":28,"size_status":16,"size_kategori":13,"font_nama":"UnifrakturMaguntia"}', NULL),
 
@@ -151,7 +151,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `users` (`id`, `nama`, `email`, `password`, `role`, `status_verifikasi`) VALUES
-(1, 'Admin SGDRC', 'adminsgdrc@gmail.com', '$2b$10$NSxldydDrMlN2s4qvWZkZOgioHzJmA3c1Fd6C080LxoEjtuESLqr6', 'admin', 1);
+(1, 'Admin SGDRC', 'adminsgdrc@gmail.com', '$2b$10$WFTUJdLnIkjTzXFqxZWC8.IhxEaEQz/WSB9nqO7EnujV.6q8WDyZ2', 'admin', 1);
 
 -- ===================================================
 --                 TABEL PENDAFTARAN

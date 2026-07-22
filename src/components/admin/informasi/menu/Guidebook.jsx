@@ -48,10 +48,10 @@ const Guidebook = ({
           {/* Header Tabel */}
           <thead>
             <tr className="bg-[#0B255D] border-b border-white/20">
-              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
-              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[200px]">Judul Panduan</th>
-              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Deskripsi</th>
-              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[120px]">Tautan & Aksi</th>
+              <th className="px-4 py-3 text-[11px] xl:text-[11.3px] 2xl:text-[12.3px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
+              <th className="px-4 py-3 text-[11px] xl:text-[11.3px] 2xl:text-[12.3px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[200px]">Judul Panduan</th>
+              <th className="px-4 py-3 text-[11px] xl:text-[11.3px] 2xl:text-[12.3px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Deskripsi</th>
+              <th className="px-4 py-3 text-[11px] xl:text-[11.3px] 2xl:text-[12.3px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[120px]">Tautan & Aksi</th>
             </tr>
           </thead>
 
@@ -94,12 +94,12 @@ const Guidebook = ({
                     <input
                       value={gb.judul}
                       onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'judul', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 tracking-tight outline-none text-center"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.6px] lg:text-[12.1px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 tracking-tight outline-none text-center"
                       placeholder="Judul..."
                     />
                   ) : (
                     // Tampilan Judul
-                    <span className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight block text-center leading-normal">
+                    <span className="text-[12.6px] lg:text-[12.1px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-600 tracking-tight block text-center leading-normal">
                       {gb.judul}
                     </span>
                   )}
@@ -113,11 +113,11 @@ const Guidebook = ({
                       value={gb.deskripsi}
                       onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'deskripsi', e.target.value)}
                       rows={2}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 tracking-tight outline-none resize-none text-justify"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-[12.6px] lg:text-[12.1px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 tracking-tight outline-none resize-none text-justify"
                     />
                   ) : (
                     // Tampilan Deskripsi
-                    <p className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight leading-relaxed line-clamp-2 text-justify capitalize">
+                    <p className="text-[12.6px] lg:text-[12.1px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-600 tracking-tight leading-relaxed line-clamp-2 text-justify capitalize">
                       {gb.deskripsi}
                     </p>
                   )}
@@ -132,7 +132,7 @@ const Guidebook = ({
                         value={gb.tautan}
                         onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'tautan', e.target.value)}
                         placeholder="URL..."
-                        className="w-32 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight outline-none text-center"
+                        className="w-32 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.6px] lg:text-[12.1px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-600 tracking-tight outline-none text-center"
                       />
                     ) : (
 

@@ -236,7 +236,7 @@ const DashboardAdmin = () => {
                       <div key={idx} className="space-y-1.5">
 
                         {/* Nama Lomba */}
-                        <p className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 tracking-wide">
+                        <p className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950">
                           {lomba.nama.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.substring(1)).join(' ')}
                         </p>
 
