@@ -59,6 +59,25 @@ export async function POST(request) {
           }
         }
 
+        // Hapus file fisik foto dokumentasi yang dihapus oleh admin
+        if (key === 'foto_dokumentasi_list') {
+          try {
+            const [lama] = await db.query('SELECT nilai FROM pengaturan WHERE nama_key = ?', [key]);
+            if (lama.length > 0 && lama[0].nilai) {
+              const oldList = JSON.parse(lama[0].nilai);
+              const newList = JSON.parse(nilai);
+              if (Array.isArray(oldList) && Array.isArray(newList)) {
+                const deletedFiles = oldList.filter(file => file && !newList.includes(file));
+                for (const file of deletedFiles) {
+                  await hapusFileFisik(file);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("Gagal membersihkan file dokumentasi lama:", err.message);
+          }
+        }
+
         // Cek apakah key sudah ada (update jika ada || insert data baru)
         const [cek] = await db.query('SELECT nama_key FROM pengaturan WHERE nama_key = ?', [key]);
         if (cek.length > 0) {

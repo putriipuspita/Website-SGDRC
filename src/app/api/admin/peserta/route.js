@@ -183,6 +183,14 @@ export async function PUT(req) {
 
     // Upload Bukti Transfer
     if (pathBuktiBaru) {
+      // Ambil file bukti bayar lama sebelum update
+      const [pesertaLama] = await db.query(
+        "SELECT file_bukti_bayar FROM pendaftaran WHERE id = ?",
+        [id]
+      );
+      if (pesertaLama.length > 0 && pesertaLama[0].file_bukti_bayar) {
+        await hapusFileFisik(pesertaLama[0].file_bukti_bayar);
+      }
       query += `, file_bukti_bayar = ?`;
       params.push(pathBuktiBaru);
     }
