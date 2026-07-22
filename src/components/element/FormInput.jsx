@@ -47,7 +47,7 @@ export const FormInput = ({
             }
           }}
           placeholder={placeholder}
-          className={`w-full text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] placeholder:text-[11.5px] placeholder:text-slate-500 rounded-xl py-2.5 pr-4 border-2 outline-none font-medium transition-all duration-300 [&::-webkit-calendar-picker-indicator]:hidden ${Icon ? 'pl-10' : 'pl-4'} ${
+          className={`w-full text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] tracking-tight placeholder:text-[11.5px] placeholder:text-slate-500 rounded-xl py-2.5 pr-4 border-2 outline-none font-medium transition-all duration-300 [&::-webkit-calendar-picker-indicator]:hidden ${Icon ? 'pl-10' : 'pl-4'} ${
             disabled || readOnly
               ? 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
               : 'bg-white border-slate-200 text-slate-950'

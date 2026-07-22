@@ -5,8 +5,8 @@ import { join } from 'path';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'adminsgdrc@gmail.com',
-    pass: 'rxtq hlbo bmsh xeed'
+    user: process.env.EMAIL_USER || 'adminsgdrc@gmail.com',
+    pass: process.env.EMAIL_PASS || 'rxtq hlbo bmsh xeed'
   }
 });
 

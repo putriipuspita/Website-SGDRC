@@ -140,7 +140,7 @@ export async function PATCH(req) {
     sinkronisasiSemuaPendaftaran().catch(err => console.error("Gagal sinkronisasi Sheets saat update status:", err));
 
     // Kirim email notifikasi
-    const host = req.headers.get('host');
+    const host = req.headers.get('x-forwarded-host') || req.headers.get('host');
     const linkBukti = status === 'refund' ? (params.length > 2 ? params[2] : pesertaFull[0].file_bukti_refund) : null;
     kirimEmailNotifikasi(peserta[0].email, peserta[0].nama_tim || peserta[0].nama_peserta1, status, catatan, host, linkBukti, isKoreksi);
 

@@ -6,7 +6,7 @@ import { kirimEmailResetPassword } from '@/lib/email';
 export async function POST(req) {
   try {
     const { email } = await req.json();
-    const host = req.headers.get('host');
+    const host = req.headers.get('x-forwarded-host') || req.headers.get('host');
 
     // Validasi email wajib diisi
     if (!email) {
