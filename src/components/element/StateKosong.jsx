@@ -22,7 +22,7 @@ const StateKosong = ({ Ikon, judul, deskripsi, tombolTeks, tombolHref, className
         <h3 className="text-2xl font-black text-slate-800 tracking-normal mb-3 leading-tight uppercase">
           {judul}
         </h3>
-        <p className="text-slate-500 text-[11.5px] font-bold tracking-wide leading-relaxed max-w-xs mx-auto opacity-90 mb-8">
+        <p className="text-slate-500 text-[11.5px] font-bold tracking-wide leading-relaxed max-w-xs mx-auto mb-8">
           {deskripsi}
         </p>
 

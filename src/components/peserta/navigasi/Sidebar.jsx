@@ -51,7 +51,7 @@ const Sidebar = ({ apakahSidebarTerbuka }) => {
                 href={data.jalur}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 ${apakahAktif
                   ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/20'
-                  : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'
+                  : 'text-slate-950 hover:bg-slate-50 hover:text-slate-950'
                   }`}
               >
 

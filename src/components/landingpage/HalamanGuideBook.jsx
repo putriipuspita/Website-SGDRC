@@ -26,17 +26,17 @@ const HalamanGuideBook = ({ dataAwal = [] }) => {
       <NavigasiUtama />
 
       {/* Container Judul & Deskripsi */}
-      <div className="pt-24 pb-10 px-4 text-center relative z-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-slate-800 tracking-wide uppercase mb-2">
+      <div className="pt-16 md:pt-20 lg:pt-24 pb-6 md:pb-10 px-4 text-center relative z-10">
+        <h1 className="text-[28px] md:text-4xl 2xl:text-5xl font-bold text-slate-800 tracking-tight uppercase mb-2">
           GUIDE BOOK
         </h1>
-        <p className="text-slate-500 font-medium italic tracking-wide text-[12px] md:text-sm">
+        <p className="text-slate-950 font-medium italic tracking-tight text-[13.5px] md:text-sm 2xl:text-base">
           Pelajari aturan dan teknis perlombaan sebelum mendaftar.
         </p>
       </div>
 
       {/* Container Daftar Guide Book  */}
-      <div className="w-full px-4 md:px-16 pb-16 relative z-10 flex-grow">
+      <div className="w-full px-4 md:px-16 pb-10 md:pb-14 lg:pb-16 relative z-10 flex-grow">
 
         {/* Grid Kotak Guide Book */}
         <div className="w-full max-w-[1400px] mx-auto">
@@ -53,24 +53,28 @@ const HalamanGuideBook = ({ dataAwal = [] }) => {
               >
 
                 {/* Foto Lomba */}
-                <div className="h-40 md:h-44 overflow-hidden relative border-b border-slate-100">
+                <div className="h-40 md:h-44 overflow-hidden relative border-b border-slate-100 bg-white">
                   <img
                     src={data.foto || '/aset/logo/placeholder.png'}
                     alt={data.judul}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-all duration-700 opacity-90 group-hover:opacity-100"
+                    className={`w-full h-full ${
+                      data.foto && data.foto.includes('soccer')
+                        ? 'object-cover' 
+                        : 'object-contain'
+                    } transition-all duration-700 opacity-90 group-hover:opacity-100`}
                   />
                 </div>
 
                 {/* Judul Lomba*/}
                 <div className={`${data.id % 2 !== 0 ? 'bg-[#E40011]' : 'bg-[#16B9FF]'} py-2 px-5 flex items-center justify-center border-b border-white/10`}>
-                  <h3 className="text-white font-black text-[13px] md:text-[15px] uppercase tracking-wide text-center leading-tight">
+                  <h3 className="text-white font-black text-[15px] 2xl:text-[17px] uppercase tracking-wide text-center leading-tight">
                     {data.judul}
                   </h3>
                 </div>
 
                 {/* Deksripsi */}
                 <div className="pt-4 px-5 md:px-6 pb-5 flex flex-col items-start text-left bg-white flex-grow z-20">
-                  <p className="text-slate-600 text-[11px] md:text-[12px] font-normal mb-5 leading-[1.7] text-justify flex-grow">
+                  <p className="text-slate-950 text-[13px] font-normal mb-5 leading-[1.7] text-justify flex-grow">
                     {data.deskripsi}
                   </p>
 
@@ -98,7 +102,7 @@ const HalamanGuideBook = ({ dataAwal = [] }) => {
 
       {/* Footer */}
       <footer className="w-full bg-[#0B255D] py-4 md:py-5 text-center border-t border-white/5 z-10 relative">
-        <p className="text-[9px] text-white/40 tracking-wide font-medium">
+        <p className="text-[10px] text-white/50 tracking-wide font-medium">
           © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </footer>

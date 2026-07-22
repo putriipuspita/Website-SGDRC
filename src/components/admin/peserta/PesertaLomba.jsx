@@ -22,11 +22,12 @@ import { TableBase } from '../../element/TableBase';
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
 import { cekTipeLomba, formatJudul } from '../../../lib/formatHelper';
+import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
 
 // Komponen Utama Peserta Lomba
 const PesertaLomba = () => {
   const { slug } = useParams();
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(true);
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [apakahTambahTerbuka, setApakahTambahTerbuka] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -105,13 +106,14 @@ const PesertaLomba = () => {
     }
   };
 
-  // Fungsi Search
   useEffect(() => {
     const timer = setTimeout(() => {
       ambilData();
     }, 500);
     return () => clearTimeout(timer);
   }, [slug, kataKunci]);
+
+
 
   // Fungsi Hapus Peserta
   const tanganiHapus = async () => {
@@ -257,10 +259,59 @@ const PesertaLomba = () => {
 
         {/* Container Konten */}
         <main className={`flex-1 overflow-y-auto peserta-scrollbar p-4 md:p-8 transition-all duration-500 ${apakahSidebarTerbuka ? 'md:ml-56' : 'ml-0'}`}>
+          <style>{`
+            @media (min-width: 768px) and (max-width: 1024px) {
+              /* Baris Judul & Tombol */
+              .peserta-header-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                width: 100% !important;
+                gap: 12px !important;
+              }
+              .peserta-header-row > div:first-child {
+                width: 100% !important;
+              }
+              .peserta-header-row > .buttons-container {
+                width: 100% !important;
+                display: flex !important;
+                gap: 12px !important;
+              }
+              .peserta-header-row > .buttons-container > button {
+                flex: 1 !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                width: auto !important;
+              }
+ 
+              /* Baris Search & Filter */
+              .peserta-filters-row {
+                display: flex !important;
+                flex-direction: row !important;
+                width: 100% !important;
+                gap: 12px !important;
+              }
+              .peserta-filters-row > .search-container {
+                flex: 1 !important;
+                width: auto !important;
+              }
+              .peserta-filters-row > .filters-container {
+                flex: 2 !important;
+                width: auto !important;
+                display: flex !important;
+                gap: 12px !important;
+              }
+              .peserta-filters-row > .filters-container > div {
+                flex: 1 !important;
+                width: auto !important;
+              }
+            }
+          `}</style>
+
           <div className="max-w-[1500px] mx-auto space-y-8">
 
             {/* Container Judul, Export dan Tambah */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ipad-column-header animate-in slide-in-from-left duration-700">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ipad-column-header animate-in slide-in-from-left duration-700 w-full peserta-header-row">
               {/* Judul */}
               <div>
                 <h1 className="text-2xl font-black tracking-tight text-slate-800 uppercase leading-tight">
@@ -269,11 +320,11 @@ const PesertaLomba = () => {
               </div>
 
               {/* Container Export dan Tambah */}
-              <div className="flex gap-3">
-                {/* TOmbol Export */}
+              <div className="flex gap-3 w-full md:w-auto buttons-container">
+                {/* Tombol Export */}
                 <button
                   onClick={eksporData}
-                  className="flex items-center gap-2 bg-white border-2 border-slate-200 text-slate-600 px-5 py-2.5 rounded-xl text-[10px] font-bold hover:bg-slate-50 transition-all shadow-sm uppercase tracking-wide"
+                  className="flex-1 md:flex-initial flex items-center justify-center gap-2 bg-white border-2 border-slate-200 text-slate-950 px-5 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-bold hover:bg-slate-50 transition-all shadow-sm uppercase tracking-wide whitespace-nowrap"
                 >
                   <Download size={14} /> Export Data
                 </button>
@@ -281,7 +332,7 @@ const PesertaLomba = () => {
                 {/* Tombol Tambah */}
                 <button
                   onClick={() => setApakahTambahTerbuka(true)}
-                  className="bg-[#0B255D] hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-[10px] font-black transition-all flex items-center gap-2 shadow-lg shadow-[#0B255D]/20 uppercase tracking-wide active:scale-95"
+                  className="flex-1 md:flex-initial flex items-center justify-center bg-[#0B255D] hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black transition-all gap-2 shadow-lg shadow-[#0B255D]/20 uppercase tracking-wide active:scale-95 whitespace-nowrap"
                 >
                   <Plus size={16} /> Tambah Peserta
                 </button>
@@ -289,11 +340,11 @@ const PesertaLomba = () => {
             </div>
 
             {/* Container Filter & Search */}
-            <div className="flex flex-col md:flex-row items-center gap-3 w-full">
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full peserta-filters-row">
               {/* Container Search Bar */}
-              <div className="relative group w-full md:w-40 lg:w-72">
+              <div className="relative group w-full md:w-[40%] search-container">
                 {/* Icon */}
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={13} />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-950 group-focus-within:text-[#16B9FF] transition-colors" size={13} />
 
                 {/* Input */}
                 <input
@@ -301,22 +352,22 @@ const PesertaLomba = () => {
                   placeholder="Cari Peserta..."
                   value={kataKunci}
                   onChange={(e) => setKataKunci(e.target.value)}
-                  className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-800 placeholder:text-slate-500 shadow-sm w-full"
+                  className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.3px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 placeholder:text-slate-950 shadow-sm w-full"
                 />
               </div>
 
               {/* Container Filter */}
-              <div className="flex gap-2.5 w-full md:w-auto">
+              <div className="flex gap-2.5 w-full md:w-[60%] filters-container">
                 {/* Container Filter Jenjang */}
-                <div className="relative flex-1 md:w-40">
+                <div className="relative flex-1">
                   {/* Icon */}
-                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={13} />
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-950" size={13} />
 
                   {/* Nilai */}
                   <select
                     value={filterJenjang}
                     onChange={(e) => setFilterJenjang(e.target.value)}
-                    className="pl-9 pr-8 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[10.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full shadow-sm"
+                    className="pl-9 pr-8 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11.3px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 focus:border-[#16B9FF] w-full shadow-sm"
                   >
                     <option value="Semua">Semua Jenjang</option>
                     {dapatkanOpsiJenjang().map(j => (
@@ -325,19 +376,19 @@ const PesertaLomba = () => {
                   </select>
 
                   {/* Icon Dropdown */}
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={13} />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-950 pointer-events-none" size={13} />
                 </div>
 
                 {/* Container Filter Status */}
-                <div className="relative flex-1 md:w-40">
+                <div className="relative flex-1">
                   {/* Icon */}
-                  <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={13} />
+                  <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-950" size={13} />
 
                   {/* Nilai */}
                   <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
-                    className="pl-9 pr-8 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[10.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full shadow-sm"
+                    className="pl-9 pr-8 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11.3px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 focus:border-[#16B9FF] w-full shadow-sm"
                   >
                     <option value="Semua">Semua Status</option>
                     <option value="Terverifikasi">Terverifikasi</option>
@@ -346,7 +397,7 @@ const PesertaLomba = () => {
                   </select>
 
                   {/* Icon Dropdown */}
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={12} />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-950 pointer-events-none" size={12} />
                 </div>
               </div>
             </div>
@@ -357,26 +408,28 @@ const PesertaLomba = () => {
               loadingText="Memuat Data Peserta..."
               isEmpty={daftarPeserta.length === 0 && kataKunci === ''}
               footer={
-                <div className="px-6 py-3 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
-                  <p className="text-[11px] font-bold text-slate-600">
-                    Menampilkan {indeksPertama + 1} - {Math.min(indeksTerakhir, dataTerfilter.length)} dari {dataTerfilter.length} data
+                <div className="px-4 sm:px-6 py-3 bg-white flex flex-row justify-between items-center gap-2 w-full">
+                  <p className="text-[11px] sm:text-[12px] font-medium text-slate-600 truncate max-w-[150px] sm:max-w-none">
+                    {dataTerfilter.length <= dataPerHalaman
+                      ? `Menampilkan ${dataTerfilter.length} dari ${dataTerfilter.length} data`
+                      : `Menampilkan ${indeksPertama + 1} - ${Math.min(indeksTerakhir, dataTerfilter.length)} dari ${dataTerfilter.length} data`}
                   </p>
 
                   {/* Container Tombol */}
-                  <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-2 sm:gap-2.5">
                     {/* Tombol Sebelumnya */}
                     <button
                       disabled={halamanSekarang === 1}
                       onClick={() => setHalamanSekarang(halamanSekarang - 1)}
-                      className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
+                      className={`group flex items-center gap-1 sm:gap-1.5 text-[11px] font-bold transition-all text-slate-950
                           ${halamanSekarang === 1 ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
                     >
                       <ChevronLeft size={16} className={`transition-transform ${halamanSekarang !== 1 && 'group-hover:-translate-x-0.5'}`} />
-                      Sebelumnya
+                      <span className="hidden sm:inline">Sebelumnya</span>
                     </button>
 
                     {/* Nomor Halaman */}
-                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F8FAFC] border-2 border-slate-100 text-[#0B255D] text-[12px] font-black shadow-sm">
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F8FAFC] border-2 border-slate-100 text-[#0B255D] text-[12px] font-black shadow-sm flex-shrink-0">
                       {halamanSekarang}
                     </div>
 
@@ -384,10 +437,10 @@ const PesertaLomba = () => {
                     <button
                       disabled={halamanSekarang >= totalHalaman}
                       onClick={() => setHalamanSekarang(halamanSekarang + 1)}
-                      className={`group flex items-center gap-1.5 text-[11px] font-bold transition-all text-slate-600
+                      className={`group flex items-center gap-1 sm:gap-1.5 text-[11px] font-bold transition-all text-slate-950
                           ${halamanSekarang >= totalHalaman ? 'cursor-not-allowed opacity-50' : 'hover:text-[#16B9FF]'}`}
                     >
-                      Selanjutnya
+                      <span className="hidden sm:inline">Selanjutnya</span>
                       <ChevronRight size={16} className={`transition-transform ${halamanSekarang < totalHalaman && 'group-hover:translate-x-0.5'}`} />
                     </button>
                   </div>
@@ -414,28 +467,28 @@ const PesertaLomba = () => {
                 <tr key={p.id} className={`transition-colors group ${p.status === 'REFUNDED' ? 'bg-slate-100 opacity-70' : 'hover:bg-slate-50/50'}`}>
 
                   {/* Tanggal */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.tanggal}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.tanggal}</td>
 
                   {/* Nama Tim */}
                   {!apakahSolo && (
-                    <td className="px-4 py-2 border-r border-slate-200 text-center text-[10.8px] font-black text-[#16B9FF] uppercase tracking-wider leading-relaxed">
+                    <td className="px-4 py-2 border-r border-slate-200 text-center text-[11.6px] lg:text-[10.2px] xl:text-[11.1px] 2xl:text-[12.1px] font-black text-[#16B9FF] uppercase tracking-wider leading-relaxed">
                       {p.namaTim || '-'}
                     </td>
                   )}
 
                   {/* Nama Peserta */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta1}</td>
-                  {!apakahSolo && <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
-                  {apakahKelompokMaks3 && <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta1}</td>
+                  {!apakahSolo && <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
+                  {apakahKelompokMaks3 && <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.whatsapp}</td>
-                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.jenjang}</td>
-                  <td className="px-4 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">{p.instansi}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.whatsapp}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.jenjang}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.instansi}</td>
 
                   {/* Status */}
                   <td className="px-4 py-2 border-r border-slate-200 text-center leading-tight">
-                    <span className={`text-[9.8px] font-black uppercase tracking-wider leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
+                    <span className={`text-[11.2px] lg:text-[10px] xl:text-[10.7px] 2xl:text-[11.5px] font-black uppercase tracking-wider leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
                       p.status === 'Ditolak' ? 'text-red-500' :
                         p.status === 'Refunded' ? 'text-orange-500' :
                           'text-amber-500'

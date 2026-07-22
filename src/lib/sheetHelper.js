@@ -2,7 +2,7 @@ import { hubungkanDB } from './db';
 
 // Helper untuk mengirim data ke Google Spreadsheet menggunakan Webhook
 export async function kirimKeSpreadsheet(dataPendaftaran) {
-  const urlWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
+  const urlWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim() || "https://script.google.com/macros/s/AKfycbyc_ajX05xnOq6hJAdCyWuDCEQ9Ciw9zR2tcqzncawGOv_NDKiGjpXhLIeMKGWUVIZ2Rw/exec";
   if (!urlWebhook) {
     console.warn("Peringatan: GOOGLE_SHEETS_WEBHOOK_URL belum dikonfigurasi di .env.local");
     return false;
@@ -59,7 +59,7 @@ export async function kirimKeSpreadsheet(dataPendaftaran) {
 
 // Fungsi untuk mensinkronisasikan seluruh data pendaftaran dari database ke Google Sheets
 export async function sinkronisasiSemuaPendaftaran() {
-  const urlWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
+  const urlWebhook = process.env.GOOGLE_SHEETS_WEBHOOK_URL?.trim() || "https://script.google.com/macros/s/AKfycbyc_ajX05xnOq6hJAdCyWuDCEQ9Ciw9zR2tcqzncawGOv_NDKiGjpXhLIeMKGWUVIZ2Rw/exec";
   if (!urlWebhook) {
     console.warn("Peringatan: GOOGLE_SHEETS_WEBHOOK_URL belum dikonfigurasi di .env.local");
     return false;

@@ -198,7 +198,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                     setEditPoster(!editPoster);
                   }}
                   disabled={sedangMenyimpan}
-                  className={`px-4 py-2.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editPoster
+                  className={`px-4 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editPoster
                       ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                       : 'bg-[#0B255D] text-white hover:bg-blue-500'
                     } disabled:opacity-50`}
@@ -264,7 +264,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                 {editTimeline && (
                   <button
                     onClick={tambahTimeline}
-                    className="bg-[#0B255D] hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm"
+                    className="bg-[#0B255D] hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm"
                   >
                     <Plus size={15} /> Tambah
                   </button>
@@ -275,7 +275,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                     setEditTimeline(!editTimeline);
                   }}
                   disabled={sedangMenyimpan}
-                  className={`px-4 py-2.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editTimeline
+                  className={`px-4 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editTimeline
                       ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                       : 'bg-[#0B255D] text-white hover:bg-blue-500'
                     } disabled:opacity-50`}
@@ -299,10 +299,10 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                 {/* Header Tabel */}
                 <thead>
                   <tr className="bg-[#0B255D]">
-                    <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center w-20">Status</th>
-                    <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center w-full">Kegiatan</th>
-                    <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center whitespace-nowrap">Tanggal Tampilan</th>
-                    {editTimeline && <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-b border-white/10 w-12 text-center">Aksi</th>}
+                    <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center w-20">Status</th>
+                    <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center w-full">Kegiatan</th>
+                    <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-b border-white/10 text-center whitespace-nowrap">Tanggal Tampilan</th>
+                    {editTimeline && <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-b border-white/10 w-12 text-center">Aksi</th>}
                   </tr>
                 </thead>
 
@@ -321,7 +321,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                               <div className={`w-2 h-2 rounded-full ${statusAktif === 'Sedang Berlangsung' ? 'bg-[#16B9FF] animate-pulse shadow-[0_0_8px_rgba(22,185,255,0.5)]' :
                                 statusAktif === 'Selesai' ? 'bg-emerald-500' : 'bg-slate-300'
                                 }`}></div>
-                              <span className={`text-[9px] font-black uppercase tracking-wide ${statusAktif === 'Sedang Berlangsung' ? 'text-[#16B9FF]' :
+                              <span className={`text-[10.6px] lg:text-[10.1px] xl:text-[10.3px] 2xl:text-[11.3px] font-black uppercase tracking-wide ${statusAktif === 'Sedang Berlangsung' ? 'text-[#16B9FF]' :
                                 statusAktif === 'Selesai' ? 'text-emerald-500' : 'text-slate-400'
                                 }`}>
                                 {statusAktif}
@@ -332,14 +332,14 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                           {/* Kegiatan */}
                           <td className="px-3 py-4 text-center">
                             {!editTimeline ? (
-                              <span className="text-[11px] font-bold text-slate-700">{item.label}</span>
+                              <span className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950">{item.label}</span>
                             ) : (
                               <input
                                 type="text"
                                 value={item.label}
                                 onChange={(e) => updateTimeline(item.id, 'label', e.target.value)}
                                 placeholder="Kegiatan..."
-                                className="w-full min-w-[180px] bg-white border border-slate-300 rounded-lg px-3 py-3 text-[11px] font-bold text-slate-700 outline-none focus:border-[#16B9FF] focus:ring-1 focus:ring-[#16B9FF]"
+                                className="w-full min-w-[180px] bg-white border border-slate-300 rounded-lg px-3 py-3 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 outline-none focus:border-[#16B9FF] focus:ring-1 focus:ring-[#16B9FF]"
                               />
                             )}
                           </td>
@@ -347,7 +347,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                           {/* Tanggal Tampilan */}
                           <td className="px-3 py-4 text-center whitespace-nowrap">
                             {!editTimeline ? (
-                              <span className="text-[11px] font-medium text-slate-500">{formatTanggal}</span>
+                              <span className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-700">{formatTanggal}</span>
                             ) : (
                               <div className="flex items-center justify-center gap-1.5">
                                 {/* Input Tanggal Mulai */}
@@ -355,7 +355,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                                   type="date"
                                   value={item.mulai || ''}
                                   onChange={(e) => updateTimeline(item.id, 'mulai', e.target.value)}
-                                  className="w-[110px] bg-white border border-slate-200 rounded-md px-2 py-1 text-[11px] font-bold text-slate-700 outline-none focus:border-[#16B9FF]"
+                                  className="w-[110px] bg-white border border-slate-200 rounded-md px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 outline-none focus:border-[#16B9FF]"
                                 />
 
                                 <span className="text-[10px] text-slate-400">s/d</span>
@@ -365,7 +365,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                                   type="date"
                                   value={item.selesai || ''}
                                   onChange={(e) => updateTimeline(item.id, 'selesai', e.target.value)}
-                                  className="w-[110px] bg-white border border-slate-200 rounded-md px-2 py-1 text-[11px] font-bold text-slate-700 outline-none focus:border-[#16B9FF]"
+                                  className="w-[110px] bg-white border border-slate-200 rounded-md px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 outline-none focus:border-[#16B9FF]"
                                 />
                               </div>
                             )}

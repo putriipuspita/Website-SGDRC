@@ -1,7 +1,7 @@
 'use client';
 // Import Icon, Navigasi, Navigasi dan Tampilan Data Kosong
 import React, { useState, useEffect } from 'react';
-import { Award, Download, ShieldCheck, Trophy, Loader2, Search, Filter } from 'lucide-react';
+import { Award, Download, ShieldCheck, Trophy, Loader2, Search, Filter, ChevronDown } from 'lucide-react';
 import Navbar from './navigasi/Navbar';
 import Sidebar from './navigasi/Sidebar';
 import StateKosong from '../element/StateKosong';
@@ -81,7 +81,7 @@ const Sertifikat = () => {
             const startIdxJuara = currentGlobalJuaraIndex;
 
             // Ambil Seluruh Data Nama Peserta
-            const members = [tim.nama_peserta1, tim.nama_peserta2, tim.nama_peserta3].filter(n => n && n.trim() !== "");
+            const members = [tim.nama_peserta1, tim.nama_peserta2, tim.nama_peserta3].filter(n => n && n.trim() !== "" && n.trim() !== "-");
             currentGlobalPesertaIndex += members.length;
 
             // Jika Ada Peringkat
@@ -113,7 +113,7 @@ const Sertifikat = () => {
     if (Number(item.is_sertifikat_siap) !== 1) return acc;
 
     // Ambil Seluruh Data
-    const listNama = [item.nama_peserta1, item.nama_peserta2, item.nama_peserta3].filter(n => n && n.trim() !== "");
+    const listNama = [item.nama_peserta1, item.nama_peserta2, item.nama_peserta3].filter(n => n && n.trim() !== "" && n.trim() !== "-");
     listNama.forEach((nama, indeks) => {
       // Masukkan ke List Peserta
       acc.peserta.push({
@@ -198,44 +198,48 @@ const Sertifikat = () => {
         <div className="flex-1 bg-slate-50 overflow-y-auto peserta-scrollbar px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
           <div className="w-full flex-1 flex flex-col">
             {/* Judul, Deskripsi & Filter Controls*/}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 animate-in slide-in-from-left duration-700">
+            <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 mb-6 animate-in slide-in-from-left duration-700">
               <div className="text-left border-l-4 border-[#E40011] pl-6">
-                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-800 uppercase leading-relaxed md:leading-tight">Sertifikat Elektronik</h1>
+                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-950 uppercase leading-relaxed md:leading-tight">Sertifikat Elektronik</h1>
                 <p className="text-slate-500 text-[9.5px] font-bold tracking-normal uppercase leading-relaxed">Pencapaian Resmi SGDRC {new Date().getFullYear()}</p>
               </div>
 
               {/* Container Filter & Search */}
               {!sedangMemuat && daftarSertifikat.length > 0 && (
-                <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center w-full lg:w-auto animate-in fade-in duration-300">
-                  {/* Input Kolom Pencarian */}
-                  <div className="relative group min-w-[170px] lg:min-w-[200px]">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
-                    <input
-                      type="text"
-                      placeholder="Cari Nama, Tim, atau Instansi..."
-                      value={kataKunci}
-                      onChange={(e) => setKataKunci(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-700 placeholder:text-slate-400 shadow-sm"
-                    />
+                <div className="flex flex-col xl:flex-row gap-3 items-stretch xl:items-center w-full xl:w-auto animate-in fade-in duration-300">
+                  {/* Baris 1: Search & Filter Cabang Lomba (Fleksibel Sama Panjang di HP & Tablet) */}
+                  <div className="flex flex-row gap-2 sm:gap-3 flex-1 xl:flex-initial w-full xl:w-auto">
+                    {/* Input Kolom Pencarian */}
+                    <div className="relative group flex-1 w-1/2 min-w-0 xl:min-w-[220px] xl:w-auto">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
+                      <input
+                        type="text"
+                        placeholder="Cari Nama, Tim..."
+                        value={kataKunci}
+                        onChange={(e) => setKataKunci(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[12px] md:text-[12px] lg:text-[11px] font-bold text-slate-950 placeholder:text-slate-400 shadow-sm"
+                      />
+                    </div>
+
+                    {/* Filter Kategori Lomba */}
+                    <div className="relative flex-1 w-1/2 min-w-0 xl:min-w-[190px] xl:w-auto">
+                      <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={14} />
+                      <select
+                        value={lombaFilter}
+                        onChange={(e) => setLombaFilter(e.target.value)}
+                        className="w-full pl-9 pr-7 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[12px] md:text-[12px] lg:text-[11px] font-bold text-slate-950 appearance-none shadow-sm capitalize"
+                      >
+                        <option value="SEMUA">Semua Cabang Lomba</option>
+                        {daftarLomba.map(lomba => (
+                          <option key={lomba.id} value={lomba.nama.toUpperCase()}>{formatJudul(lomba.nama)}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={12} />
+                    </div>
                   </div>
 
-                  {/* Filter Kategori Lomba */}
-                  <div className="relative min-w-[150px] lg:min-w-[180px]">
-                    <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={14} />
-                    <select
-                      value={lombaFilter}
-                      onChange={(e) => setLombaFilter(e.target.value)}
-                      className="w-full pl-9 pr-10 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-700 appearance-none shadow-sm capitalize"
-                    >
-                      <option value="SEMUA">Semua Cabang Lomba</option>
-                      {daftarLomba.map(lomba => (
-                        <option key={lomba.id} value={lomba.nama.toUpperCase()}>{formatJudul(lomba.nama)}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Filter Jenis Sertifikat (Peserta / Juara) */}
-                  <div className="flex bg-white p-0.5 rounded-xl border-2 border-slate-200 shadow-sm min-w-[140px] lg:min-w-[150px]">
+                  {/* Filter Jenis Sertifikat (Peserta / Juara) - Turun ke Baris 2 di HP & Tablet */}
+                  <div className="flex bg-white p-0.5 rounded-xl border-2 border-slate-200 shadow-sm w-full xl:min-w-[150px] xl:w-auto">
                     {[
                       { id: 'SEMUA', nama: 'Semua' },
                       { id: 'PESERTA', nama: 'Peserta' },
@@ -244,9 +248,9 @@ const Sertifikat = () => {
                       <button
                         key={opt.id}
                         onClick={() => setJenisFilter(opt.id)}
-                        className={`flex-1 py-1.5 px-2.5 rounded-lg text-[10.5px] font-bold transition-all ${jenisFilter === opt.id
+                        className={`flex-1 py-1.5 px-3 rounded-lg text-[10.5px] font-bold transition-all ${jenisFilter === opt.id
                           ? 'bg-[#16B9FF] text-white shadow-sm'
-                          : 'text-slate-700 hover:bg-slate-50'
+                          : 'text-slate-950 hover:bg-slate-50'
                           }`}
                       >
                         {opt.nama}
@@ -326,8 +330,8 @@ const Sertifikat = () => {
                             <div className="space-y-2 mb-6 relative z-10">
                               {/* Nama */}
                               <div>
-                                <p className="text-[7px] font-bold text-slate-400 uppercase tracking-normal mb-1">Diberikan Kepada</p>
-                                <h3 className="text-lg font-black text-slate-800 uppercase tracking-tight leading-tight">
+                                <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Diberikan Kepada</p>
+                                <h3 className="text-lg font-black text-slate-950 uppercase tracking-tight leading-tight">
                                   {item.nama}
                                 </h3>
                               </div>
@@ -336,14 +340,14 @@ const Sertifikat = () => {
                               <div className="grid grid-cols-2 gap-4 pt-1">
                                 {/* Tim */}
                                 <div>
-                                  <p className="text-[7px] font-bold text-slate-400 uppercase tracking-normal mb-1">Tim</p>
+                                  <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Tim</p>
                                   <p className={`text-[11px] font-bold ${item.jenis === 'JUARA' ? 'text-amber-700' : 'text-[#16B9FF]'} truncate`}>{item.tim || '-'}</p>
                                 </div>
 
                                 {/* Instansi */}
                                 <div>
-                                  <p className="text-[7px] font-bold text-slate-400 uppercase tracking-normal mb-1">Instansi</p>
-                                  <p className="text-[11px] font-bold text-slate-600 truncate">{item.instansi}</p>
+                                  <p className="text-[7px] font-bold text-slate-950 uppercase tracking-normal mb-1">Instansi</p>
+                                  <p className="text-[11px] font-bold text-slate-950 truncate">{item.instansi}</p>
                                 </div>
                               </div>
                             </div>

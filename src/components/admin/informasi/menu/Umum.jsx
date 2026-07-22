@@ -10,6 +10,18 @@ import toast from 'react-hot-toast';
 // Import Component
 import { FormInput } from '../../../element/FormInput';
 
+// Helper untuk konversi format tanggal database (YYYY-MM-DD HH:mm:ss) ke datetime-local (YYYY-MM-DDTHH:mm)
+const formatKeDatetimeLocal = (stringTgl) => {
+  if (!stringTgl) return "";
+  const clean = stringTgl.replace(' ', 'T');
+  return clean.substring(0, 16);
+};
+
+const formatDariDatetimeLocal = (val) => {
+  if (!val) return "";
+  return val.replace('T', ' ') + ':00';
+};
+
 // Komponen Utama Menu Umum
 const Umum = ({
   umum,
@@ -108,11 +120,8 @@ const Umum = ({
       if (validPaths.length > 0) {
         const newList = [...listFoto];
         let pathIdx = 0;
-        for (let i = 0; i < 8 && pathIdx < validPaths.length; i++) {
-          if (filesToUpload.length === 8) {
-            newList[i] = validPaths[pathIdx];
-            pathIdx++;
-          } else if (!newList[i]) {
+        for (let i = 0; i < newList.length; i++) {
+          if (!newList[i] && pathIdx < validPaths.length) {
             newList[i] = validPaths[pathIdx];
             pathIdx++;
           }
@@ -178,26 +187,24 @@ const Umum = ({
             />
 
             {/* Input Tagline */}
-            <div className="space-y-1">
-              <label className="text-[12px] font-bold text-slate-700">Tagline</label>
-              <textarea
-                rows="2"
-                disabled={!modeEditUmum}
-                value={umum.deskripsi_hero}
-                onChange={handleInputChange('deskripsi_hero')}
-                className={`w-full rounded-xl px-4 py-2.5 text-[12px] font-medium transition-all outline-none leading-relaxed ${modeEditUmum
-                  ? 'bg-white border-2 border-slate-200 text-[#0B255D] focus:border-[#16B9FF]'
-                  : 'bg-slate-50 border-2 border-transparent text-slate-400 cursor-not-allowed'
-                  }`}
-              />
-            </div>
+            <FormInput
+              label="Tagline"
+              disabled={!modeEditUmum}
+              value={umum.deskripsi_hero}
+              onChange={handleInputChange('deskripsi_hero')}
+              placeholder="Masukkan tagline event..."
+            />
 
             {/* Input Waktu Event */}
             <FormInput
               label="Waktu Event"
+              type="datetime-local"
               disabled={!modeEditUmum}
-              value={umum.tanggal_event}
-              onChange={handleInputChange('tanggal_event')}
+              value={formatKeDatetimeLocal(umum.tanggal_event)}
+              onChange={(e) => {
+                const formatted = formatDariDatetimeLocal(e.target.value);
+                setUmum(prev => ({ ...prev, tanggal_event: formatted }));
+              }}
               icon={Calendar}
             />
           </div>
@@ -272,7 +279,7 @@ const Umum = ({
           </div>
 
           {/* Container Konten Sponsor */}
-          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto scrollbar-hide">
+          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:max-h-[500px] lg:overflow-y-auto scrollbar-hide">
             {/* Looping Data Sponsor */}
             {umum.sponsor_list.map((sp, idx) => (
               <div key={idx} className={`p-3 rounded-xl border-2 transition-all flex items-center gap-3 ${modeEditUmum ? 'bg-white border-slate-300 shadow-sm' : 'bg-slate-50 border-transparent'
@@ -294,14 +301,14 @@ const Umum = ({
                   {/* Input Nama Sponsor */}
                   <input
                     disabled={!modeEditUmum}
-                    value={sp.nama}
+                    value={sp.nama || ''}
                     onChange={(e) => {
                       const baru = [...umum.sponsor_list];
                       baru[idx].nama = e.target.value;
                       setUmum({ ...umum, sponsor_list: baru });
                     }}
                     placeholder="Nama Sponsor..."
-                    className={`w-full text-[12px] font-bold transition-all outline-none focus:outline-none focus:ring-0 truncate ${modeEditUmum ? 'text-[#0B255D] bg-slate-50 px-2.5 py-2 rounded-lg border border-slate-200 focus:border-[#16B9FF]' : 'text-slate-500 bg-transparent'
+                    className={`w-full text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium transition-all outline-none border-2 rounded-lg truncate ${modeEditUmum ? 'text-slate-950 bg-white border-slate-200 px-2.5 py-2' : 'text-slate-400 bg-slate-50 border-slate-100 px-2.5 py-2'
                       }`}
                   />
 
@@ -367,19 +374,20 @@ const Umum = ({
 
                 {/* Container WhatsApp Utama */}
                 <div className="space-y-2">
-                  <label className={`text-[12px] font-bold transition-colors ${modeEditUmum ? 'text-slate-700' : 'text-emerald-600'}`}>
+                  <label className={`text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-bold ml-1 transition-colors ${modeEditUmum ? 'text-slate-950' : 'text-emerald-600'}`}>
                     Link WhatsApp Utama
                   </label>
 
                   <input
+                    key="input-wa-utama"
                     type="text"
                     disabled={!modeEditUmum}
                     value={umum.wa_link_umum || ''}
                     onChange={handleInputChange('wa_link_umum')}
                     placeholder="Masukkan link WhatsApp"
-                    className={`w-full rounded-xl px-5 py-2.5 text-[12px] font-medium transition-all outline-none ${modeEditUmum
-                      ? 'bg-white border-2 border-slate-300 text-[#0B255D] focus:border-emerald-500 shadow-sm'
-                      : 'bg-slate-50 border-2 border-transparent text-slate-400 cursor-not-allowed'
+                    className={`w-full rounded-xl px-4 py-2.5 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] placeholder:text-[11.5px] placeholder:text-slate-500 transition-all duration-300 outline-none border-2 font-medium ${modeEditUmum
+                      ? 'bg-white border-slate-200 text-slate-950'
+                      : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
                       }`}
                   />
                 </div>
@@ -387,26 +395,27 @@ const Umum = ({
                 {/* Container Grup WA Per Lomba */}
                 <div className="space-y-3.5">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <label className={`text-[12px] font-bold transition-colors ${modeEditUmum ? 'text-slate-700' : 'text-emerald-600'}`}>
+                    <label className={`text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-bold ml-1 transition-colors ${modeEditUmum ? 'text-slate-950' : 'text-emerald-600'}`}>
                       Grup WA Per Lomba
                     </label>
                   </div>
 
                   {/* Container Grup WA Per Lomba */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 lg:max-h-[400px] lg:overflow-y-auto pr-2 scrollbar-hide">
                     {kategoriLombaGrup.map((item, idx) => (
                       <div key={idx} className="space-y-1.5 relative group">
                         <div className="flex items-center justify-between px-1">
-                          <span className="text-[12px] font-bold text-slate-700">
+                          <span className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">
                             {item.namaFormat}
                           </span>
                         </div>
 
                         {/* Input Link Grup WA Per Lomba */}
                         <input
+                          key={`input-wa-grup-${idx}`}
                           type="text"
                           disabled={!modeEditUmum}
-                          value={item.linkSekarang}
+                          value={item.linkSekarang || ''}
                           onChange={(e) => {
                             const linkBaru = e.target.value;
                             item.lombaTerkait.forEach(l => {
@@ -414,9 +423,9 @@ const Umum = ({
                             });
                           }}
                           placeholder="Masukkan link WhatsApp"
-                          className={`w-full rounded-xl px-4 py-2.5 text-[12px] font-medium transition-all outline-none ${modeEditUmum
-                            ? 'bg-white border-2 border-slate-300 text-[#0B255D] focus:border-emerald-500 shadow-sm'
-                            : 'bg-slate-50 border-2 border-transparent text-slate-400 cursor-not-allowed'
+                          className={`w-full rounded-xl px-4 py-2.5 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] placeholder:text-[11.5px] placeholder:text-slate-500 transition-all duration-300 outline-none border-2 font-medium ${modeEditUmum
+                            ? 'bg-white border-slate-200 text-slate-950'
+                            : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
                             }`}
                         />
                       </div>
@@ -428,20 +437,21 @@ const Umum = ({
               <div className="space-y-6 animate-in slide-in-from-right duration-300">
                 {/* Link Google Drive Utama */}
                 <div className="space-y-2">
-                  <label className={`text-[12px] font-bold transition-colors ${modeEditUmum ? 'text-slate-700' : 'text-emerald-600'}`}>
+                  <label className={`text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-bold ml-1 transition-colors ${modeEditUmum ? 'text-slate-950' : 'text-emerald-600'}`}>
                     Link Google Drive Utama
                   </label>
 
                   {/* Input Link Google Drive Utama */}
                   <input
+                    key="input-gdrive-utama"
                     type="text"
                     disabled={!modeEditUmum}
                     value={umum.link_dokumentasi || ''}
                     onChange={handleInputChange('link_dokumentasi')}
                     placeholder="Masukkan link Google Drive"
-                    className={`w-full rounded-xl px-5 py-2.5 text-[12px] font-medium transition-all outline-none ${modeEditUmum
-                      ? 'bg-white border-2 border-slate-300 text-[#0B255D] focus:border-emerald-500 shadow-sm'
-                      : 'bg-slate-50 border-2 border-transparent text-slate-400 cursor-not-allowed'
+                    className={`w-full rounded-xl px-4 py-2.5 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] placeholder:text-[11.5px] placeholder:text-slate-500 transition-all duration-300 outline-none border-2 font-medium ${modeEditUmum
+                      ? 'bg-white border-slate-200 text-slate-950'
+                      : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
                       }`}
                   />
                 </div>
@@ -449,7 +459,7 @@ const Umum = ({
                 {/* Unggah Foto Grid */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                    <label className={`text-[12px] font-bold transition-colors ${modeEditUmum ? 'text-slate-700' : 'text-emerald-600'}`}>
+                    <label className={`text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-bold ml-1 transition-colors ${modeEditUmum ? 'text-slate-950' : 'text-emerald-600'}`}>
                       Foto Display (Maks 8 Foto)
                     </label>
                     {modeEditUmum && (

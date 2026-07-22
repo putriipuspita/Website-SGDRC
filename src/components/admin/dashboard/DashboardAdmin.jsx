@@ -16,11 +16,12 @@ import toast from 'react-hot-toast';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
+import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
 
 // Komponen Dashboard Admin
 const DashboardAdmin = () => {
   const router = useRouter();
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(true);
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [apakahModalTambahTerbuka, setApakahModalTambahTerbuka] = useState(false);
   const [apakahModalHapusTerbuka, setApakahModalHapusTerbuka] = useState(false);
@@ -79,6 +80,8 @@ const DashboardAdmin = () => {
 
   useEffect(() => { ambilDataDashboard(); }, []);
 
+
+
   // Fungsi Hapus Akun menggunakan fetchDenganToken
   const tanganiHapusAkun = async () => {
     try {
@@ -114,8 +117,8 @@ const DashboardAdmin = () => {
   // Kartu Statistik Utama
   const statistikCards = [
     { id: 1, judul: "TOTAL PENDAFTAR", jumlah: statistikUtama.total, ikon: <Users size={24} />, warna: "text-blue-500", bgIcon: "bg-blue-50", borderColor: "border-b-blue-400", link: null },
-    { id: 2, judul: "SUDAH TERVERIFIKASI", jumlah: statistikUtama.success, ikon: <CheckCircle size={24} />, warna: "text-emerald-500", bgIcon: "bg-emerald-50", borderColor: "border-b-emerald-400", link: null },
-    { id: 3, judul: "BELUM TERVERIFIKASI", jumlah: statistikUtama.pending, ikon: <Clock size={24} />, warna: "text-amber-500", bgIcon: "bg-amber-50", borderColor: "border-b-amber-400", link: "/admin/verifikasi" },
+    { id: 2, judul: "TERVERIFIKASI", jumlah: statistikUtama.success, ikon: <CheckCircle size={24} />, warna: "text-emerald-500", bgIcon: "bg-emerald-50", borderColor: "border-b-emerald-400", link: null },
+    { id: 3, judul: "BELUM VERIFIKASI", jumlah: statistikUtama.pending, ikon: <Clock size={24} />, warna: "text-amber-500", bgIcon: "bg-amber-50", borderColor: "border-b-amber-400", link: "/admin/verifikasi" },
     { id: 4, judul: "TOTAL REFUND", jumlah: statistikUtama.refund, ikon: <RotateCcw size={24} />, warna: "text-rose-500", bgIcon: "bg-rose-50", borderColor: "border-b-rose-400", link: "/admin/refund" },
   ];
 
@@ -134,17 +137,17 @@ const DashboardAdmin = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 lg:landscape:grid-cols-4 gap-6">
               {statistikCards.map((item) => (
                 // Container Kotak
-                <div key={item.id} onClick={() => item.link && router.push(item.link)} className={`bg-white py-4 px-4 h-24 rounded-2xl shadow-sm border border-slate-100 border-b-4 ${item.borderColor} relative group hover:shadow-md transition-all duration-300 ${item.link ? 'cursor-pointer active:scale-95' : ''}`}>
-                  <div className="flex items-center gap-3 h-full">
+                <div key={item.id} onClick={() => item.link && router.push(item.link)} className={`bg-white py-4 px-4 h-auto min-h-[96px] rounded-2xl shadow-sm border border-slate-100 border-b-4 ${item.borderColor} relative group hover:shadow-md transition-all duration-300 ${item.link ? 'cursor-pointer active:scale-95' : ''}`}>
+                  <div className="flex items-center gap-3.5 h-full">
                     {/* Icon */}
-                    <div className={`p-3 ${item.bgIcon} rounded-2xl ${item.warna} transition-transform group-hover:scale-110 duration-300`}>
+                    <div className={`p-3 ${item.bgIcon} rounded-2xl ${item.warna} transition-transform group-hover:scale-110 duration-300 flex-shrink-0`}>
                       {item.ikon}
                     </div>
 
                     {/* Teks Judul dan Jumlah */}
-                    <div className="flex flex-col justify-between h-full">
-                      <p className="block text-[12px] font-bold text-black tracking-normal whitespace-nowrap overflow-hidden">{item.judul}</p>
-                      <h3 className="text-4xl font-black text-[#0B255D] leading-tight">{loading ? "..." : item.jumlah}</h3>
+                    <div className="flex flex-col justify-center flex-1 min-w-0 gap-0.5">
+                      <p className="block text-[12.5px] lg:text-[11.5px] xl:text-[12.5px] 2xl:text-[13.5px] font-bold text-black tracking-normal truncate">{item.judul}</p>
+                      <h3 className="text-4xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-black text-[#0B255D] leading-tight">{loading ? "..." : item.jumlah}</h3>
                     </div>
                   </div>
                 </div>
@@ -160,7 +163,7 @@ const DashboardAdmin = () => {
                   {/* Container Judul dan Tombol Tambah Akun */}
                   <div className="p-6 border-b border-slate-50 flex items-center justify-between">
                     {/* Judul */}
-                    <h3 className="font-black text-[#0B255D] flex items-center gap-2 uppercase tracking-tight text-sm">
+                    <h3 className="font-black text-[#0B255D] flex items-center gap-2 uppercase tracking-tight text-[15px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px]">
                       <UserPlus size={18} className="text-[#16B9FF]" /> Daftar Akun Pengguna
                     </h3>
 
@@ -171,11 +174,11 @@ const DashboardAdmin = () => {
                   </div>
 
                   {/* Container Tabel */}
-                  <div className="overflow-x-auto min-h-[400px]">
+                  <div className="overflow-x-auto custom-scrollbar min-h-[400px]">
                     <table className="w-full text-left border-collapse">
                       {/* Header Tabel */}
                       <thead>
-                        <tr className="bg-[#0B255D] text-white text-[10px] font-black uppercase tracking-wide">
+                        <tr className="bg-[#0B255D] text-white text-[11.8px] lg:text-[10px] xl:text-[10.8px] 2xl:text-[11.8px] font-black uppercase tracking-wide">
                           <th className="px-8 py-4 border-r border-white/5 font-black text-left">Nama Lengkap</th>
                           <th className="px-6 py-4 border-r border-white/5 font-black text-left">Email</th>
                           <th className="pr-11 py-4 font-black uppercase tracking-wide text-right">Aksi</th>
@@ -185,17 +188,17 @@ const DashboardAdmin = () => {
                       {/* Body Tabel */}
                       <tbody className="divide-y divide-slate-100">
                         {loading ? (
-                          <tr><td colSpan="3" className="py-20"><div className="flex flex-col items-center justify-center gap-3"><Loader2 size={30} className="text-[#16B9FF] animate-spin" /><p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Memuat Data...</p></div></td></tr>
+                          <tr><td colSpan="3" className="py-20"><div className="flex flex-col items-center justify-center gap-3"><Loader2 size={30} className="text-[#16B9FF] animate-spin" /><p className="text-[10px] font-black text-slate-950 uppercase tracking-wide">Memuat Data...</p></div></td></tr>
                         ) : akunTampil.length > 0 ? (
                           akunTampil.map((akun) => (
                             <tr key={akun.id} className="hover:bg-slate-50/50 transition-colors group">
-                              <td className="px-8 py-3"><div className="text-[11px] font-medium text-slate-900">{akun.nama}</div></td>
-                              <td className="px-6 py-3 text-[11px] font-medium text-slate-700">{akun.email}</td>
-                              <td className="px-8 py-3"><div className="flex justify-end"><button onClick={() => { setDataAkunHapus(akun); setApakahModalHapusTerbuka(true); }} className="flex items-center gap-2 px-3 py-1 text-red-500 hover:text-red-700 transition-all font-bold"><Trash2 size={16} /><span className="text-[11px] font-medium">Hapus</span></button></div></td>
+                              <td className="px-8 py-3"><div className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950">{akun.nama}</div></td>
+                              <td className="px-6 py-3 text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950">{akun.email}</td>
+                              <td className="px-8 py-3"><div className="flex justify-end"><button onClick={() => { setDataAkunHapus(akun); setApakahModalHapusTerbuka(true); }} className="flex items-center gap-2 px-3 py-1 text-red-500 hover:text-red-700 transition-all font-bold"><Trash2 size={16} /><span className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium">Hapus</span></button></div></td>
                             </tr>
                           ))
                         ) : (
-                          <tr><td colSpan="3" className="px-8 py-10 text-center text-slate-400 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
+                          <tr><td colSpan="3" className="px-8 py-10 text-center text-slate-950 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
                         )}
                       </tbody>
                     </table>
@@ -204,7 +207,11 @@ const DashboardAdmin = () => {
                   {/* Container Tombol Pagination */}
                   <div className="mt-auto px-8 py-3 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
                     {/* Deskripsi */}
-                    <p className="text-[11px] font-medium text-slate-600">Menampilkan {akunTampil.length} dari {daftarAkun.length} akun</p>
+                    <p className="text-[12.5px] lg:text-[11px] xl:text-[12.5px] 2xl:text-[13.5px] font-medium text-slate-600">
+                      {daftarAkun.length <= itemPerHalaman
+                        ? `Menampilkan ${daftarAkun.length} dari ${daftarAkun.length} akun`
+                        : `Menampilkan ${indeksAwal + 1} - ${Math.min(indeksTerakhir, daftarAkun.length)} dari ${daftarAkun.length} akun`}
+                    </p>
 
                     {/* Tombol Pagination */}
                     <div className="flex items-center gap-3">
@@ -221,7 +228,7 @@ const DashboardAdmin = () => {
                 <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 h-full">
 
                   {/* Judul */}
-                  <div className="flex items-center justify-between mb-8"><h3 className="font-black text-[#0B255D] flex items-center gap-2 uppercase tracking-tight text-sm"><LayoutGrid size={18} className="text-[#16B9FF]" /> Pendaftar Tiap Lomba</h3></div>
+                  <div className="flex items-center justify-between mb-8"><h3 className="font-black text-[#0B255D] flex items-center gap-2 uppercase tracking-tight text-[15px] lg:text-[13px] xl:text-[14px] 2xl:text-[15px]"><LayoutGrid size={18} className="text-[#16B9FF]" /> Pendaftar Tiap Lomba</h3></div>
 
                   {/* Container Statistik */}
                   <div className="space-y-6">
@@ -229,14 +236,14 @@ const DashboardAdmin = () => {
                       <div key={idx} className="space-y-1.5">
 
                         {/* Nama Lomba */}
-                        <p className="text-[11px] font-medium text-slate-600 tracking-wide">
+                        <p className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 tracking-wide">
                           {lomba.nama.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.substring(1)).join(' ')}
                         </p>
 
                         {/* Jumlah Pendaftar */}
                         <div className="flex items-center gap-4">
                           <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-[#16B9FF] transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(22,185,255,0.4)]" style={{ width: `${(lomba.jumlah / lomba.max) * 100}%` }}></div></div>
-                          <p className="text-[11px] font-medium text-slate-600 min-w-[20px] text-right">{lomba.jumlah}</p>
+                          <p className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 min-w-[20px] text-right">{lomba.jumlah}</p>
                         </div>
                       </div>
                     ))}

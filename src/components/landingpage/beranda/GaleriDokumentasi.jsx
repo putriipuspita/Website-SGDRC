@@ -121,7 +121,7 @@ export default function GaleriDokumentasi() {
       <div className="w-full max-w-[1400px] mx-auto">
 
         {/* Judul*/}
-        <h2 className="text-center text-[26px] md:text-4xl font-bold tracking-wide text-slate-800 mb-5 md:mb-8 w-full z-10 relative">
+        <h2 className="text-center text-[28px] md:text-4xl font-bold tracking-tight text-slate-800 mb-5 md:mb-8 w-full z-10 relative">
           DOKUMENTASI
         </h2>
 

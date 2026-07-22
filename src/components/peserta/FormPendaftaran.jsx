@@ -8,47 +8,54 @@ import toast from 'react-hot-toast';
 import { fetchDenganToken } from '../../lib/apiClient';
 
 // Sub-Komponen untuk Input Upload Berkas
-const InputFilePendaftaran = ({ id, label, file, ikonSrc, ikonAlt, bgIkon, accept, onChange, onPreview }) => {
+const InputFilePendaftaran = ({ id, label, file, ikonSrc, ikonAlt, bgIkon, accept, onChange, onPreview, error }) => {
   return (
-    <div className="bg-white p-2 rounded-xl border-2 border-gray-300 flex items-center justify-between group hover:border-[#16B9FF] transition-all cursor-pointer shadow-sm gap-2">
-      {/* Icon dan Label Berkas */}
-      <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
-        <div className={`w-10 h-10 rounded-lg ${bgIkon} flex items-center justify-center flex-shrink-0 overflow-hidden`}>
-          <img src={ikonSrc} alt={ikonAlt} className="w-full h-full object-cover" />
+    <div className="flex flex-col gap-1 w-full">
+      <div className="bg-white p-2 rounded-xl border-2 border-gray-300 flex items-center justify-between group hover:border-[#16B9FF] transition-all cursor-pointer shadow-sm gap-2">
+        {/* Icon dan Label Berkas */}
+        <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
+          <div className={`w-10 h-10 rounded-lg ${bgIkon} flex items-center justify-center flex-shrink-0 overflow-hidden`}>
+            <img src={ikonSrc} alt={ikonAlt} className="w-full h-full object-cover" />
+          </div>
+          <div className="text-left min-w-0 flex-1">
+            <p className="text-[12.5px] font-bold text-black leading-normal break-words">{label}</p>
+          </div>
         </div>
-        <div className="text-left min-w-0 flex-1">
-          <p className="text-[11px] md:text-[12px] font-bold text-black leading-tight md:leading-relaxed break-words">{label}</p>
-        </div>
-      </div>
 
-      {/* Input File & Tombol Kontrol */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <input
-          type="file"
-          id={id}
-          className="hidden"
-          accept={accept}
-          onChange={onChange}
-        />
+        {/* Input File & Tombol Kontrol */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <input
+            type="file"
+            id={id}
+            className="hidden"
+            accept={accept}
+            onChange={onChange}
+          />
 
-        {/* Tombol Preview */}
-        {file && (
-          <button
-            onClick={onPreview}
-            className="w-7 h-7 flex items-center justify-center bg-blue-50 text-[#16B9FF] rounded-md border border-blue-100 hover:bg-blue-100 transition-all"
+          {/* Tombol Preview */}
+          {file && (
+            <button
+              onClick={onPreview}
+              className="w-7 h-7 flex items-center justify-center bg-blue-50 text-[#16B9FF] rounded-md border border-blue-100 hover:bg-blue-100 transition-all"
+            >
+              <Eye size={14} />
+            </button>
+          )}
+
+          {/* Label Status / Tombol Pilih File */}
+          <label
+            htmlFor={id}
+            className={`px-3 py-1 ${file ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'} hover:bg-[#16B9FF] hover:text-white text-[10px] font-sans font-bold rounded-md transition-all flex-shrink-0 cursor-pointer`}
           >
-            <Eye size={14} />
-          </button>
-        )}
-
-        {/* Label Status / Tombol Pilih File */}
-        <label
-          htmlFor={id}
-          className={`px-3 py-1 ${file ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500'} hover:bg-[#16B9FF] hover:text-white text-[9px] font-sans font-bold rounded-md transition-all flex-shrink-0 cursor-pointer`}
-        >
-          {file ? 'Terpilih' : 'Pilih File'}
-        </label>
+            {file ? 'Terpilih' : 'Pilih File'}
+          </label>
+        </div>
       </div>
+      {error && (
+        <span className="text-[10px] text-red-500 font-bold italic pl-2 text-left leading-tight animate-in fade-in duration-300">
+          * {error}
+        </span>
+      )}
     </div>
   );
 };
@@ -57,14 +64,14 @@ const InputFilePendaftaran = ({ id, label, file, ikonSrc, ikonAlt, bgIkon, accep
 const InputTeksPendaftaran = ({ label, type = "text", name, value, onChange, placeholder }) => {
   return (
     <div>
-      <label className="block text-[12px] font-bold text-black tracking-normal mb-2">{label}</label>
+      <label className="block text-[12.5px] font-bold text-black tracking-normal mb-2">{label}</label>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-1.5 rounded-lg border-2 border-gray-300 focus:border-[#16B9FF] focus:ring-0 outline-none transition-all font-sans font-bold text-[12px] text-black placeholder:text-gray-400 placeholder:font-normal placeholder:text-[11px]"
+        className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-gray-300 focus:border-[#16B9FF] focus:ring-0 outline-none transition-all font-sans font-bold text-[12.5px] text-black placeholder:text-gray-400 placeholder:font-normal placeholder:text-[11.5px]"
       />
     </div>
   );
@@ -90,6 +97,15 @@ const FormPendaftaran = ({ lomba, kembali }) => {
     ikutiInstagramRobotika: null,
     ikutiTiktok: null,
     buktiBayar: null,
+  });
+
+  // Menyimpan Status Eror Berkas
+  const [erorBerkas, setErorBerkas] = useState({
+    kartuSiswa: '',
+    ikutiInstagram: '',
+    ikutiInstagramRobotika: '',
+    ikutiTiktok: '',
+    buktiBayar: '',
   });
 
   // State Tambahan (Loading, Pesan Error, Preview)
@@ -138,6 +154,14 @@ const FormPendaftaran = ({ lomba, kembali }) => {
   const tanganiPerubahanBerkas = (nama, acara) => {
     const file = acara.target.files[0];
     if (file) {
+      // Batasi ukuran file maksimal 2MB
+      if (file.size > 2 * 1024 * 1024) {
+        setErorBerkas(prev => ({ ...prev, [nama]: "Ukuran file terlalu besar (maks 2MB)" }));
+        setBerkas(prev => ({ ...prev, [nama]: null }));
+        acara.target.value = ''; // Reset input file
+        return;
+      }
+      setErorBerkas(prev => ({ ...prev, [nama]: "" }));
       setBerkas(prev => ({ ...prev, [nama]: file }));
       setPesan({ tipe: '', isi: '' });
     }
@@ -225,8 +249,8 @@ const FormPendaftaran = ({ lomba, kembali }) => {
             <div className="space-y-6">
               {/* Jenis Lomba */}
               <div>
-                <label className="block text-[12px] font-bold text-black tracking-normal mb-2">Jenis Lomba yang Dipilih</label>
-                <div className="w-full px-4 py-1.5 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 font-sans font-bold text-[12px] text-[#E40011] uppercase tracking-wider">
+                <label className="block text-[12.5px] font-bold text-black tracking-normal mb-2">Jenis Lomba yang Dipilih</label>
+                <div className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 font-sans font-bold text-[12.5px] text-[#E40011] uppercase tracking-wider">
                   {lomba?.nama || 'Lomba Tidak Terdeteksi'}
                 </div>
               </div>
@@ -265,12 +289,12 @@ const FormPendaftaran = ({ lomba, kembali }) => {
 
               {/* Jenjang */}
               <div>
-                <label className="block text-[12px] font-bold text-black tracking-normal mb-2">Jenjang</label>
+                <label className="block text-[12.5px] font-bold text-black tracking-normal mb-2">Jenjang</label>
                 <select
                   name="jenjang"
                   value={dataFormulir.jenjang}
                   onChange={tanganiPerubahanInput}
-                  className="w-full px-4 py-1.5 rounded-lg border-2 border-gray-300 focus:border-[#16B9FF] focus:ring-0 outline-none transition-all font-sans font-bold text-[11px] text-black appearance-none bg-[url('https://cdn-icons-png.flaticon.com/512/271/271210.png')] bg-[length:10px] bg-[right_1rem_center] bg-no-repeat cursor-pointer"
+                  className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-gray-300 focus:border-[#16B9FF] focus:ring-0 outline-none transition-all font-sans font-bold text-[11.5px] text-black appearance-none bg-[url('https://cdn-icons-png.flaticon.com/512/271/271210.png')] bg-[length:10px] bg-[right_1rem_center] bg-no-repeat cursor-pointer"
                 >
 
                   {/* Fungsi Menampilkan Jenjang Sesuai Tingkat Lomba */}
@@ -296,10 +320,19 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                         daftar = ['SD'];
                       }
                     } else {
-                      daftar = teksJenjang
-                        .split(/ - |, | dan | & /i)
+                      const mentah = teksJenjang
+                        .split(/ - |, | dan | & | \/ /i)
                         .map(item => item.trim())
                         .filter(item => item !== "");
+                      
+                      daftar = mentah.map(item => {
+                        const low = item.toLowerCase();
+                        if (low.includes('mahasiswa') || low.includes('perguruan tinggi')) return 'Perguruan Tinggi';
+                        if (low.includes('sd') || low.includes('mi')) return 'SD';
+                        if (low.includes('smp') || low.includes('mts')) return 'SMP';
+                        if (low.includes('sma') || low.includes('smk') || low.includes('ma')) return 'SMA';
+                        return item;
+                      });
                     }
 
                     const daftarUnik = [...new Set(daftar)];
@@ -323,12 +356,12 @@ const FormPendaftaran = ({ lomba, kembali }) => {
           </div>
 
           {/* Container Formulir Sebelah Kanan */}
-          <div className="flex-1 p-5 lg:p-6 bg-slate-50 flex flex-col border-t lg:border-t-0">
+          <div className="flex-1 p-6 lg:p-8 bg-white flex flex-col border-t lg:border-t-0 border-slate-100">
             {/* Judul Upload Dokumen */}
-            <h2 className="text-[13px] md:text-[13px] font-bold mb-3 tracking-normal text-black mt-2 md:mt-[30px]">Upload Dokumen</h2>
+            <h2 className="text-[13px] font-bold mb-4 tracking-normal text-black mt-0">Upload Dokumen</h2>
 
             {/* Container Upload Berkas */}
-            <div className="bg-white p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-gray-100 mb-6 animate-in zoom-in-95 duration-700">
+            <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/60 mb-6 animate-in zoom-in-95 duration-700">
               <div className="space-y-4">
                 {/* Upload Kartu Tanda Siswa */}
                 <InputFilePendaftaran
@@ -341,6 +374,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   accept="image/*,application/pdf"
                   onChange={(e) => tanganiPerubahanBerkas('kartuSiswa', e)}
                   onPreview={() => tanganiPreview(berkas.kartuSiswa)}
+                  error={erorBerkas.kartuSiswa}
                 />
 
                 {/* Upload Bukti Follow Instagram SGDRC */}
@@ -354,6 +388,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   accept="image/*,application/pdf"
                   onChange={(e) => tanganiPerubahanBerkas('ikutiInstagram', e)}
                   onPreview={() => tanganiPreview(berkas.ikutiInstagram)}
+                  error={erorBerkas.ikutiInstagram}
                 />
 
                 {/* Upload Bukti Follow Instagram Robotika */}
@@ -367,6 +402,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   accept="image/*,application/pdf"
                   onChange={(e) => tanganiPerubahanBerkas('ikutiInstagramRobotika', e)}
                   onPreview={() => tanganiPreview(berkas.ikutiInstagramRobotika)}
+                  error={erorBerkas.ikutiInstagramRobotika}
                 />
 
                 {/* Upload Bukti Follow TikTok */}
@@ -380,6 +416,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   accept="image/*,application/pdf"
                   onChange={(e) => tanganiPerubahanBerkas('ikutiTiktok', e)}
                   onPreview={() => tanganiPreview(berkas.ikutiTiktok)}
+                  error={erorBerkas.ikutiTiktok}
                 />
 
                 {/* Upload Bukti Pembayaran */}
@@ -393,6 +430,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   accept="image/*"
                   onChange={(e) => tanganiPerubahanBerkas('buktiBayar', e)}
                   onPreview={() => tanganiPreview(berkas.buktiBayar)}
+                  error={erorBerkas.buktiBayar}
                 />
               </div>
             </div>

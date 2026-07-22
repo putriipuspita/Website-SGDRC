@@ -76,7 +76,7 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
       lebar="max-w-[450px]"
       footer={
         <div className="flex gap-3 w-full">
-          <button type="button" onClick={() => setApakahModalTambahTerbuka(false)} className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold py-2.5 rounded-xl text-[12px] transition-all uppercase">BATAL</button>
+          <button type="button" onClick={() => setApakahModalTambahTerbuka(false)} className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] transition-all uppercase">BATAL</button>
           <button type="button" onClick={tanganiKirim} disabled={loading} className="flex-[1.5] bg-[#0B255D] hover:bg-blue-500 active:bg-[#0B255D] text-white font-black py-2.5 rounded-xl text-[12px] tracking-wide uppercase transition-all shadow-lg shadow-[#0B255D]/20 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2">
             {loading ? <Loader2 size={16} className="animate-spin" /> : "SIMPAN AKUN"}
           </button>
@@ -120,10 +120,11 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
 
         {/* Container Password */}
         <div className="space-y-1">
-          <label className="text-slate-700 text-[12px] font-semibold ml-1">Password</label>
+          <label className="text-slate-950 text-[12px] font-semibold ml-1">Password</label>
           <div className="relative group">
             <FormInput
               icon={Lock}
+              type={tampilkanSandi ? 'text' : 'password'}
               required
               readOnly
               onFocus={(e) => e.target.removeAttribute('readonly')}
@@ -132,7 +133,6 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="Password"
-              style={{ WebkitTextSecurity: tampilkanSandi ? 'none' : 'disc' }}
             />
             {/* Icon Mata */}
             <button type="button" onClick={() => setTampilkanSandi(!tampilkanSandi)} className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors z-10">
@@ -143,10 +143,11 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
 
         {/* Container Konfirmasi Password */}
         <div className="space-y-1">
-          <label className="text-slate-700 text-[12px] font-semibold ml-1">Konfirmasi Password</label>
+          <label className="text-slate-950 text-[12px] font-semibold ml-1">Konfirmasi Password</label>
           <div className="relative group">
             <FormInput
               icon={Lock}
+              type={tampilkanKonfirmasiSandi ? 'text' : 'password'}
               required
               readOnly
               onFocus={(e) => e.target.removeAttribute('readonly')}
@@ -155,7 +156,6 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
               value={formData.konfirmasiPassword}
               onChange={(e) => setFormData({ ...formData, konfirmasiPassword: e.target.value })}
               placeholder="Konfirmasi Password"
-              style={{ WebkitTextSecurity: tampilkanKonfirmasiSandi ? 'none' : 'disc' }}
             />
             {/* Icon Mata */}
             <button type="button" onClick={() => setTampilkanKonfirmasiSandi(!tampilkanKonfirmasiSandi)} className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors z-10">

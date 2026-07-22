@@ -202,3 +202,32 @@
     display: none !important;
   }
 }
+
+/* Aktifkan Batang/Ikon Scrollbar Khusus HP & Tablet menggunakan Style Custom */
+@media (max-width: 1023px) {
+  /* Terapkan scrollbar tipis (6px) untuk vertikal dan horizontal di HP & Tablet */
+  ::-webkit-scrollbar {
+    display: block !important;
+    width: 6px !important;
+    height: 6px !important;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9 !important;
+    border-radius: 10px !important;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1 !important;
+    border-radius: 10px !important;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8 !important;
+  }
+
+  /* Tetap izinkan scrollbar berfungsi dengan baik */
+  html,
+  body,
+  .peserta-scrollbar {
+    -ms-overflow-style: auto !important;
+    scrollbar-width: thin !important;
+  }
+}

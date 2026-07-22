@@ -163,7 +163,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
       lebar="max-w-[800px]"
       footer={
         <div className="flex gap-3 w-full">
-          <button type="button" onClick={() => setApakahTerbuka(false)} className="flex-1 bg-slate-200 text-slate-600 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95">BATAL</button>
+          <button type="button" onClick={() => setApakahTerbuka(false)} className="flex-1 bg-slate-200 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95">BATAL</button>
           <button type="button" onClick={tanganiKirim} disabled={loading} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white font-black py-2.5 rounded-xl text-[12px] tracking-wide uppercase transition-all shadow-lg shadow-[#0B255D]/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50">
             {loading ? <Loader2 size={16} className="animate-spin" /> : "SIMPAN DATA"}
           </button>
@@ -180,7 +180,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         {/* Container Input Email */}
         <div className="space-y-1">
           {/* Labels */}
-          <label className="text-slate-700 text-[12.5px] font-semibold ml-1 italic">Email Akun Peserta</label>
+          <label className="text-slate-950 text-[12.5px] font-semibold ml-1 italic">Email Akun Peserta</label>
 
           {/* Container Input Email */}
           <div className="relative group">
@@ -200,14 +200,14 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
               value={searchEmail}
               onChange={(e) => { setSearchEmail(e.target.value); setApakahSaranTerbuka(true); }}
               placeholder="Masukkan atau cari email akun"
-              className="w-full bg-white border border-slate-300 text-slate-800 text-[12px] rounded-xl py-2 pl-10 pr-4 focus:outline-none focus:border-[#0B255D]"
+              className="w-full bg-white border border-slate-300 text-slate-950 text-[12px] rounded-xl py-2 pl-10 pr-4 focus:outline-none focus:border-[#0B255D]"
             />
 
             {/* Fungsi Saran Email Terdaftar */}
             {apakahSaranTerbuka && saranEmail.length > 0 && (
               <div className="absolute top-full left-0 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl z-20 py-1">
                 {saranEmail.map((email) => (
-                  <button key={email} type="button" onClick={() => { setSearchEmail(email); setApakahSaranTerbuka(false); }} className="w-full px-4 py-2 text-left hover:bg-slate-50 text-[12px] font-semibold text-slate-600 flex items-center justify-between">
+                  <button key={email} type="button" onClick={() => { setSearchEmail(email); setApakahSaranTerbuka(false); }} className="w-full px-4 py-2 text-left hover:bg-slate-50 text-[12px] font-semibold text-slate-950 flex items-center justify-between">
                     {email} <Check size={13} className="text-[#16B9FF]" />
                   </button>
                 ))}
@@ -283,7 +283,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         {/* Container Jenjang */}
         <div className="space-y-1">
           {/* Label */}
-          <label className="text-slate-700 text-[12.5px] font-semibold ml-1">Jenjang</label>
+          <label className="text-slate-950 text-[12.5px] font-semibold ml-1">Jenjang</label>
 
           {/* Container Opsi Jenjang */}
           <div className="relative group">
@@ -293,7 +293,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
             </div>
 
             {/* Opsi Jenjang */}
-            <select required value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full bg-white border border-slate-300 text-slate-800 text-[12px] rounded-xl py-2 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] appearance-none cursor-pointer">
+            <select required value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full bg-white border border-slate-300 text-slate-950 text-[12px] rounded-xl py-2 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] appearance-none cursor-pointer">
               <option value="">Pilih Jenjang</option>
               {dapatkanOpsiJenjang().map(j => (
                 <option key={j} value={j}>{j}</option>
@@ -308,7 +308,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         {/* Container Bukti Transfer */}
         <div className={`space-y-2 pt-1 ${apakahKelompokMaks3 ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
           {/* Label */}
-          <label className="text-slate-700 text-[12.5px] font-semibold ml-1">Bukti Transfer</label>
+          <label className="text-slate-950 text-[12.5px] font-semibold ml-1">Bukti Transfer</label>
 
           {/* Container Input Bukti Transfer */}
           <div className="flex gap-3 flex-col sm:flex-row">
@@ -331,7 +331,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
               {/* Icon dan Place Holder */}
               <div className="flex items-center justify-center gap-2">
                 <Upload size={14} className="text-slate-400 group-hover:text-[#0B255D]" />
-                <span className="text-[11px] font-semibold text-slate-600 truncate max-w-[200px]">
+                <span className="text-[11px] font-semibold text-slate-950 truncate max-w-[200px]">
                   {buktiTransfer ? buktiTransfer.name : (apakahKelompokMaks3 ? 'Klik untuk mengunggah bukti pembayaran' : 'Unggah Bukti')}
                 </span>
               </div>

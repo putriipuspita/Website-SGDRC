@@ -10,12 +10,13 @@ export const TableBase = ({
   notFound = false,
   notFoundText = 'Data tidak ditemukan',
   children,
-  footer
+  footer,
+  minWidth = 'min-w-[1200px]'
 }) => {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.05),0_0_20px_rgba(22,185,255,0.06)] overflow-hidden">
       <div className="overflow-x-auto custom-scrollbar pb-2">
-        <table className="w-full text-left border-collapse min-w-[1200px]">
+        <table className={`w-full text-left border-collapse ${minWidth}`}>
           {/* Header Tabel */}
           <thead>
             <tr className="bg-[#0B255D] border-b border-white/20">
@@ -38,19 +39,19 @@ export const TableBase = ({
                 <td colSpan={headers.length} className="py-20 text-center">
                   <div className="flex flex-col items-center justify-center gap-3">
                     <Loader2 size={30} className="text-[#16B9FF] animate-spin" />
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">{loadingText}</p>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-wide">{loadingText}</p>
                   </div>
                 </td>
               </tr>
             ) : isEmpty ? (
               <tr>
-                <td colSpan={headers.length} className="py-8 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
+                <td colSpan={headers.length} className="py-8 text-center text-slate-500 font-bold uppercase text-[11px] tracking-wide">
                   {emptyText}
                 </td>
               </tr>
             ) : notFound ? (
               <tr>
-                <td colSpan={headers.length} className="py-8 text-center text-slate-400 font-bold uppercase text-[11px] tracking-wide">
+                <td colSpan={headers.length} className="py-8 text-center text-slate-500 font-bold uppercase text-[11px] tracking-wide">
                   {notFoundText}
                 </td>
               </tr>

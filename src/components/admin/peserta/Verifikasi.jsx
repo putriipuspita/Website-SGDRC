@@ -163,7 +163,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
         textTombol={loading ? "Memproses..." : "Ya, Reset"}
         iconCustom={AlertTriangle}
         pesanCustom={
-          <p className="text-[11.5px] font-medium text-slate-500 leading-[1.7] px-1">
+          <p className="text-[11.5px] font-medium text-slate-950 leading-[1.7] px-1">
             Apakah Anda Yakin Ingin Membatalkan Refund <span className="font-bold text-red-600">"{dataPeserta?.nama}"</span>? Tindakan Ini Akan Mengembalikan Status Ke <span className="font-bold text-emerald-500">TERVERIFIKASI</span> Dan Menghapus <span className="font-bold text-orange-500">BUKTI REFUND</span> Secara Permanen.
           </p>
         }
@@ -286,7 +286,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
               {/* Container Bukti Pembayaran */}
               <div className="space-y-2 text-left">
                 {/* Label */}
-                <label className="text-[10px] font-black text-slate-400 block ml-1">Bukti Pembayaran Peserta</label>
+                <label className="text-[10px] font-black text-slate-950 block ml-1">Bukti Pembayaran Peserta</label>
 
                 {/* Container Gambar Bukti */}
                 <GambarZoom src={dataPeserta.bukti} />
@@ -308,7 +308,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 {/* Container Bukti Pembayaran */}
                 <div className="space-y-2 text-left">
                   {/* Label */}
-                  <label className="text-[10px] font-black text-slate-400 block ml-1">Bukti Pembayaran Peserta</label>
+                  <label className="text-[10px] font-black text-slate-950 block ml-1">Bukti Pembayaran Peserta</label>
 
                   {/* Container Gambar Bukti */}
                   <GambarZoom src={dataPeserta.bukti} />
@@ -348,7 +348,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                           <div className={`p-4 text-white rounded-full shadow-lg ${dataPeserta.status === 'Refunded' ? 'bg-blue-500 shadow-blue-200' : 'bg-orange-500 shadow-orange-200'}`}>
                             <RotateCcw size={24} />
                           </div>
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                          <p className="text-[10px] font-black text-slate-950 uppercase tracking-wider">
                             {dataPeserta.status === 'Refunded' ? 'Pilih File Koreksi Baru' : 'Pilih File Bukti Transfer'}
                           </p>
                         </>
@@ -361,7 +361,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
               // Mode Awal ( Belum Ditolak dan Belum Refund )
               <div className="space-y-2">
                 {/* Label */}
-                <label className="text-[11px] font-black text-slate-700 ml-1 opacity-70">Bukti Pembayaran</label>
+                <label className="text-[11px] font-black text-slate-950 ml-1">Bukti Pembayaran</label>
 
                 {/* Container Gambar Bukti */}
                 <GambarZoom

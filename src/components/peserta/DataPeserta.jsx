@@ -36,17 +36,17 @@ const ambilWarnaStatus = (status) => {
 
 // Fungsi untuk Menampilkan Detail Peserta
 const BarisDetailPeserta = ({ label, value }) => (
-  <div className="flex py-2 border-b border-slate-50 last:border-0 items-start">
+  <div className="flex py-1 border-b border-slate-50 last:border-0 items-start">
 
     {/* Label dan Titik Dua */}
     <div className="w-[100px] md:w-[120px] flex-shrink-0 flex justify-between">
-      <span className="text-[11.5px] font-bold text-slate-400 leading-relaxed">{label}</span>
-      <span className="text-[11.5px] font-bold text-slate-400 mr-2 md:mr-4 leading-relaxed">:</span>
+      <span className="text-[12.2px] font-bold text-slate-950 leading-relaxed">{label}</span>
+      <span className="text-[12.2px] font-bold text-slate-950 mr-2 md:mr-4 leading-relaxed">:</span>
     </div>
 
     {/* Nilai */}
     <div className="flex-1 text-left">
-      <span className="text-[11.5px] font-bold leading-relaxed block text-slate-700">{value || "-"}</span>
+      <span className="text-[12.2px] font-bold leading-relaxed block text-slate-950">{value || "-"}</span>
     </div>
   </div>
 );
@@ -80,10 +80,18 @@ const DataPeserta = () => {
   const [kataKunciCari, setKataKunciCari] = useState('');
   const [statusFilter, setStatusFilter] = useState('Semua');
   const [lombaFilter, setLombaFilter] = useState('Semua');
-  const [barisTerbuka, setBarisTerbuka] = useState(null);
+  const [barisTerbuka, setBarisTerbuka] = useState([]);
   const [isHp, setIsHp] = useState(false);
   const [sedangUnduh, setSedangUnduh] = useState(null);
   const [pengaturan, setPengaturan] = useState({});
+
+  // Fungsi Toggle Multi Row Accordion
+  const tanganiToggleBaris = (id) => {
+    setBarisTerbuka(prev => {
+      const list = Array.isArray(prev) ? prev : [];
+      return list.includes(id) ? list.filter(i => i !== id) : [...list, id];
+    });
+  };
 
   // Fungsi Deteksi Ukuran Layar
   useEffect(() => {
@@ -232,41 +240,40 @@ const DataPeserta = () => {
         <Sidebar apakahSidebarTerbuka={apakahSidebarTerbuka} />
 
         {/* Container Isi Data Peserta */}
-        <div className="flex-1 bg-slate-50 overflow-y-auto peserta-scrollbar px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
+        <div className="flex-1 bg-slate-50 overflow-y-auto scrollbar-none lg:peserta-scrollbar px-6 md:px-10 py-8 flex flex-col border-l border-solid border-[#16B9FF] shadow-[-2px_0_8px_rgba(22,185,255,0.1)] relative z-20">
           <div className="w-full">
 
             {/* Container Judul & Kontrol Halaman*/}
             <div className="mb-8 flex flex-col lg:flex-col lg:landscape:flex-row items-start lg:landscape:items-center justify-between gap-4 lg:gap-6">
               {/* Judul dan Deskripsi */}
               <div className="text-left border-l-4 border-[#E40011] pl-6 animate-in slide-in-from-left duration-700 min-w-fit">
-                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-800 uppercase whitespace-normal md:whitespace-nowrap text-left leading-relaxed md:leading-tight">Data Peserta Terdaftar</h1>
+                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-950 uppercase whitespace-normal md:whitespace-nowrap text-left leading-relaxed md:leading-tight">Data Peserta Terdaftar</h1>
                 <p className="text-slate-500 text-[9.5px] font-bold tracking-normal uppercase whitespace-normal md:whitespace-nowrap text-left leading-relaxed md:leading-normal">{isHp ? "Kelola status pendaftaran" : "Kelola dan pantau status pendaftaran lomba"}</p>
               </div>
 
               {/* Container Pencarian dan Filter */}
-              <div className="flex flex-col md:flex-row items-center gap-3 w-full lg:w-full lg:landscape:w-auto md:mt-2 lg:mt-2 lg:landscape:mt-0">
+              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-full lg:w-full lg:landscape:w-auto md:mt-2 lg:mt-2 lg:landscape:mt-0">
                 {/* Input Pencarian */}
-                <div className="relative group w-full md:flex-1 lg:w-full lg:landscape:w-auto lg:landscape:flex-none">
+                <div className="relative group w-full md:w-1/3 md:flex-1 lg:landscape:w-[160px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
                   <input
                     type="text"
                     placeholder="Cari Tim..."
                     value={kataKunciCari}
                     onChange={(e) => setKataKunciCari(e.target.value)}
-                    className="pl-8 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11px] md:text-[11px] lg:text-[9.5px] w-full lg:w-full lg:landscape:w-[160px] font-bold text-slate-800 placeholder:text-slate-600 shadow-sm"
+                    className="pl-8 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[12px] md:text-[12px] lg:text-[11px] w-full font-bold text-slate-950 placeholder:text-slate-600 shadow-sm"
                   />
                 </div>
 
                 {/* Container Filter */}
-                <div className="flex flex-row gap-2 w-full lg:w-full lg:landscape:w-auto">
-
+                <div className="flex flex-row gap-2 md:gap-3 w-full md:w-2/3 md:flex-[2]">
                   {/* Filter Pilihan Lomba */}
-                  <div className="relative flex-1 md:flex-1 lg:flex-1 lg:landscape:flex-none">
+                  <div className="relative flex-1 w-1/2 md:w-1/2 lg:landscape:w-[160px]">
                     <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                     <select
                       value={lombaFilter}
                       onChange={(e) => setLombaFilter(e.target.value)}
-                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full lg:w-full lg:landscape:w-[160px] shadow-sm"
+                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[12px] md:text-[12px] lg:text-[11px] font-bold text-slate-950 focus:border-[#16B9FF] w-full shadow-sm"
                     >
                       <option value="Semua">{isHp ? "Semua Lomba" : "Semua Lomba"}</option>
                       {daftarJenisLomba.map(l => <option key={l} value={l}>{formatJudul(l)}</option>)}
@@ -275,12 +282,12 @@ const DataPeserta = () => {
                   </div>
 
                   {/* Filter Status Verifikasi */}
-                  <div className="relative flex-1 md:flex-1 lg:flex-1 lg:landscape:flex-none">
+                  <div className="relative flex-1 w-1/2 md:w-1/2 lg:landscape:w-[160px]">
                     <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
-                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[11px] md:text-[11px] lg:text-[9.5px] font-bold text-slate-600 focus:border-[#16B9FF] w-full lg:w-full lg:landscape:w-[160px] shadow-sm"
+                      className="pl-8 pr-6 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none appearance-none cursor-pointer text-[12px] md:text-[12px] lg:text-[11px] font-bold text-slate-950 focus:border-[#16B9FF] w-full shadow-sm"
                     >
                       <option value="Semua">{isHp ? "Semua Status" : "Semua Status"}</option>
                       <option value="TERVERIFIKASI">Terverifikasi</option>
@@ -341,15 +348,15 @@ const DataPeserta = () => {
                               <th className="px-2 py-2 border-r border-white/30 text-center lg:hidden w-10"></th>
 
                               {/* Header Tabel */}
-                              <th className="px-2 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed min-w-[120px]">Jenis Lomba</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed">Nama Tim</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 1</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 2</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 3</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 whitespace-nowrap hidden lg:table-cell">Jenjang</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider border-r border-white/10 min-w-[120px] text-center">Asal Instansi</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 min-w-[85px]">Status</th>
-                              <th className="px-3 py-3 text-[9.2px] font-black text-white uppercase tracking-wider text-center">Aksi</th>
+                              <th className="px-2 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed min-w-[120px]">Jenis Lomba</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed">Nama Tim</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 1</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 2</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 3</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 whitespace-nowrap hidden lg:table-cell">Jenjang</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 min-w-[120px] text-center">Asal Instansi</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 min-w-[85px]">Status</th>
+                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center">Aksi</th>
                             </tr>
 
                             {/* Header Tampilan HP */}
@@ -369,42 +376,42 @@ const DataPeserta = () => {
                                   {/* Kolom Toggle khusus iPad Standar */}
                                   <td className="px-2 py-2 border-r border-slate-200 text-center lg:hidden">
                                     <button
-                                      onClick={() => setBarisTerbuka(barisTerbuka === data.id ? null : data.id)}
-                                      className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${barisTerbuka === data.id ? 'bg-red-500' : 'bg-emerald-500'}`}
+                                      onClick={() => tanganiToggleBaris(data.id)}
+                                      className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${barisTerbuka.includes(data.id) ? 'bg-red-500' : 'bg-emerald-500'}`}
                                     >
-                                      {barisTerbuka === data.id ? <Minus size={10} className="text-white" /> : <Plus size={10} className="text-white" />}
+                                      {barisTerbuka.includes(data.id) ? <Minus size={10} className="text-white" /> : <Plus size={10} className="text-white" />}
                                     </button>
                                   </td>
 
                                   {/* Kolom Lomba */}
                                   <td className="px-2 py-3 border-r border-slate-200 min-w-[120px]">
-                                    <span className="text-[9.9px] font-black text-[#16B9FF] uppercase tracking-tight block text-center leading-normal">
+                                    <span className="text-[12px] xl:text-[10.6px] 2xl:text-[11.6px] font-black text-[#16B9FF] uppercase tracking-tight block text-center leading-normal">
                                       {data.lomba}
                                     </span>
                                   </td>
 
                                   {/* Kolom Nama Tim */}
                                   <td className="px-3 py-3 border-r border-slate-200 leading-normal">
-                                    <span className="text-[9.9px] font-black text-slate-800 uppercase tracking-tight block text-center leading-normal">
+                                    <span className="text-[12px] xl:text-[10.6px] 2xl:text-[11.6px] font-black text-slate-950 uppercase tracking-tight block text-center leading-normal">
                                       {data.tim || "-"}
                                     </span>
                                   </td>
 
                                   {/* Kolom Peserta */}
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.5px] font-bold leading-normal hidden lg:table-cell text-slate-700 min-w-[105px]">{formatJudul(data.peserta[0])}</td>
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.5px] font-bold leading-normal hidden lg:table-cell text-slate-700 min-w-[105px]">{formatJudul(data.peserta[1])}</td>
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.5px] font-bold leading-normal hidden lg:table-cell text-slate-700 min-w-[105px]">{formatJudul(data.peserta[2])}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[0])}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[1])}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[2])}</td>
 
                                   {/* Kolom Jenjang */}
-                                  <td className="px-3 py-3 text-center border-r border-slate-200 text-[10.5px] font-bold leading-relaxed hidden lg:table-cell text-slate-600">{data.jenjang}</td>
+                                  <td className="px-3 py-3 text-center border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-relaxed hidden lg:table-cell text-slate-950">{data.jenjang}</td>
 
                                   {/* Kolom Instansi */}
-                                  <td className="px-3 py-3 border-r border-slate-200 font-bold text-[10.5px] tracking-tight leading-normal text-slate-700">{data.instansi}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 font-bold text-[12px] xl:text-[11.2px] 2xl:text-[12.2px] tracking-tight leading-normal text-slate-950">{data.instansi}</td>
 
                                   {/* Kolom Status Verifikasi */}
                                   <td className="px-3 py-3 text-center border-r border-slate-200">
                                     <div className="flex items-center justify-center">
-                                      <span className={`text-[10.5px] font-bold tracking-wider ${ambilWarnaStatus(data.status)} whitespace-normal break-words`}>
+                                      <span className={`text-[12px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold tracking-wider ${ambilWarnaStatus(data.status)} whitespace-normal break-words`}>
                                         {data.status.split(' ').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ')}
                                       </span>
                                     </div>
@@ -469,10 +476,10 @@ const DataPeserta = () => {
                                 </tr>
 
                                 {/* Detail Data (Tampilan Ipad) */}
-                                {barisTerbuka === data.id && (
+                                {barisTerbuka.includes(data.id) && (
                                   <tr className="hidden md:table-row lg:hidden bg-slate-50 border-b border-slate-100">
                                     <td colSpan="10" className="p-0">
-                                      <div className="bg-white px-10 py-4 animate-in slide-in-from-top-2 duration-300 border-t border-slate-100">
+                                      <div className="bg-white px-6 md:px-8 py-2 animate-in slide-in-from-top-2 duration-300 border-t border-slate-100">
                                         <BarisDetailPeserta label="Peserta 1" value={data.peserta[0]} />
                                         <BarisDetailPeserta label="Peserta 2" value={data.peserta[1]} />
                                         <BarisDetailPeserta label="Peserta 3" value={data.peserta[2]} />
@@ -493,20 +500,20 @@ const DataPeserta = () => {
                                 <tr className="md:hidden border-b border-slate-100">
                                   <td colSpan="3" className="p-0">
                                     <div
-                                      onClick={() => setBarisTerbuka(barisTerbuka === data.id ? null : data.id)}
+                                      onClick={() => tanganiToggleBaris(data.id)}
                                       className="flex items-center gap-3 p-3 cursor-pointer bg-slate-50/50 hover:bg-slate-100 transition-all"
                                     >
-                                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${barisTerbuka === data.id ? 'bg-red-500' : 'bg-emerald-500'}`}>
-                                        {barisTerbuka === data.id ? <Minus size={12} className="text-white" /> : <Plus size={12} className="text-white" />}
+                                      <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${barisTerbuka.includes(data.id) ? 'bg-red-500' : 'bg-emerald-500'}`}>
+                                        {barisTerbuka.includes(data.id) ? <Minus size={12} className="text-white" /> : <Plus size={12} className="text-white" />}
                                       </div>
                                       <div className="flex flex-col leading-relaxed">
-                                        <span className="text-[11px] md:text-[10px] font-black text-[#16B9FF] uppercase tracking-wider">{data.lomba}</span>
-                                        <span className="text-[13px] md:text-[11px] font-black text-slate-800 uppercase">{data.tim}</span>
+                                        <span className="text-[11.5px] md:text-[10px] font-black text-[#16B9FF] uppercase tracking-wider">{data.lomba}</span>
+                                        <span className="text-[13.5px] md:text-[11px] font-black text-slate-950 uppercase">{data.tim}</span>
                                       </div>
                                     </div>
 
                                     {/* Detail Data (Tampilan HP Terbuka) */}
-                                    {barisTerbuka === data.id && (
+                                    {barisTerbuka.includes(data.id) && (
                                       <div className="bg-white px-4 py-2 animate-in slide-in-from-top-2 duration-300 border-t border-slate-100">
                                         <BarisDetailPeserta label="Peserta 1" value={data.peserta[0]} />
                                         <BarisDetailPeserta label="Peserta 2" value={data.peserta[1]} />
@@ -515,23 +522,23 @@ const DataPeserta = () => {
                                         <BarisDetailPeserta label="Jenjang" value={data.jenjang} />
 
                                         {/* Status */}
-                                        <div className="flex py-2.5 border-b border-slate-50 items-start">
+                                        <div className="flex py-1 border-b border-slate-50 items-start">
                                           <div className="w-[100px] flex-shrink-0 flex justify-between">
-                                            <span className="text-[11.5px] font-bold text-slate-400 leading-relaxed">Status</span>
-                                            <span className="text-[11.5px] font-bold text-slate-400 mr-2 leading-relaxed">:</span>
+                                            <span className="text-[12px] font-bold text-slate-950 leading-relaxed">Status</span>
+                                            <span className="text-[12px] font-bold text-slate-950 mr-2 leading-relaxed">:</span>
                                           </div>
                                           <div className="flex-1 text-left">
-                                            <span className={`text-[11.5px] font-black leading-relaxed pt-[1px] block ${ambilWarnaStatus(data.status)}`}>
+                                            <span className={`text-[12px] font-black leading-relaxed pt-[1px] block ${ambilWarnaStatus(data.status)}`}>
                                               {data.status.split(' ').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ')}
                                             </span>
                                           </div>
                                         </div>
 
                                         {/* Kolom Aksi */}
-                                        <div className="flex py-2.5 border-b border-slate-50 last:border-0 items-start">
+                                        <div className="flex py-1 border-b border-slate-50 last:border-0 items-start">
                                           <div className="w-[100px] flex-shrink-0 flex justify-between">
-                                            <span className="text-[11.5px] font-bold text-slate-400 leading-relaxed">Aksi</span>
-                                            <span className="text-[11.5px] font-bold text-slate-400 mr-2 leading-relaxed">:</span>
+                                            <span className="text-[12px] font-bold text-slate-950 leading-relaxed">Aksi</span>
+                                            <span className="text-[12px] font-bold text-slate-950 mr-2 leading-relaxed">:</span>
                                           </div>
                                           <div className="flex-1 text-left">
                                             <div className="flex gap-2 pt-0.5">

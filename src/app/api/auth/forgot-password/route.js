@@ -19,7 +19,7 @@ export async function POST(req) {
     // Cek user
     const [users] = await db.query('SELECT id, nama, email FROM users WHERE email = ?', [email]);
     if (users.length === 0) {
-      return new Response(JSON.stringify({ pesan: "Cek email Anda untuk instruksi reset." }), { status: 200 });
+      return new Response(JSON.stringify({ pesan: "Email belum terdaftar dalam sistem." }), { status: 404 });
     }
 
     const user = users[0];

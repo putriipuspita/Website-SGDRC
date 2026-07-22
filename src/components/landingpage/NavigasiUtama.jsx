@@ -31,14 +31,14 @@ export default function NavigasiUtama() {
 
         {/* Logo */}
         <Link href="/" onClick={tutupMenu} className="flex items-center gap-2 cursor-pointer z-20">
-          <h1 className="font-logo text-[18px] md:text-[30px] italic tracking-[0.05rem]">
+          <h1 className="font-logo text-[24px] md:text-[30px] italic tracking-[0.05rem]">
             <span className="text-[#E40011]">SGD</span>
             <span className="text-[#0B255D]" style={{ WebkitTextStroke: '0.8px rgba(255, 255, 255, 0.9)' }}>RC</span>
           </h1>
         </Link>
 
         {/* Menu Desktop & Ipad */}
-        <ul className="hidden md:flex items-center md:gap-2.5 lg:gap-8 md:text-[8px] lg:text-[10.3px] font-bold md:tracking-normal lg:tracking-[0.1em] absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
+        <ul className="hidden md:flex items-center md:gap-2.5 lg:gap-8 md:text-[8px] lg:text-[10.3px] font-bold tracking-wide absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
           {daftarMenu.map((menu, idx) => {
             // Menentukan Menu Aktif
             const aktif = jalur === menu.href;
@@ -133,7 +133,7 @@ export default function NavigasiUtama() {
           `}>
 
             {/* List Menu di dalam Sidebar */}
-            <ul className="flex flex-col items-start px-6 py-6 gap-5 text-[11px] font-medium tracking-[0.2em] text-white uppercase">
+            <ul className="flex flex-col items-start px-6 py-6 gap-5 text-[11px] font-medium tracking-wide text-white uppercase">
               {daftarMenu.map((menu, idx) => {
                 if (menu.tipe === 'link') {
                   return (

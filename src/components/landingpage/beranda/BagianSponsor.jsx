@@ -28,7 +28,7 @@ export default function BagianSponsor({ dataAwal = [] }) {
       {/* Container Bagian Sponsor & Media Partner */}
       <div className="w-full max-w-[1400px] mx-auto">
         {/* Judul */}
-        <h2 className="text-center text-[26px] md:text-4xl font-bold tracking-wide text-slate-800 mb-6 w-full z-10 relative">
+        <h2 className="text-center text-[28px] md:text-4xl font-bold tracking-tight text-slate-800 mb-6 w-full z-10 relative">
           SPONSOR & MEDIA PARTNER
         </h2>
 

@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 
 // Komponen Untuk Menampilkan Kontak & Footer
-export default function KontakDanKaki() {
+export default function KontakDanKaki({ dataAwal = {} }) {
   // Menyimpan Data Pengaturan Dari Database
-  const [pengaturan, setPengaturan] = useState(null);
+  const [pengaturan, setPengaturan] = useState(dataAwal);
 
   // Mengambil data kontak dan pengaturan website dari API
   useEffect(() => {
-    fetch('/api/pengaturan')
+    fetch('/api/pengaturan', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => setPengaturan(data))
       .catch(err => console.error("Gagal ambil pengaturan:", err));
@@ -16,15 +16,18 @@ export default function KontakDanKaki() {
 
   // Daftar Kontak
   const daftarKontak = [
+    // Email
     {
       tipe: 'Email',
       label: 'EMAIL',
-      tautan: `mailto:${pengaturan?.email_kontak || 'sgdrc@gmail.com'}`,
-      teks: pengaturan?.email_kontak || 'sgdrc@gmail.com',
+      tautan: `mailto:${pengaturan?.email_kontak || 'adminsgdrc@gmail.com'}`,
+      teks: pengaturan?.email_kontak || 'adminsgdrc@gmail.com',
       ikon: '/aset/icon/gmail.png',
       target: '_self',
       hoverBorder: 'hover:border-brand-blue/80'
     },
+
+    // IG SGDRC
     {
       tipe: 'IG Official',
       label: 'IG Official',
@@ -34,6 +37,8 @@ export default function KontakDanKaki() {
       target: '_blank',
       hoverBorder: 'hover:border-pink-500/80'
     },
+
+    // IG Robotika
     {
       tipe: 'IG Robotika',
       label: 'IG Robotika',
@@ -43,17 +48,37 @@ export default function KontakDanKaki() {
       target: '_blank',
       hoverBorder: 'hover:border-pink-500/80'
     },
+
+    // WhatsApp
     {
       tipe: 'WhatsApp',
       label: 'WHATSAPP',
-      tautan: pengaturan?.wa_link_umum || "https://wa.me/6289653263531",
-      teks: pengaturan?.wa_link_umum
-        ? pengaturan.wa_link_umum.replace('https://wa.me/', '+').replace(/(\d{2})(\d{3})(\d{4})(\d{4})/, '$1 $2-$3-$4')
-        : '+62 896-5326-3531',
+      tautan: (() => {
+        const link = pengaturan?.wa_link_umum;
+        if (!link) return "https://wa.me/6289653263531";
+        if (link.startsWith('http://') || link.startsWith('https://')) return link;
+        let cleanNum = link.replace(/[^\d]/g, '');
+        if (cleanNum.startsWith('0')) cleanNum = '62' + cleanNum.slice(1);
+        return `https://wa.me/${cleanNum}`;
+      })(),
+      teks: (() => {
+        const link = pengaturan?.wa_link_umum;
+        if (!link) return '+62 896-5326-3531';
+        if (link.includes('chat.whatsapp.com')) return 'Grup WhatsApp';
+        let cleanNum = link.replace('https://wa.me/', '').replace('http://wa.me/', '').replace(/[^\d]/g, '');
+        if (cleanNum.startsWith('0')) cleanNum = '62' + cleanNum.slice(1);
+        if (!cleanNum) return 'Hubungi Kami';
+        if (cleanNum.startsWith('62')) {
+          return '+' + cleanNum.substring(0, 2) + ' ' + cleanNum.substring(2, 5) + '-' + cleanNum.substring(5, 9) + '-' + cleanNum.substring(9);
+        }
+        return '+' + cleanNum;
+      })(),
       ikon: '/aset/icon/whatsapp.png',
       target: '_blank',
       hoverBorder: 'hover:border-green-500/80'
     },
+
+    // Tiktok
     {
       tipe: 'TikTok',
       label: 'TIKTOK',
@@ -64,6 +89,8 @@ export default function KontakDanKaki() {
       hoverBorder: 'hover:border-slate-800',
       imgClass: 'rounded-sm'
     },
+
+    // Lokasi
     {
       tipe: 'Lokasi',
       label: 'LOKASI',
@@ -83,12 +110,12 @@ export default function KontakDanKaki() {
         <div className="w-full max-w-[1400px] mx-auto mb-10 md:mb-12">
 
           {/* Judul */}
-          <h2 className="text-[26px] md:text-4xl font-bold tracking-wide text-slate-800 uppercase text-left w-full mb-4">
+          <h2 className="text-[28px] md:text-4xl font-bold tracking-tight text-slate-800 uppercase text-left w-full mb-4">
             KONTAK KAMI
           </h2>
 
           {/* Deskripsi */}
-          <p className="text-slate-500 text-[13.5px] md:text-[14.5px] mb-6 md:mb-8 leading-relaxed">Punya pertanyaan ? Hubungi kami melalui kontak berikut!.</p>
+          <p className="text-slate-950 text-[14.5px] mb-6 md:mb-8 leading-relaxed">Punya pertanyaan ? Hubungi kami melalui kontak berikut.</p>
 
           {/* Container Daftar Kontak */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 lg:landscape:grid-cols-6 gap-4 w-full">
@@ -107,8 +134,8 @@ export default function KontakDanKaki() {
 
                 {/* Teks */}
                 <div className="overflow-hidden">
-                  <p className="text-[10px] text-slate-500 font-bold tracking-wide mb-1.5 uppercase">{kontak.label}</p>
-                  <p className="text-[9.5px] text-slate-800 truncate leading-tight">{kontak.teks}</p>
+                  <p className="text-[10.5px] text-slate-700 font-bold tracking-wide mb-1.5 uppercase">{kontak.label}</p>
+                  <p className="text-[10.5px] text-slate-950 font-medium truncate leading-tight">{kontak.teks}</p>
                 </div>
               </a>
             ))}
@@ -118,7 +145,7 @@ export default function KontakDanKaki() {
 
       {/* Container Footer */}
       <div className="w-full bg-[#0B255D] py-4 md:py-5 text-center z-10 relative">
-        <p className="text-[9px] text-white/50 tracking-wide font-medium">
+        <p className="text-[10px] text-white/50 tracking-wide font-medium">
           © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </div>

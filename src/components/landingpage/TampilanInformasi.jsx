@@ -107,7 +107,7 @@ export default function TampilanInformasi({ data }) {
                         }`}>
                         <div className="flex flex-col">
                           {/* Status */}
-                          <div className={`inline-flex items-center gap-1.5 text-[8.5px] font-black uppercase tracking-wide mb-1.5 ${statusAktif === 'Sedang Berlangsung' ? 'text-[#16B9FF]' :
+                          <div className={`inline-flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-wide mb-1.5 ${statusAktif === 'Sedang Berlangsung' ? 'text-[#16B9FF]' :
                             statusAktif === 'Selesai' ? 'text-emerald-500' : 'text-slate-400'
                             }`}>
                             {statusAktif === 'Sedang Berlangsung' && <div className="w-1.5 h-1.5 bg-[#16B9FF] rounded-full animate-pulse"></div>}
@@ -115,7 +115,7 @@ export default function TampilanInformasi({ data }) {
                           </div>
 
                           {/* Judul */}
-                          <h4 className={`text-[13px] font-bold leading-snug mb-1.5 ${statusAktif === 'Sedang Berlangsung' ? 'text-[#0B255D]' : 'text-slate-800'
+                          <h4 className={`text-[13.5px] font-bold leading-snug mb-1.5 ${statusAktif === 'Sedang Berlangsung' ? 'text-[#0B255D]' : 'text-slate-800'
                             }`}>
                             {item.label}
                           </h4>
@@ -123,7 +123,7 @@ export default function TampilanInformasi({ data }) {
                           {/* Tanggal */}
                           <div className="flex items-center gap-1.5">
                             <Calendar size={11} className="text-slate-400" />
-                            <span className="text-[11px] font-medium text-slate-500 leading-snug">
+                            <span className="text-[12px] font-medium text-slate-950 leading-snug">
                               {item.tanggal}
                             </span>
                           </div>

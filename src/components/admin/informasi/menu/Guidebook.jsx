@@ -18,11 +18,11 @@ const Guidebook = ({
     // Halaman Bagian Guidebook
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-4 duration-500">
       {/* Container Header */}
-      <div className="p-5 flex justify-end items-center gap-3 border-b border-slate-100">
+      <div className="p-4 sm:p-5 flex flex-col sm:flex-row justify-end items-stretch sm:items-center gap-3 border-b border-slate-100">
         {/* Tombol Tambah */}
         <button
           onClick={tambahGuidebook}
-          className="bg-[#0B255D] hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm"
+          className="w-full sm:w-auto bg-[#0B255D] hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
         >
           <Plus size={16} /> Tambah Guidebook
         </button>
@@ -33,7 +33,7 @@ const Guidebook = ({
             if (modeEditGuidebook) simpanSemuaGuidebook();
             setModeEditGuidebook(!modeEditGuidebook);
           }}
-          className={`px-5 py-2.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${modeEditGuidebook
+          className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center justify-center gap-2 shadow-sm ${modeEditGuidebook
             ? 'bg-emerald-500 text-white'
             : 'bg-white border border-slate-200 text-[#0B255D] hover:bg-slate-50'
             }`}
@@ -48,10 +48,10 @@ const Guidebook = ({
           {/* Header Tabel */}
           <thead>
             <tr className="bg-[#0B255D] border-b border-white/20">
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Judul Panduan</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap max-w-[300px]">Deskripsi</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[120px]">Tautan & Aksi</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[200px]">Judul Panduan</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Deskripsi</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[120px]">Tautan & Aksi</th>
             </tr>
           </thead>
 
@@ -88,38 +88,36 @@ const Guidebook = ({
                 </td>
 
                 {/* Kolom Judul */}
-                <td className="px-4 py-3 border-r border-slate-200 leading-normal text-center whitespace-nowrap">
+                <td className="px-4 py-3 border-r border-slate-200 leading-normal text-center w-[200px]">
                   {modeEditGuidebook ? (
                     // Mode Edit
                     <input
                       value={gb.judul}
                       onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'judul', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.5px] font-medium text-slate-600 tracking-wide outline-none text-center"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 tracking-tight outline-none text-center"
                       placeholder="Judul..."
                     />
                   ) : (
-
                     // Tampilan Judul
-                    <span className="text-[11.5px] font-medium text-slate-600 tracking-wide block text-center leading-normal">
+                    <span className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight block text-center leading-normal">
                       {gb.judul}
                     </span>
                   )}
                 </td>
 
                 {/* Kolom Deskripsi */}
-                <td className="px-4 py-3 border-r border-slate-200 leading-normal max-w-[300px]">
+                <td className="px-4 py-3 border-r border-slate-200 leading-normal">
                   {modeEditGuidebook ? (
                     // Mode Edit
                     <textarea
                       value={gb.deskripsi}
                       onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'deskripsi', e.target.value)}
                       rows={2}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-[11.5px] font-medium text-slate-600 tracking-wide outline-none resize-none text-justify"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 tracking-tight outline-none resize-none text-justify"
                     />
                   ) : (
-
                     // Tampilan Deskripsi
-                    <p className="text-[11.5px] font-medium text-slate-600 tracking-wide leading-relaxed line-clamp-2 text-justify capitalize">
+                    <p className="text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight leading-relaxed line-clamp-2 text-justify capitalize">
                       {gb.deskripsi}
                     </p>
                   )}
@@ -134,7 +132,7 @@ const Guidebook = ({
                         value={gb.tautan}
                         onChange={(e) => handleUpdateGuidebookLocal(gb.id, 'tautan', e.target.value)}
                         placeholder="URL..."
-                        className="w-32 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.5px] font-medium text-slate-600 tracking-wide outline-none text-center"
+                        className="w-32 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[12.1px] lg:text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-600 tracking-tight outline-none text-center"
                       />
                     ) : (
 

@@ -11,10 +11,11 @@ import { TableBase } from '../../element/TableBase';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
+import useSidebarAdmin from '../../../hooks/useSidebarAdmin';
 
 // Komponen Utama Belum Terverifikasi
 const DataPending = () => {
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(true);
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [daftarPeserta, setDaftarPeserta] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,6 +46,8 @@ const DataPending = () => {
 
   useEffect(() => { ambilDataPending(); }, []);
 
+
+
   // Filter Data yang Tampil di Tabel
   const dataTampil = daftarPeserta.filter(p =>
     (p.nama_tim || p.nama_peserta1 || "").toLowerCase().includes(kataKunci.toLowerCase()) ||
@@ -71,7 +74,7 @@ const DataPending = () => {
               {/* Search */}
               <div className="relative group w-full md:w-80">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={13} />
-                <input type="text" placeholder="Cari Antrian..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-800 placeholder:text-slate-500 shadow-sm w-full" />
+                <input type="text" placeholder="Cari Antrian..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-950 placeholder:text-slate-600 shadow-sm w-full" />
               </div>
 
             </div>
@@ -84,7 +87,8 @@ const DataPending = () => {
               emptyText="Data Belum Ada"
               notFound={dataTampil.length === 0 && (daftarPeserta.length > 0 || kataKunci !== '')}
               notFoundText="Data tidak ditemukan"
-               headers={[
+              minWidth="min-w-[700px] w-full"
+              headers={[
                 { label: 'Jenis Lomba' },
                 { label: 'Nama Tim / Peserta', className: 'min-w-[185px]' },
                 { label: 'Nomor WhatsApp' },
@@ -100,17 +104,17 @@ const DataPending = () => {
                   </td>
 
                   {/* Nama Tim */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase min-w-[185px]">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed uppercase min-w-[185px]">
                     {p.nama_tim || p.nama_peserta1}
                   </td>
 
                   {/* Nomor WhatsApp */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed">
                     {p.whatsapp}
                   </td>
 
                   {/* Asal Instansi */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-700 text-center leading-relaxed uppercase">
+                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed uppercase">
                     {p.asal_instansi}
                   </td>
 

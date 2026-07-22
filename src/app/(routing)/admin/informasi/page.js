@@ -1,13 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavbarAdmin from '@/components/admin/navigasi/NavbarAdmin';
 import SidebarAdmin from '@/components/admin/navigasi/SidebarAdmin';
 import Informasi from '@/components/admin/informasi/Informasi';
+import useSidebarAdmin from '@/hooks/useSidebarAdmin';
 
 // Halaman utama menu informasi
 export default function HalamanInformasi() {
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(true);
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
+
+
 
   return (
     <div className="h-screen bg-[#F8FAFC] font-montserrat flex flex-col overflow-hidden">

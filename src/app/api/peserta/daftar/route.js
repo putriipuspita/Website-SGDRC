@@ -35,18 +35,36 @@ export async function POST(req) {
     // File upload handling
     const fileKeys = ['kartuSiswa', 'ikutiInstagram', 'ikutiInstagramRobotika', 'ikutiTiktok', 'buktiBayar'];
     const paths = {};
+    const UKURAN_MAKSIMAL = 2 * 1024 * 1024; // 2MB
 
-    // Simpan file ke database
+    // Simpan file ke database (dioptimalkan untuk hemat ruang penyimpanan)
     for (const key of fileKeys) {
       const file = formData.get(key);
       if (file && typeof file !== 'string') {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const fileName = `${Date.now()}-${key}-${file.name.replace(/\s+/g, '_')}`;
-        const relativePath = `/uploads/pendaftaran/${fileName}`;
-        const fullPath = join(process.cwd(), 'public', relativePath);
-        await writeFile(fullPath, buffer);
-        paths[key] = relativePath;
+        // Validasi ukuran file di sisi server tetap aktif
+        if (file.size > UKURAN_MAKSIMAL) {
+          return new Response(
+            JSON.stringify({ pesan: `Ukuran file berkas (${key}) terlalu besar. Maksimal 2MB.` }), 
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        // Hanya buktiBayar yang disimpan fisik ke server
+        if (key === 'buktiBayar') {
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          const fileName = `${Date.now()}-${key}-${file.name.replace(/\s+/g, '_')}`;
+          const relativePath = `/uploads/pendaftaran/${fileName}`;
+          const fullPath = join(process.cwd(), 'public', relativePath);
+          await writeFile(fullPath, buffer);
+          paths[key] = relativePath;
+        } else if (key === 'kartuSiswa') {
+          // Kartu Siswa cukup simpan teks penanda (tidak disimpan fisik di server)
+          paths[key] = '/uploads/pendaftaran/kartu-siswa-terunggah.png';
+        } else {
+          // Bukti follow IG dan Tiktok cukup simpan teks penanda (menghemat penyimpanan server)
+          paths[key] = '/uploads/pendaftaran/bukti-follow-terunggah.png';
+        }
       }
     }
 

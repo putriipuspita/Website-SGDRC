@@ -145,7 +145,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
       lebar="max-w-[800px]"
       footer={
         <div className="flex gap-4 w-full">
-          <button type="button" onClick={() => setApakahTerbuka(false)} className="flex-1 bg-slate-200 text-slate-600 font-bold py-3 rounded-xl text-[12px] uppercase transition-all active:scale-95">BATAL</button>
+          <button type="button" onClick={() => setApakahTerbuka(false)} className="flex-1 bg-slate-200 text-slate-950 font-bold py-3 rounded-xl text-[12px] uppercase transition-all active:scale-95">BATAL</button>
           <button type="button" onClick={tanganiKirim} disabled={loading} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white font-black py-3 rounded-xl text-[12px] tracking-wide uppercase transition-all shadow-lg shadow-[#0B255D]/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50">
             {loading ? <Loader2 size={16} className="animate-spin" /> : "SIMPAN PERUBAHAN"}
           </button>
@@ -225,7 +225,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
         {/* Container Jenjang */}
         <div className="space-y-1">
           {/* Label */}
-          <label className="text-slate-700 text-[12.5px] font-semibold ml-1">Jenjang</label>
+          <label className="text-slate-950 text-[12.5px] font-semibold ml-1">Jenjang</label>
 
           {/* Container Input Jenjang */}
           <div className="relative group">
@@ -235,7 +235,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
             </div>
 
             {/* Input Jenjang */}
-            <select value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full bg-white border border-slate-300 text-slate-800 text-[12px] font-medium rounded-xl py-2.5 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] appearance-none cursor-pointer">
+            <select value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full bg-white border border-slate-300 text-slate-950 text-[12px] font-medium rounded-xl py-2.5 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] appearance-none cursor-pointer">
               <option value="">Pilih Jenjang</option>
               {dapatkanOpsiJenjang().map(j => (
                 <option key={j} value={j}>{j}</option>
@@ -251,7 +251,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
         <div className={`space-y-3 pt-2 ${apakahKelompokMaks3 ? 'col-span-1 md:col-span-2' : 'col-span-1'}`}>
           <div className="flex items-center justify-between px-1">
             {/* Label */}
-            <label className="text-slate-700 text-[12.5px] font-semibold flex items-center gap-2">
+            <label className="text-slate-950 text-[12.5px] font-semibold flex items-center gap-2">
               Bukti Transfer
             </label>
 
@@ -293,7 +293,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
                 onChange={(e) => setBuktiTransfer(e.target.files[0])}
               />
               <ImageIcon size={14} className="text-slate-400 group-hover:text-amber-500" />
-              <span className="text-[10px] font-bold text-slate-500 truncate px-2 w-full">
+              <span className="text-[10px] font-bold text-slate-950 truncate px-2 w-full">
                 {buktiTransfer ? buktiTransfer.name : 'Ganti Bukti'}
               </span>
             </div>

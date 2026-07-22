@@ -70,39 +70,38 @@ const Register = () => {
 
   return (
     // Halaman Bagian Register
-    <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-montserrat">
+    <div className="h-screen h-[100dvh] w-full bg-slate-50 flex items-center justify-center p-3 sm:p-4 relative overflow-hidden font-montserrat">
       {/* Container Formulir Register */}
-      <div className="w-full max-w-[350px] px-4 md:px-0 md:w-[450px] lg:w-[310px] xl:w-[310px] md:min-w-[450px] lg:min-w-[310px] xl:min-w-[310px] relative z-10 animate-fade-in py-4">
+      <div className="w-[310px] min-w-[310px] max-w-[310px] mx-auto relative z-10 animate-fade-in my-auto">
 
         {/* Card Utama */}
-        <div className="bg-white rounded-[22px] p-5 pt-5 pb-6 md:p-6 md:pt-6 md:pb-8 shadow-[0_20px_50px_rgba(15,23,42,0.05)] border border-slate-100 relative">
+        <div className="bg-white rounded-[22px] p-4 sm:p-5 shadow-[0_20px_50px_rgba(15,23,42,0.05)] border border-slate-100 relative">
           {/* Logo */}
-          <div className="flex justify-center mb-4 md:mb-6 lg:mb-5 xl:mb-4">
-            <div className="w-20 h-20 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-[70px] xl:h-[70px] bg-white rounded-full p-1.5 shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
+          <div className="flex justify-center mb-2 sm:mb-3">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full p-1 shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
               <img src="/aset/logo/logo.jpg" alt="Logo SGDRC" className="w-full h-full object-cover rounded-full" />
             </div>
           </div>
 
           {/* Judul */}
-          <h2 className="text-slate-800 text-lg md:text-2xl lg:text-xl xl:text-lg font-black text-center uppercase tracking-wide mb-1">
+          <h2 className="text-slate-950 text-xl md:text-2xl font-black text-center uppercase tracking-wide mb-1">
             REGISTER
           </h2>
 
           {/* Pesan Error/Sukses */}
           {pesan.isi && (
-            <div className={`p-3 rounded-xl text-[13px] font-bold text-center mb-4 capitalize ${pesan.tipe === 'error' ? 'bg-rose-50 text-rose-500 border border-rose-100' : 'bg-emerald-50 text-emerald-500 border border-emerald-100'}`}>
+            <div className={`p-2 rounded-xl text-[12px] font-bold text-center mb-2.5 capitalize ${pesan.tipe === 'error' ? 'bg-rose-50 text-rose-500 border border-rose-100' : 'bg-emerald-50 text-emerald-500 border border-emerald-100'}`}>
               {pesan.isi}
             </div>
           )}
 
           {/* Deskripsi */}
-          <p className="text-slate-500 text-[10.5px] text-center mb-5 lg:mb-4 xl:mb-3 font-medium">
-            Daftar untuk mengikuti
-            SGD-RC {new Date().getFullYear()}
+          <p className="text-slate-700 text-[11px] sm:text-[11.5px] text-center mb-3 sm:mb-4 font-medium">
+            Daftar untuk mengikuti SGD-RC {new Date().getFullYear()}
           </p>
 
           {/* Form Register */}
-          <form className="space-y-3 md:space-y-3 lg:space-y-3 xl:space-y-2" onSubmit={tanganiKirim}>
+          <form className="space-y-2 sm:space-y-2.5" onSubmit={tanganiKirim}>
             {/* Input Nama Lengkap  */}
             <FormInput
               placeholder="Nama Lengkap"
@@ -182,22 +181,19 @@ const Register = () => {
               </button>
             </div>
 
-            {/* Jarak */}
-            <div className="h-1"></div>
-
             {/* Tombol Daftar */}
             <button
               type="submit"
               disabled={apakahLoading}
-              className="w-full bg-[#E40011] hover:bg-[#c4000e] text-white font-black py-2.5 md:py-3.5 lg:py-2.5 xl:py-2 rounded-xl mt-4 lg:mt-3 xl:mt-2 text-[13px] md:text-[15px] lg:text-[14px] xl:text-[13px] tracking-wider uppercase transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
+              className="w-full bg-[#E40011] hover:bg-[#c4000e] text-white font-black py-2.5 sm:py-3 rounded-xl mt-2 text-[14px] tracking-wider uppercase transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
             >
               {apakahLoading ? 'Mendaftarkan...' : 'DAFTAR'}
             </button>
           </form>
 
           {/* Pindah Ke Login */}
-          <p className="text-center text-slate-500 text-[10.4px] mt-5 lg:mt-4 xl:mt-3 font-medium">
-            <span className="italic">Sudah punya akun ?</span>
+          <p className="text-center text-slate-700 text-[11.5px] mt-3 sm:mt-4 font-medium">
+            <span>Sudah punya akun ?</span>
             <Link href="/login" className="text-red-500 hover:text-red-600 font-bold ml-1 transition-colors">Masuk</Link>
           </p>
         </div>

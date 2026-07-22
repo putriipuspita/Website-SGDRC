@@ -11,14 +11,14 @@ import { fetchDenganToken } from '@/lib/apiClient';
 // Sub-komponen Input File Template Sertifikat
 const InputTemplateSertifikat = ({ label, value, tipe, modeEdit, onChange, getNamaFile }) => (
   <div className="space-y-2">
-    <label className="text-[12px] font-bold text-slate-700">{label}</label>
+    <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">{label}</label>
     <div className="relative group">
       <FileText className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 z-0" size={14} />
       <input
         type="text"
         readOnly
         value={getNamaFile(value)}
-        className={`w-full pl-10 pr-12 py-2.5 border-2 rounded-xl text-[12px] font-medium outline-none transition-all ${modeEdit ? 'bg-white border-[#16B9FF] text-[#0B255D] cursor-pointer' : 'bg-slate-50 border-slate-100 text-slate-400'
+        className={`w-full pl-10 pr-12 py-2.5 border-2 rounded-xl text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium outline-none transition-all ${modeEdit ? 'bg-white border-[#16B9FF] text-slate-950 cursor-pointer' : 'bg-slate-50 border-slate-100 text-slate-400'
           }`}
       />
       <input
@@ -34,11 +34,11 @@ const InputTemplateSertifikat = ({ label, value, tipe, modeEdit, onChange, getNa
     </div>
   </div>
 );
-
+ 
 // Sub-komponen Input File Legalitas (Logo, TTD, Cap)
 const InputLegalitas = ({ label, path, tipe, modeEdit, onChange }) => (
   <div className="space-y-2">
-    <label className="text-[11px] font-bold text-slate-600 uppercase">{label}</label>
+    <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">{label}</label>
     <div className="relative h-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
       {path ? (
         <img src={path} className="h-full w-full object-contain" alt={label} />
@@ -56,13 +56,13 @@ const InputLegalitas = ({ label, path, tipe, modeEdit, onChange }) => (
     </div>
   </div>
 );
-
+ 
 // Sub-komponen Input Slider Konfigurasi
 const SliderConfigCard = ({ judul, ikon: Ikon, ikonColor, fields, min, max, currentConfig, updateConfig, modeEdit, accentClass }) => (
   <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
     <div className="flex items-center gap-2 mb-1">
       <Ikon size={14} className={ikonColor} />
-      <span className="text-[12px] font-bold text-slate-700">{judul}</span>
+      <span className="text-[11.5px] xl:text-[12px] 2xl:text-[13px] font-bold text-slate-950">{judul}</span>
     </div>
     {fields.map((field) => (
       <div key={field} className="flex flex-col gap-1">
@@ -278,38 +278,46 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
 
                 {/* Format Nomor Sertifikat */}
                 <div className="space-y-2">
-                  <label className="text-[12px] font-bold text-slate-700">Format Nomor Sertifikat</label>
-                  <input type="text" value={formatNomor} disabled={!modeEdit} onChange={(e) => setFormatNomor(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                  <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Format Nomor Sertifikat</label>
+                  <input type="text" value={formatNomor} disabled={!modeEdit} onChange={(e) => setFormatNomor(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                 </div>
 
                 {/* Container Nomor Mulai */}
                 <div className="grid grid-cols-2 gap-4">
                   {/* No Mulai Peserta */}
                   <div className="space-y-2">
-                    <label className="text-[12px] font-bold text-slate-700">No. Mulai Peserta</label>
-                    <input type="number" value={nomorMulai} disabled={!modeEdit} onChange={(e) => setNomorMulai(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                    <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">No. Mulai Peserta</label>
+                    <input type="number" value={nomorMulai} disabled={!modeEdit} onChange={(e) => setNomorMulai(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                   </div>
 
                   {/* No Mulai Juara */}
                   <div className="space-y-2">
-                    <label className="text-[12px] font-bold text-slate-700">No. Mulai Juara</label>
-                    <input type="number" value={nomorMulaiJuara} disabled={!modeEdit} onChange={(e) => setNomorMulaiJuara(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                    <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">No. Mulai Juara</label>
+                    <input type="number" value={nomorMulaiJuara} disabled={!modeEdit} onChange={(e) => setNomorMulaiJuara(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                   </div>
                 </div>
 
-                {/* Jenis Font Nama */}
+                 {/* Jenis Font Nama */}
                 <div className="space-y-2">
-                  <label className="text-[12px] font-bold text-slate-700">Jenis Font Nama ({previewTipe === 'peserta' ? 'Peserta' : 'Juara'})</label>
-                  <select
-                    disabled={!modeEdit}
-                    value={currentConfig.font_nama || 'Cinzel'}
-                    onChange={(e) => updateConfig('font_nama', e.target.value)}
-                    className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`}
-                  >
-                    {listFont.map(font => (
-                      <option key={font.value} value={font.value}>{font.name}</option>
-                    ))}
-                  </select>
+                  <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Jenis Font Nama ({previewTipe === 'peserta' ? 'Peserta' : 'Juara'})</label>
+                  {!modeEdit ? (
+                    <input
+                      type="text"
+                      readOnly
+                      value={currentConfig.font_nama || 'Cinzel'}
+                      className="w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium bg-slate-50 border-slate-100 text-slate-400"
+                    />
+                  ) : (
+                    <select
+                      value={currentConfig.font_nama || 'Cinzel'}
+                      onChange={(e) => updateConfig('font_nama', e.target.value)}
+                      className="w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium bg-white border-slate-200"
+                    >
+                      {listFont.map(font => (
+                        <option key={font.value} value={font.value}>{font.name}</option>
+                      ))}
+                    </select>
+                  )}
                 </div>
 
                 {/* Container Slider */}
@@ -349,8 +357,8 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
               <div className="space-y-5 animate-in slide-in-from-right duration-300">
                 {/* Nama Ketua Pelaksana */}
                 <div className="space-y-2">
-                  <label className="text-[12px] font-bold text-slate-700">Nama Ketua Pelaksana</label>
-                  <input type="text" value={ketuaNama} disabled={!modeEdit} onChange={(e) => setKetuaNama(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl text-[12px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                  <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Nama Ketua Pelaksana</label>
+                  <input type="text" value={ketuaNama} disabled={!modeEdit} onChange={(e) => setKetuaNama(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                 </div>
 
                 {/* Container Logo */}
@@ -418,7 +426,7 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
                   <button
                     key={tipe}
                     onClick={() => setPreviewTipe(tipe)}
-                    className={`px-4 py-1.5 rounded-md text-[10px] font-bold transition-all ${previewTipe === tipe ? 'bg-[#16B9FF] text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'}`}
+                    className={`px-4 py-1.5 rounded-md text-[10.5px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold transition-all ${previewTipe === tipe ? 'bg-[#16B9FF] text-white shadow-sm' : 'text-slate-950 hover:bg-slate-100'}`}
                   >
                     {tipe.charAt(0).toUpperCase() + tipe.slice(1)}
                   </button>

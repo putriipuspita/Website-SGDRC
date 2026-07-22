@@ -50,7 +50,7 @@ export default function PenyediaNotifikasi() {
             <h4 className="text-[12px] font-black text-slate-800 uppercase tracking-widest mb-0.5">
               {t.type === 'error' ? 'Gagal' : 'Berhasil'}
             </h4>
-            <p className="text-[10px] font-bold text-slate-500 leading-tight">
+            <p className="text-[10px] font-bold text-slate-950 leading-tight">
               {t.message}
             </p>
           </div>

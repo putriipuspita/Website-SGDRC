@@ -477,7 +477,7 @@ const Informasi = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-wrap sm:grid sm:grid-cols-3 lg:flex lg:flex-nowrap lg:justify-between gap-2 sm:gap-x-4 sm:gap-y-3 bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200 w-full overflow-hidden lg:overflow-x-auto lg:scrollbar-hide">
+      <div className="flex flex-row flex-nowrap items-center gap-2 bg-white p-1.5 rounded-2xl shadow-sm border border-slate-200 w-full overflow-x-auto scrollbar-hide">
         {[
           { id: 'umum', nama: 'Umum', ikon: Info },
           { id: 'lomba', nama: 'Manajemen Lomba', ikon: LayoutGrid },
@@ -485,19 +485,17 @@ const Informasi = () => {
           { id: 'jadwal', nama: 'Poster & Jadwal', ikon: Calendar },
           { id: 'template', nama: 'Template Dokumen', ikon: Award },
         ].map((tab) => (
-          <React.Fragment key={tab.id}>
-            {tab.id === 'jadwal' && <div className="w-full sm:hidden" />}
-            <button
-              onClick={() => setTabAktif(tab.id)}
-              className={`flex items-center justify-start gap-1.5 lg:gap-3 px-4 lg:px-6 py-2.5 rounded-xl text-[10px] lg:text-[13px] font-bold tracking-normal transition-all whitespace-nowrap ${tabAktif === tab.id
-                ? 'bg-[#0B255D] text-white shadow-md'
-                : 'text-slate-500 hover:text-[#0B255D] hover:bg-slate-50'
-                }`}
-            >
-              <tab.ikon className="w-3.5 h-3.5 lg:w-4 lg:h-4 flex-shrink-0" />
-              {tab.nama}
-            </button>
-          </React.Fragment>
+          <button
+            key={tab.id}
+            onClick={() => setTabAktif(tab.id)}
+            className={`flex-shrink-0 flex items-center justify-start gap-1.5 lg:gap-3 px-4 lg:px-6 py-2.5 rounded-xl text-[13.5px] lg:text-[13px] xl:text-[13.8px] 2xl:text-[14.5px] font-bold tracking-normal transition-all whitespace-nowrap ${tabAktif === tab.id
+              ? 'bg-[#0B255D] text-white shadow-md'
+              : 'text-slate-500 hover:text-[#0B255D] hover:bg-slate-50'
+              }`}
+          >
+            <tab.ikon className="w-3.5 h-3.5 lg:w-4 lg:h-4 flex-shrink-0" />
+            {tab.nama}
+          </button>
         ))}
       </div>
 

@@ -7,6 +7,9 @@ import BagianSponsor from "@/components/landingpage/beranda/BagianSponsor";
 import KontakDanKaki from "@/components/landingpage/beranda/KontakDanKaki";
 import { hubungkanDB } from "@/lib/db";
 
+// Aktifkan Incremental Static Regeneration (ISR) - Halaman di-render statis & di-update setiap 60 detik
+export const revalidate = 60;
+
 // Fungsi Ambil Data Global (Server Side)
 async function ambilDataLanding() {
   try {
@@ -57,10 +60,12 @@ async function ambilDataLanding() {
   }
 }
 
+// Komponen Garis Pemisah
 function GarisPemisah() {
   return <div className="w-full h-[1.3px] bg-slate-300 z-40 relative"></div>;
 }
 
+// Fungsi Utama Beranda
 export default async function Beranda() {
   const data = await ambilDataLanding();
 
@@ -84,7 +89,7 @@ export default async function Beranda() {
           </>
         )}
         <GarisPemisah />
-        <KontakDanKaki />
+        <KontakDanKaki dataAwal={data.pengaturan} />
       </main>
     </div>
   );

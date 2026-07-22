@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 // Komponen Input Sel Tabel Lomba (Menghindari Pengulangan Kode TD)
-const InputCell = ({ isEdit, value, onChange, placeholder = "", classNameText = "text-slate-500 uppercase" }) => {
+const InputCell = ({ isEdit, value, onChange, placeholder = "", classNameText = "text-slate-700 uppercase" }) => {
   return (
     <td className="px-3 py-3 border-r border-slate-200 text-center">
       {isEdit ? (
@@ -15,10 +15,10 @@ const InputCell = ({ isEdit, value, onChange, placeholder = "", classNameText = 
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.5px] font-medium text-center outline-none"
+          className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-center outline-none text-slate-950"
         />
       ) : (
-        <span className={`text-[11.5px] font-medium tracking-tight ${classNameText}`}>{value || "-"}</span>
+        <span className={`text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium tracking-tight ${classNameText}`}>{value || "-"}</span>
       )}
     </td>
   );
@@ -29,7 +29,7 @@ const LombaSection = ({ title, Icon, type, modeEdit, setModeEdit, onSave, onAdd,
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
       {/* Container Header */}
-      <div className="h-[55px] px-6 bg-[#0B255D] flex items-center justify-between">
+      <div className="min-h-[55px] py-3 sm:py-0 px-4 sm:px-6 bg-[#0B255D] flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0 flex-shrink-0">
         {/* Judul dan Icon */}
         <div className="flex items-center gap-3">
           <div className="p-1.5 bg-white/10 rounded-lg">
@@ -39,11 +39,11 @@ const LombaSection = ({ title, Icon, type, modeEdit, setModeEdit, onSave, onAdd,
         </div>
 
         {/* Container Aksi */}
-        <div className="flex items-center gap-3">
+        <div className="w-full sm:w-auto flex items-center gap-3 sm:self-auto">
           {/* Tombol Tambah */}
           <button
             onClick={() => onAdd(type)}
-            className="bg-white text-[#0B255D] hover:bg-slate-50 px-4 py-1.5 rounded-lg text-[10px] font-bold transition-all flex items-center gap-2 shadow-sm"
+            className="flex-1 sm:flex-none justify-center bg-white text-[#0B255D] hover:bg-slate-50 px-4 py-1.5 rounded-lg text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm"
           >
             <Plus size={14} /> {type === 'landing' ? 'Tambah Card' : 'Tambah Cabang'}
           </button>
@@ -54,7 +54,7 @@ const LombaSection = ({ title, Icon, type, modeEdit, setModeEdit, onSave, onAdd,
               if (modeEdit) onSave();
               setModeEdit(!modeEdit);
             }}
-            className={`px-4 py-1.5 rounded-lg text-[10px] font-bold transition-all flex items-center gap-2 shadow-sm ${modeEdit ? 'bg-emerald-500 text-white' : 'bg-white text-[#0B255D] hover:bg-slate-50'
+            className={`flex-1 sm:flex-none justify-center px-4 py-1.5 rounded-lg text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${modeEdit ? 'bg-emerald-500 text-white' : 'bg-white text-[#0B255D] hover:bg-slate-50'
               }`}
           >
             {modeEdit ? <><Save size={14} /> Simpan Semua</> : <><Settings size={14} /> Edit Tabel</>}
@@ -105,11 +105,11 @@ const Lomba = ({
           <thead>
             {/* Header Tabel */}
             <tr className="bg-[#0B255D] border-b border-white/20">
-              <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
-              <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[210px]">Judul Lomba</th>
-              <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[260px]">Jenjang</th>
-              <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Deskripsi</th>
-              <th className="px-3 py-3 text-[10px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[60px]">Aksi</th>
+              <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Foto</th>
+              <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[140px] lg:w-[210px]">Judul Lomba</th>
+              <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[140px] lg:w-[260px]">Jenjang</th>
+              <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap">Deskripsi</th>
+              <th className="px-3 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[60px]">Aksi</th>
             </tr>
           </thead>
 
@@ -147,24 +147,24 @@ const Lomba = ({
                   isEdit={modeEditLombaLanding}
                   value={lomba.judul}
                   onChange={(val) => handleUpdateLombaLandingLocal(lomba.id, 'judul', val)}
-                  classNameText="text-slate-600 uppercase"
+                  classNameText="text-slate-700 uppercase"
                 />
 
                 {/* Container Jenjang */}
-                <td className="px-3 py-2 border-r border-slate-200 text-center w-[260px]">
+                <td className="px-3 py-2 border-r border-slate-200 text-center w-[140px] lg:w-[260px]">
                   {modeEditLombaLanding ? (
                     <div className="flex flex-col gap-1.5 justify-center items-center">
                       {[0, 1].map((index) => (
                         <div key={index} className="flex gap-1 items-center w-full justify-center">
                           {/* Label */}
-                          <span className="text-[11.5px] font-medium text-slate-500 w-16 text-left">Jenjang {index + 1}</span>
+                          <span className="text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 w-16 text-left">Jenjang {index + 1}</span>
                           {/* Input Kategori */}
                           <input
                             placeholder="Teks"
                             value={(Array.isArray(lomba.label) ? lomba.label[index]?.teks : null) || ''}
                             onChange={(e) => handleUpdateLombaLandingLabelLocal(lomba.id, index, 'teks', e.target.value)}
                             style={{ paddingLeft: '4px', paddingRight: '4px' }}
-                            className="bg-white border border-slate-200 rounded py-0.5 text-[10px] font-medium outline-none w-[75px] uppercase text-center"
+                            className="bg-white border border-slate-200 rounded py-0.5 text-[10px] xl:text-[10.2px] 2xl:text-[11px] font-medium outline-none w-[75px] uppercase text-center text-slate-950"
                           />
 
                           {/* Input Sub Jenjang */}
@@ -173,25 +173,25 @@ const Lomba = ({
                             value={(Array.isArray(lomba.label) ? lomba.label[index]?.sub : null) || ''}
                             onChange={(e) => handleUpdateLombaLandingLabelLocal(lomba.id, index, 'sub', e.target.value)}
                             style={{ paddingLeft: '4px', paddingRight: '4px' }}
-                            className="bg-white border border-slate-200 rounded py-0.5 text-[10px] font-medium outline-none w-[115px] text-center"
+                            className="bg-white border border-slate-200 rounded py-0.5 text-[10px] xl:text-[10.2px] 2xl:text-[11px] font-medium outline-none w-[115px] text-center text-slate-950"
                           />
                         </div>
                       ))}
                     </div>
                   ) : (
                     // Menampilkan Jenjang
-                    <div className="flex flex-col gap-1 items-center justify-center">
-                      {Array.isArray(lomba.label) && lomba.label.length > 0 ? (
-                        lomba.label.map((lbl, idx) => (
-                          <div key={idx} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold text-center border border-slate-200 min-w-[100px]">
-                            <span className="uppercase">{lbl.teks}</span>
-                            {lbl.sub && <span className="block text-[8px] text-slate-500 font-normal normal-case">{lbl.sub}</span>}
-                          </div>
-                        ))
-                      ) : (
-                        <span className="text-slate-400 text-[10px] italic">Tidak ada jenjang</span>
-                      )}
-                    </div>
+                     <div className="flex flex-col lg:flex-row lg:flex-wrap gap-1.5 lg:gap-2 items-center justify-center">
+                       {Array.isArray(lomba.label) && lomba.label.length > 0 ? (
+                         lomba.label.map((lbl, idx) => (
+                           <div key={idx} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] xl:text-[10.2px] 2xl:text-[11px] font-bold text-center border border-slate-200 min-w-[100px]">
+                             <span className="uppercase">{lbl.teks}</span>
+                             {lbl.sub && <span className="block text-[9px] xl:text-[9.2px] 2xl:text-[10px] text-slate-950 font-normal normal-case">{lbl.sub}</span>}
+                           </div>
+                         ))
+                       ) : (
+                         <span className="text-slate-400 text-[10px] xl:text-[10.2px] 2xl:text-[11px] italic">Tidak ada jenjang</span>
+                       )}
+                     </div>
                   )}
                 </td>
 
@@ -201,10 +201,10 @@ const Lomba = ({
                     <textarea
                       value={lomba.deskripsi}
                       onChange={(e) => handleUpdateLombaLandingLocal(lomba.id, 'deskripsi', e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.5px] font-medium text-slate-500 outline-none h-12 resize-none"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-950 outline-none h-12 resize-none text-justify"
                     />
                   ) : (
-                    <p className="text-[11.5px] font-medium text-slate-500 leading-relaxed line-clamp-2 capitalize">{lomba.deskripsi}</p>
+                    <p className="text-[11.6px] xl:text-[11.7px] 2xl:text-[12.7px] font-medium text-slate-700 leading-relaxed line-clamp-2 capitalize text-justify">{lomba.deskripsi}</p>
                   )}
                 </td>
 
@@ -234,14 +234,14 @@ const Lomba = ({
           {/* Header Tabel */}
           <thead>
             <tr className="bg-[#0B255D] border-b border-white/20">
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Ikon</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[200px]">Nama Cabang</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[120px]">Jenjang</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[130px]">Harga</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[110px]">Kuota</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[130px]">Tanggal</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[80px]">Status</th>
-              <th className="px-4 py-3 text-[10px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[60px]">Aksi</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[90px]">Ikon</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[200px]">Nama Cabang</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[120px]">Jenjang</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[130px]">Harga</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[110px]">Kuota</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[130px]">Tanggal</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide border-r border-white/10 text-center whitespace-nowrap w-[80px]">Status</th>
+              <th className="px-4 py-3 text-[10.5px] xl:text-[10.8px] 2xl:text-[11.8px] font-black text-white uppercase tracking-wide text-center whitespace-nowrap w-[60px]">Aksi</th>
             </tr>
           </thead>
 
@@ -280,7 +280,7 @@ const Lomba = ({
                   isEdit={modeEditLombaDashboard}
                   value={lomba.nama}
                   onChange={(val) => handleUpdateLombaDashboardLocal(lomba.id, 'nama', val)}
-                  classNameText="text-[#0B255D] uppercase"
+                  classNameText="text-slate-700 uppercase"
                 />
 
                 {/* Jenjang */}
@@ -288,7 +288,7 @@ const Lomba = ({
                   isEdit={modeEditLombaDashboard}
                   value={lomba.jenjang}
                   onChange={(val) => handleUpdateLombaDashboardLocal(lomba.id, 'jenjang', val)}
-                  classNameText="text-slate-500 uppercase"
+                  classNameText="text-slate-700 uppercase"
                 />
 
                 <InputCell
@@ -303,7 +303,7 @@ const Lomba = ({
                   isEdit={modeEditLombaDashboard}
                   value={lomba.tim}
                   onChange={(val) => handleUpdateLombaDashboardLocal(lomba.id, 'tim', val)}
-                  classNameText="text-slate-500 capitalize"
+                  classNameText="text-slate-700 capitalize"
                 />
 
                 {/* Tanggal */}
@@ -311,7 +311,7 @@ const Lomba = ({
                   isEdit={modeEditLombaDashboard}
                   value={lomba.tanggal}
                   onChange={(val) => handleUpdateLombaDashboardLocal(lomba.id, 'tanggal', val)}
-                  classNameText="text-slate-500 capitalize"
+                  classNameText="text-slate-700 capitalize"
                 />
 
                 {/* Status Lomba */}

@@ -39,7 +39,7 @@ const Konfirmasi = ({ apakahTerbuka, setApakahTerbuka, dataNama, onConfirm, tipe
           {pesanCustom ? (
             pesanCustom
           ) : (
-            <p className="text-[11.5px] font-medium text-slate-500 leading-[1.7] px-1">
+            <p className="text-[11.5px] font-medium text-slate-950 leading-[1.7] px-1">
               Apakah Anda Yakin Ingin Menghapus {tipe} <span className="font-bold text-red-600">"{dataNama}"</span>? Tindakan Ini Akan Menghapus Data Secara Permanent.
             </p>
           )}
@@ -50,7 +50,7 @@ const Konfirmasi = ({ apakahTerbuka, setApakahTerbuka, dataNama, onConfirm, tipe
           {/* Tombol Batal */}
           <button
             onClick={() => setApakahTerbuka(false)}
-            className="flex-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-[10.5px] font-bold transition-all uppercase tracking-wide border border-slate-300"
+            className="flex-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-950 rounded-xl text-[10.5px] font-bold transition-all uppercase tracking-wide border border-slate-300"
           >
             Batal
           </button>

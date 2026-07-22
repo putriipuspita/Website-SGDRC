@@ -45,7 +45,7 @@ export default async function HalamanInformasiPublik() {
       <NavigasiUtama />
 
       {/* Konten */}
-      <main className="w-full px-4 md:px-16 pt-24 pb-16 relative z-10 flex-grow">
+      <main className="w-full px-4 md:px-16 pt-16 md:pt-20 lg:pt-24 pb-10 md:pb-14 lg:pb-16 relative z-10 flex-grow">
         <div className="w-full max-w-[1400px] mx-auto">
           <TampilanInformasi data={data} />
         </div>
@@ -53,7 +53,7 @@ export default async function HalamanInformasiPublik() {
 
       {/* Footer */}
       <footer className="w-full bg-[#0B255D] py-4 md:py-5 text-center border-t border-white/5 z-10 relative">
-        <p className="text-[9px] text-white/40 tracking-wider font-medium">
+        <p className="text-[10px] text-white/50 tracking-wide font-medium">
           © {new Date().getFullYear()} Sunan Gunung Djati Robotics Competition.
         </p>
       </footer>

@@ -1,6 +1,8 @@
 import HalamanGuideBook from '@/components/landingpage/HalamanGuideBook';
 import { hubungkanDB } from '@/lib/db';
 
+export const revalidate = 60;
+
 // Fungsi ambil data langsung dari server
 async function ambilDataGuidebook() {
   try {

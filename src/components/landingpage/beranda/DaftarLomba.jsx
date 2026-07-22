@@ -29,7 +29,7 @@ export default function DaftarLomba({ dataAwal = [] }) {
   const totalLomba = Array.isArray(dataLombaRender) ? dataLombaRender.length : 0;
 
   // Menentukan Grid Kolom
-  let gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+  let gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-[1270px] mx-auto";
   if (totalLomba === 1) {
     gridColsClass = "grid-cols-1 max-w-[310px] mx-auto";
   } else if (totalLomba === 2) {
@@ -40,6 +40,9 @@ export default function DaftarLomba({ dataAwal = [] }) {
     gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-[1270px] mx-auto";
   } else if (totalLomba === 5) {
     gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:landscape:grid-cols-5";
+  } else if (totalLomba === 6) {
+    // 3 kolom per baris dengan lebar kontainer 1010px agar ada ruang untuk jarak/gap yang sedang
+    gridColsClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-[1010px] mx-auto";
   }
 
   return (
@@ -50,12 +53,12 @@ export default function DaftarLomba({ dataAwal = [] }) {
       <div className="w-full max-w-[1400px] mx-auto">
 
         {/* Judul */}
-        <h2 className="text-center text-[26px] md:text-4xl font-bold tracking-wide text-slate-800 mb-6 md:mb-10 w-full z-10 relative">
+        <h2 className="text-center text-[28px] md:text-4xl font-bold tracking-tight text-slate-800 mb-6 md:mb-10 w-full z-10 relative">
           JENIS PERLOMBAAN
         </h2>
 
         {/* Container Daftar Lomba */}
-        <div className={`grid gap-3 md:gap-4 gap-y-6 md:gap-y-9 px-0 w-full ${gridColsClass}`}>
+        <div className={`grid ${totalLomba === 6 ? 'gap-6 md:gap-8' : 'gap-3 md:gap-4'} gap-y-6 md:gap-y-9 px-0 w-full ${gridColsClass}`}>
           {Array.isArray(dataLombaRender) && dataLombaRender.map((lomba, indeks) => {
             // Tentukan Warna Kotak
             const warnaTema = indeks % 2 === 0 ? '#0B255D' : '#E40011';
@@ -94,9 +97,15 @@ export default function DaftarLomba({ dataAwal = [] }) {
                 >
 
                   {/* Tempat Gambar Lomba */}
-                  <div className={`w-full relative flex items-center justify-center bg-slate-50 ${totalLomba === 5 ? 'h-[140px] md:h-32' : 'h-[140px] md:h-40'}`}>
-                    <img src={lomba.gambar || '/aset/logo/placeholder.png'} alt={lomba.judul} className="h-full w-full object-cover object-top group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundColor: warnaTema }}></div>
+                  <div className={`w-full relative flex items-center justify-center bg-white ${totalLomba === 5 ? 'h-[140px] md:h-32' : 'h-[140px] md:h-40'}`}>
+                    <img
+                      src={lomba.gambar || '/aset/logo/placeholder.png'}
+                      alt={lomba.judul}
+                      className={`h-full w-full ${lomba.gambar && lomba.gambar.includes('soccer')
+                        ? 'object-cover'
+                        : 'object-contain'
+                        } object-center group-hover:scale-105 transition-transform duration-500`}
+                    />
                   </div>
 
                   {/* Container Informasi Lomba */}
@@ -104,14 +113,14 @@ export default function DaftarLomba({ dataAwal = [] }) {
 
                     {/* Judul Lomba */}
                     <h3
-                      className="text-[11px] md:text-[12px] lg:text-[12.5px] font-black tracking-tighter mb-3 text-center leading-tight uppercase whitespace-nowrap overflow-hidden text-ellipsis"
+                      className="text-[14px] font-black tracking-tighter mb-3 text-center leading-tight uppercase whitespace-nowrap overflow-hidden text-ellipsis"
                       style={{ color: warnaTema }}
                     >
                       {lomba.judul}
                     </h3>
 
                     {/* Deskripsi Lomba */}
-                    <p className="text-[10.5px] sm:text-[11.5px] md:text-[12.4px] text-slate-500 flex-grow mb-5 leading-relaxed text-center">
+                    <p className="text-[14px] text-slate-950 flex-grow mb-5 leading-relaxed text-center">
                       {lomba.deskripsi}
                     </p>
 
@@ -133,18 +142,18 @@ export default function DaftarLomba({ dataAwal = [] }) {
                           // Kotak Label
                           <div
                             key={indeksLabel}
-                            className="flex-1 px-1 py-1 rounded-lg shadow-sm flex flex-col items-center justify-center text-center min-h-[32px] text-white"
+                            className="flex-1 px-1 py-1.5 rounded-lg shadow-sm flex flex-col items-center justify-center text-center min-h-[34px] text-white"
                             style={{ backgroundColor: warnaBg }}
                           >
 
                             {/* Teks Label */}
-                            <span className={`${arrayLabel.length === 1 ? 'text-[10.5px] md:text-[12.5px]' : 'text-[9px] md:text-[9.5px]'} font-bold uppercase leading-none tracking-tighter`}>
+                            <span className={`${arrayLabel.length === 1 ? 'text-[13.5px]' : 'text-[11.5px]'} font-bold uppercase leading-none tracking-tighter`}>
                               {labelLomba.teks}
                             </span>
 
                             {/* Sub Teks Label */}
                             {labelLomba.sub && (
-                              <span className="text-[7.5px] md:text-[8px] opacity-90 font-medium leading-none mt-1">
+                              <span className="text-[9px] opacity-90 font-medium leading-none mt-1">
                                 {labelLomba.sub}
                               </span>
                             )}

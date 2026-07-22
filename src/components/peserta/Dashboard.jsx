@@ -128,7 +128,7 @@ const DashboardPeserta = () => {
             {/* Judul Dashboard */}
             {!lombaTerpilih && (
               <div className="mb-10 text-left border-l-4 border-[#E40011] pl-6 animate-in slide-in-from-left duration-700">
-                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-800 uppercase leading-relaxed md:leading-tight">Pilih Lomba yang Ingin Diikuti</h1>
+                <h1 className="text-xl font-black mb-1 tracking-normal text-slate-950 uppercase leading-relaxed md:leading-tight">Pilih Lomba yang Ingin Diikuti</h1>
                 <p className="text-slate-500 text-[9.5px] font-bold tracking-normal uppercase leading-relaxed md:leading-normal">Portal Pendaftaran SGDRC {new Date().getFullYear()}</p>
               </div>
             )}
@@ -176,7 +176,7 @@ const DashboardPeserta = () => {
 
                         {/* Judul Lomba */}
                         <div className="bg-[#1E3A5F] py-1 px-4 min-h-[38px] flex items-center justify-center border-b border-white/10">
-                          <h4 className="text-[10px] font-black text-white text-center tracking-wider leading-tight uppercase">
+                          <h4 className="text-[11.8px] md:text-[11px] 2xl:text-[11.8px] font-black text-white text-center tracking-wider leading-tight uppercase">
                             {lomba.nama}
                           </h4>
                         </div>
@@ -190,7 +190,7 @@ const DashboardPeserta = () => {
                               <div className="p-1 bg-blue-50 rounded text-[#1E3A5F]">
                                 <Layers size={12} />
                               </div>
-                              <span className="text-[9px] font-black uppercase tracking-tight text-slate-600">Jenjang {lomba.jenjang}</span>
+                              <span className="text-[10.8px] md:text-[10px] 2xl:text-[10.8px] font-black uppercase tracking-tight text-slate-950">Jenjang {lomba.jenjang}</span>
                             </div>
 
                             {/* Harga Pendaftaran */}
@@ -198,7 +198,7 @@ const DashboardPeserta = () => {
                               <div className="p-1 bg-green-50 rounded text-green-600">
                                 <Tag size={12} />
                               </div>
-                              <span className="text-[10px] font-bold tracking-tight text-slate-800">{lomba.harga}</span>
+                              <span className="text-[11.8px] md:text-[11px] 2xl:text-[11.8px] font-bold tracking-tight text-slate-950">{lomba.harga}</span>
                             </div>
 
                             {/* Jadwal Pelaksanaan */}
@@ -206,7 +206,7 @@ const DashboardPeserta = () => {
                               <div className="p-1 bg-orange-50 rounded text-orange-600">
                                 <Calendar size={12} />
                               </div>
-                              <span className="text-[10px] font-bold text-slate-700">{lomba.tanggal}</span>
+                              <span className="text-[11.8px] md:text-[11px] 2xl:text-[11.8px] font-bold text-slate-950">{lomba.tanggal}</span>
                             </div>
 
                             {/* Jumlah Tim */}
@@ -214,7 +214,7 @@ const DashboardPeserta = () => {
                               <div className="p-1 bg-purple-50 rounded text-purple-600">
                                 <Users size={12} />
                               </div>
-                              <span className="text-[10px] font-bold text-slate-700">{lomba.tim}</span>
+                              <span className="text-[11.8px] md:text-[11px] 2xl:text-[11.8px] font-bold text-slate-950">{lomba.tim}</span>
                             </div>
                           </div>
 
@@ -222,7 +222,7 @@ const DashboardPeserta = () => {
                           <button
                             onClick={() => lomba.status !== 'Close' && tanganiKlikDaftar(lomba)}
                             disabled={lomba.status === 'Close'}
-                            className={`mt-4 w-full py-2 font-black text-[10px] tracking-wider rounded-lg transition-all uppercase active:scale-95 ${lomba.status === 'Close'
+                            className={`mt-4 w-full py-2 font-black text-[11.8px] md:text-[11px] 2xl:text-[11.8px] tracking-wider rounded-lg transition-all uppercase active:scale-95 ${lomba.status === 'Close'
                               ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                               : 'bg-[#E40011] hover:bg-[#c3000f] text-white'
                               }`}

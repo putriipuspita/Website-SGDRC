@@ -73,7 +73,7 @@ const Aksi = ({
               {/* Tombol batal */}
               <button
                 onClick={() => setApakahModalLombaTerbuka(false)}
-                className="px-6 py-3 rounded-xl border border-slate-300 text-slate-600 text-[10px] font-black uppercase tracking-wide hover:bg-slate-100 transition-all"
+                className="px-6 py-3 rounded-xl border border-slate-300 text-slate-950 text-[10px] font-black uppercase tracking-wide hover:bg-slate-100 transition-all"
               >
                 Batal
               </button>
@@ -123,7 +123,7 @@ const Aksi = ({
                   <input
                     value={lombaTerpilih.judul}
                     onChange={(e) => setLombaTerpilih({ ...lombaTerpilih, judul: e.target.value })}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 outline-none focus:border-[#16B9FF]"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-950 outline-none focus:border-[#16B9FF]"
                     placeholder="Contoh: Robot Soccer"
                   />
                 </div>
@@ -135,7 +135,7 @@ const Aksi = ({
                     value={lombaTerpilih.deskripsi}
                     onChange={(e) => setLombaTerpilih({ ...lombaTerpilih, deskripsi: e.target.value })}
                     rows={3}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 outline-none focus:border-[#16B9FF] resize-none"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-950 outline-none focus:border-[#16B9FF] resize-none"
                     placeholder="Jelaskan secara singkat lomba ini..."
                   />
                 </div>
@@ -219,7 +219,7 @@ const Aksi = ({
                     <input
                       value={lombaTerpilih.nama}
                       onChange={(e) => setLombaTerpilih({ ...lombaTerpilih, nama: e.target.value })}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 outline-none focus:border-[#E40011]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-950 outline-none focus:border-[#E40011]"
                       placeholder="Contoh: Robot Soccer Senior"
                     />
                   </div>
@@ -230,7 +230,7 @@ const Aksi = ({
                     <input
                       value={lombaTerpilih.jenjang}
                       onChange={(e) => setLombaTerpilih({ ...lombaTerpilih, jenjang: e.target.value })}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 outline-none focus:border-[#E40011]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-950 outline-none focus:border-[#E40011]"
                       placeholder="Contoh: SMP / SMA"
                     />
                   </div>
@@ -244,7 +244,7 @@ const Aksi = ({
                     <input
                       value={lombaTerpilih.harga}
                       onChange={(e) => setLombaTerpilih({ ...lombaTerpilih, harga: e.target.value })}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-700 outline-none focus:border-[#E40011]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-slate-950 outline-none focus:border-[#E40011]"
                     />
                   </div>
 

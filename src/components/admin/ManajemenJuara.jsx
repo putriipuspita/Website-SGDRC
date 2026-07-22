@@ -18,11 +18,12 @@ import SidebarAdmin from './navigasi/SidebarAdmin';
 import { formatJudul } from '../../lib/formatHelper';
 import { gambarTeksSertifikat, muatFontSertifikat } from '../../lib/pdfHelper';
 import { fetchDenganToken } from '../../lib/apiClient';
+import useSidebarAdmin from '../../hooks/useSidebarAdmin';
 
 // Komponen Utama Manajemen Juara & Sertifikat Pemenang
 const ManajemenJuara = () => {
   // State Utama Halaman
-  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useState(true);
+  const [apakahSidebarTerbuka, setApakahSidebarTerbuka] = useSidebarAdmin();
   const [apakahProfilTerbuka, setApakahProfilTerbuka] = useState(false);
   const [kategoriTerpilih, setKategoriTerpilih] = useState('');
   const [daftarLomba, setDaftarLomba] = useState([]);
@@ -112,6 +113,8 @@ const ManajemenJuara = () => {
   useEffect(() => {
     ambilData();
   }, []);
+
+
 
   // Filter data pemenang berdasarkan kategori dan kata kunci pencarian
   const dataTampil = daftarPemenang.filter(tim => {
@@ -408,20 +411,20 @@ const ManajemenJuara = () => {
                 <LayoutGrid className="absolute left-3 top-1/2 -translate-y-1/2 text-[#16B9FF]" size={14} />
 
                 {/* Dropdown */}
-                <select value={kategoriTerpilih} onChange={(e) => setKategoriTerpilih(e.target.value)} className="w-full pl-9 pr-10 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11px] font-bold text-slate-700 appearance-none shadow-sm uppercase">
+                <select value={kategoriTerpilih} onChange={(e) => setKategoriTerpilih(e.target.value)} className="w-full pl-9 pr-10 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 appearance-none shadow-sm uppercase">
                   {daftarLomba.map(lomba => (
                     <option key={lomba.id} value={lomba.nama.toUpperCase()}>
                       {lomba.nama.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.substring(1)).join(' ')}
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={14} />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-950 pointer-events-none" size={14} />
               </div>
 
               {/* Pencarian */}
               <div className="relative group">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
-                <input type="text" placeholder="Cari Nama..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11px] font-bold text-slate-700 placeholder:text-slate-400 shadow-sm" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-950 group-focus-within:text-[#16B9FF] transition-colors" size={14} />
+                <input type="text" placeholder="Cari Nama..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 placeholder:text-slate-950 shadow-sm" />
               </div>
 
               {/* Container Tombol Aksi */}
@@ -433,7 +436,7 @@ const ManajemenJuara = () => {
                     setDaftarPemenang(prev => prev.map(p => (p.nama_lomba || "").toUpperCase() === kategoriTerpilih.toUpperCase() ? { ...p, is_sertifikat_siap: targetState } : p));
                     import('react-hot-toast').then(m => m.default.success(`Sertifikat ${apakahSemuaAktif ? 'Dinonaktifkan' : 'Diaktifkan'}!`));
                   }}
-                  className={`flex-1 ${apakahSemuaAktif ? 'bg-slate-400 hover:bg-slate-500' : 'bg-emerald-500 hover:bg-emerald-600'} text-white px-2 py-2.5 rounded-xl text-[9.5px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 uppercase`}
+                  className={`flex-1 ${apakahSemuaAktif ? 'bg-slate-400 hover:bg-slate-500' : 'bg-emerald-500 hover:bg-emerald-600'} text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 uppercase`}
                 >
                   <Award size={13} /> {apakahSemuaAktif ? 'Nonaktif' : 'Aktif'}
                 </button>
@@ -444,7 +447,7 @@ const ManajemenJuara = () => {
                   <button
                     onClick={() => setApakahMenuUnduhTerbuka(!apakahMenuUnduhTerbuka)}
                     disabled={sedangUnduh || sedangUnduhZIP}
-                    className="w-full h-full bg-[#E40011] hover:bg-red-700 text-white px-2 py-2.5 rounded-xl text-[9.5px] font-black tracking-wide transition-all flex items-center justify-center gap-1 shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50 uppercase"
+                    className="w-full h-full bg-[#E40011] hover:bg-red-700 text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 shadow-lg shadow-red-500/20 active:scale-95 disabled:opacity-50 uppercase"
                   >
                     {sedangUnduh || sedangUnduhZIP ? (
                       <div className="flex items-center gap-1.5">
@@ -464,16 +467,16 @@ const ManajemenJuara = () => {
                     <>
                       <div className="fixed inset-0 z-[90]" onClick={() => setApakahMenuUnduhTerbuka(false)}></div>
                       <div className="absolute right-0 top-full mt-2 w-max bg-white border border-slate-200 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] py-1 z-[100] animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden">
-                        <button onClick={() => tanganiUnduhMasal('PESERTA')} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-600 hover:text-[#16B9FF] hover:bg-slate-50 transition-all border-b border-slate-50 whitespace-nowrap">Hanya Peserta (PDF)</button>
-                        <button onClick={() => tanganiUnduhMasal('JUARA')} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-600 hover:text-[#16B9FF] hover:bg-slate-50 transition-all border-b border-slate-50 whitespace-nowrap">Hanya Juara (PDF)</button>
-                        <button onClick={tanganiUnduhZIP} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-600 hover:text-emerald-600 hover:bg-slate-50 transition-all whitespace-nowrap">Arsip Sertifikat (ZIP)</button>
+                        <button onClick={() => tanganiUnduhMasal('PESERTA')} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-950 hover:text-[#16B9FF] hover:bg-slate-50 transition-all border-b border-slate-50 whitespace-nowrap">Hanya Peserta (PDF)</button>
+                        <button onClick={() => tanganiUnduhMasal('JUARA')} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-950 hover:text-[#16B9FF] hover:bg-slate-50 transition-all border-b border-slate-50 whitespace-nowrap">Hanya Juara (PDF)</button>
+                        <button onClick={tanganiUnduhZIP} className="block w-full text-left px-5 py-2.5 text-[11px] font-semibold text-slate-950 hover:text-emerald-600 hover:bg-slate-50 transition-all whitespace-nowrap">Arsip Sertifikat (ZIP)</button>
                       </div>
                     </>
                   )}
                 </div>
 
                 {/* Tombol Simpan Konfigurasi */}
-                <button onClick={simpanSemua} disabled={sedangMenyimpan} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl text-[9.5px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50 uppercase">
+                <button onClick={simpanSemua} disabled={sedangMenyimpan} className="flex-1 bg-[#0B255D] hover:bg-blue-500 text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 disabled:opacity-50 uppercase">
                   {sedangMenyimpan ? <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Save size={13} />}
                   Simpan
                 </button>
@@ -482,12 +485,12 @@ const ManajemenJuara = () => {
 
             {/* Container Tabel */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-
-                  {/* Header Tabel */}
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-left border-collapse min-w-[850px]">
+ 
+                   {/* Header Tabel */}
                   <thead>
-                    <tr className="bg-[#0B255D] text-white text-[10px] font-black uppercase tracking-wide">
+                    <tr className="bg-[#0B255D] text-white text-[10.8px] lg:text-[10px] xl:text-[10.8px] 2xl:text-[11.8px] font-black uppercase tracking-wide whitespace-nowrap">
                       <th className="px-8 py-3.5 border-r border-white/5 w-20 text-center font-black">No</th>
                       <th className="px-8 py-3.5 border-r border-white/5 text-left font-black">Nama Tim / Peserta</th>
                       <th className="px-8 py-3.5 border-r border-white/5 text-left font-black">Instansi</th>
@@ -495,23 +498,23 @@ const ManajemenJuara = () => {
                       <th className="px-8 py-3.5 text-center w-40 font-black">Sertifikat</th>
                     </tr>
                   </thead>
-
+ 
                   {/* Isi Tabel */}
                   <tbody className="divide-y divide-slate-100">
                     {loading ? (
-                      <tr><td colSpan="5" className="px-8 py-20 text-center"><div className="w-8 h-8 border-4 border-[#16B9FF] border-t-transparent rounded-full animate-spin mx-auto mb-2"></div><p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Memuat...</p></td></tr>
+                      <tr><td colSpan="5" className="px-8 py-20 text-center"><div className="w-8 h-8 border-4 border-[#16B9FF] border-t-transparent rounded-full animate-spin mx-auto mb-2"></div><p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Memuat...</p></td></tr>
                     ) : dataTampil.length > 0 ? (
                       dataTampil.map((tim, index) => (
-                        <tr key={tim.id} className="hover:bg-slate-50 transition-colors">
-                          <td className="px-8 py-3 text-center"><span className="text-[11px] font-bold text-slate-400">#{index + 1}</span></td>
-                          <td className="px-8 py-3"><h4 className="text-[12px] font-bold text-[#0B255D] uppercase tracking-tight">{tim.nama_tim || tim.nama_peserta1}</h4></td>
-                          <td className="px-8 py-3 text-[11px] font-semibold text-slate-500 uppercase">{tim.asal_instansi}</td>
-
+                        <tr key={tim.id} className="hover:bg-slate-50 transition-colors whitespace-nowrap">
+                          <td className="px-8 py-3 text-center"><span className="text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950">#{index + 1}</span></td>
+                          <td className="px-8 py-3"><h4 className="text-[12.5px] lg:text-[11.7px] xl:text-[12.5px] 2xl:text-[13.5px] font-bold text-[#0B255D] uppercase tracking-tight">{tim.nama_tim || tim.nama_peserta1}</h4></td>
+                          <td className="px-8 py-3 text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-semibold text-slate-950 uppercase">{tim.asal_instansi}</td>
+ 
                           {/* Dropdown Status Juara */}
                           <td className="px-8 py-3 border-r border-slate-100">
                             <div className="flex justify-center">
                               {/* Opsi Klasifikasi Juara */}
-                              <select value={tim.peringkat || ""} onChange={(e) => handleSetJuara(tim.id, e.target.value)} className="pl-3 pr-8 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider outline-none border-2 bg-white border-slate-200">
+                              <select value={tim.peringkat || ""} onChange={(e) => handleSetJuara(tim.id, e.target.value)} className="pl-3 pr-8 py-1.5 rounded-lg text-[10.3px] lg:text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-bold uppercase tracking-wider outline-none border-2 bg-white border-slate-200 text-slate-950">
                                 <option value="">Bukan Juara</option>
                                 <option value="Juara 1">Juara 1</option>
                                 <option value="Juara 2">Juara 2</option>
@@ -519,7 +522,7 @@ const ManajemenJuara = () => {
                               </select>
                             </div>
                           </td>
-
+ 
                           {/* Status Sertifikat */}
                           <td className="px-8 py-3 text-center">
                             <label className="relative inline-flex items-center cursor-pointer">
@@ -530,9 +533,9 @@ const ManajemenJuara = () => {
                         </tr>
                       ))
                     ) : daftarPemenang.length === 0 ? (
-                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-400 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
+                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
                     ) : (
-                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-400 font-bold uppercase text-[11px]">Data Tidak Ditemukan</td></tr>
+                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Tidak Ditemukan</td></tr>
                     )}
                   </tbody>
                 </table>
