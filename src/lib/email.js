@@ -9,6 +9,9 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id',
     pass: process.env.EMAIL_PASS || ''
+  },
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
