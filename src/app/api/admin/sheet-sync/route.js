@@ -10,26 +10,24 @@ export async function POST(request) {
     if (error) return error;
 
     // Lakukan sinkronisasi seluruh data ke Google Sheets
-    const hasilSinkron = await sinkronisasiSemuaPendaftaran();
-    
-    if (hasilSinkron) {
-      const urlTampilanSpreedsheet = (process.env.GOOGLE_SHEET_VIEW_URL || '').trim();
-      return NextResponse.json({ 
-        pesan: 'Sinkronisasi berhasil!', 
-        sukses: true,
-        urlSpreadsheet: urlTampilanSpreedsheet 
-      });
-    } else {
-      return NextResponse.json({ 
-        pesan: 'Gagal melakukan sinkronisasi ke Google Sheets', 
-        sukses: false 
-      }, { status: 500 });
-    }
+    sinkronisasiSemuaPendaftaran()
+      .then(() => console.log("Background sheet sync completed successfully."))
+      .catch(err => console.error("Background sheet sync failed:", err));
+
+    // Menampilkan Spreadsheet dari Google Sheets
+    const urlTampilanSpreedsheet = (process.env.GOOGLE_SHEET_VIEW_URL || '').trim();
+    return NextResponse.json({
+      pesan: 'Sinkronisasi berhasil dimulai!',
+      sukses: true,
+      urlSpreadsheet: urlTampilanSpreedsheet
+    });
+
+    // Jika ada error
   } catch (kesalahan) {
     console.error("Gagal memproses sinkronisasi sheet:", kesalahan);
-    return NextResponse.json({ 
-      pesan: 'Terjadi kesalahan sistem saat sinkronisasi', 
-      sukses: false 
+    return NextResponse.json({
+      pesan: 'Terjadi kesalahan sistem saat sinkronisasi',
+      sukses: false
     }, { status: 500 });
   }
 }
