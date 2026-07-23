@@ -38,7 +38,7 @@ export default function NavigasiUtama() {
         </Link>
 
         {/* Menu Desktop & Ipad */}
-        <ul className="hidden md:flex items-center md:gap-4 lg:gap-8 md:text-[9px] lg:text-[10.3px] font-bold tracking-wide mx-auto lg:absolute lg:left-1/2 lg:-translate-x-1/2 whitespace-nowrap">
+        <ul className="hidden md:flex items-center md:gap-4 lg:gap-8 md:text-[9px] lg:text-[11.5px] font-bold tracking-wide mx-auto lg:absolute lg:left-1/2 lg:-translate-x-1/2 whitespace-nowrap">
           {daftarMenu.map((menu, idx) => {
             // Menentukan Menu Aktif
             const aktif = jalur === menu.href;
@@ -102,7 +102,7 @@ export default function NavigasiUtama() {
           {/* Tombol Daftar Lomba Asli (Tampilan Laptop & iPad Pro) */}
           <Link
             href="/register"
-            className="bg-[#E40011] hover:bg-red-700 text-white font-bold py-2 px-6 rounded-md transition-all lg:flex hidden text-[10px] uppercase items-center whitespace-nowrap shadow-md hover:shadow-lg"
+            className="bg-[#E40011] hover:bg-red-700 text-white font-bold py-2 px-6 rounded-md transition-all lg:flex hidden text-[11px] uppercase items-center whitespace-nowrap shadow-md hover:shadow-lg"
           >
             DAFTAR LOMBA
           </Link>

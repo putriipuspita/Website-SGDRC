@@ -35,7 +35,8 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       teks: '@sgdrc_',
       ikon: '/aset/icon/instagram.webp',
       target: '_blank',
-      hoverBorder: 'hover:border-pink-500/80'
+      hoverBorder: 'hover:border-pink-500/80',
+      imgClass: 'w-8 h-8 rounded-[6px]'
     },
 
     // IG Robotika
@@ -46,7 +47,8 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       teks: '@robotika_uinbdg',
       ikon: '/aset/icon/instagram.webp',
       target: '_blank',
-      hoverBorder: 'hover:border-pink-500/80'
+      hoverBorder: 'hover:border-pink-500/80',
+      imgClass: 'w-8 h-8 rounded-[6px]'
     },
 
     // WhatsApp
@@ -87,7 +89,7 @@ export default function KontakDanKaki({ dataAwal = {} }) {
       ikon: '/aset/icon/tiktok.webp',
       target: '_blank',
       hoverBorder: 'hover:border-slate-800',
-      imgClass: 'rounded-sm'
+      imgClass: 'w-8 h-8 rounded-[6px]'
     },
 
     // Lokasi
@@ -128,8 +130,8 @@ export default function KontakDanKaki({ dataAwal = {} }) {
                 className={`bg-white border border-slate-200 rounded-xl h-[62px] px-2 flex items-center gap-2.5 shadow-[0_0_10px_rgba(22,185,255,0.05)] transition cursor-pointer ${kontak.hoverBorder}`}
               >
                 {/* Icon */}
-                <div className="w-10 h-10 flex items-center justify-center p-0.5 flex-shrink-0">
-                  <img src={kontak.ikon} alt={kontak.label} className={`w-full h-full object-contain ${kontak.imgClass || ''}`} />
+                <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
+                  <img src={kontak.ikon} alt={kontak.label} className={`object-contain ${kontak.imgClass || 'w-10 h-10'}`} />
                 </div>
 
                 {/* Teks */}

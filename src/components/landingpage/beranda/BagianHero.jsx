@@ -85,12 +85,12 @@ export default function BagianHero({ dataAwal = {} }) {
         <div className="relative w-full max-w-[1380px] h-full">
           {/* Robot Merah (Kiri) */}
           <div className="absolute left-[-54px] sm:left-[-50px] md:left-[-70px] lg:left-[-60px] top-[102px] sm:top-[65px] md:top-[70px] w-[135px] sm:w-[220px] md:w-[220px] lg:w-[350px] opacity-40 sm:opacity-95" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)' }}>
-            <img src="/aset/logo/robot-merah.png" alt="Robot Guard" className="w-full h-auto brightness-[0.85] contrast-[1.1]" />
+            <img src="/aset/logo/robot-merah.webp" alt="Robot Guard" className="w-full h-auto brightness-[0.85] contrast-[1.1]" />
           </div>
 
           {/* Robot Biru (Kanan) */}
           <div className="absolute right-[-54px] sm:right-[-50px] md:right-[-70px] lg:left-auto lg:right-[-60px] top-[102px] sm:top-[65px] md:top-[70px] w-[135px] sm:w-[220px] md:w-[220px] lg:w-[350px] opacity-40 sm:opacity-95" style={{ WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)' }}>
-            <img src="/aset/logo/robot-biru.png" alt="Robot Guard" className="w-full h-auto brightness-[0.85] contrast-[1.1]" />
+            <img src="/aset/logo/robot-biru.webp" alt="Robot Guard" className="w-full h-auto brightness-[0.85] contrast-[1.1]" />
           </div>
         </div>
       </div>

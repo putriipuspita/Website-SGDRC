@@ -12,7 +12,7 @@ import Konfirmasi from '../../element/Konfirmasi';
 import { fetchDenganToken } from '../../../lib/apiClient';
 
 // Komponen Reusable untuk Zoom Gambar Bukti
-const GambarZoom = ({ src, alt = "Gambar", className = "border-slate-200 bg-slate-50", scale = "group-hover:scale-[2]", onError }) => {
+const GambarZoom = ({ src, alt = "Gambar", className = "border-slate-200 bg-slate-50", scale = "group-hover:scale-[2.5]", onError }) => {
   const [zoomOrigin, setZoomOrigin] = useState('center');
 
   const handleMouseMove = (e) => {
@@ -187,7 +187,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 <button
                   onClick={() => setApakahKonfirmasiReset(true)}
                   disabled={loading}
-                  className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-wide border border-rose-100 active:scale-95 disabled:opacity-50"
+                  className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-rose-100 active:scale-95 disabled:opacity-50"
                 >
                   Reset Status
                 </button>
@@ -195,7 +195,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 {/* Tombol Edit Bukti */}
                 <button
                   onClick={() => setApakahProsesRefund(true)}
-                  className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-wide border border-blue-100 active:scale-95 shadow-sm"
+                  className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-blue-100 active:scale-95 shadow-sm"
                 >
                   Edit Bukti
                 </button>
@@ -207,7 +207,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 {/* Tombol Batal */}
                 <button
                   onClick={tanganiBatalRefund}
-                  className="flex-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95 border border-slate-300"
+                  className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
                 >
                   Batal
                 </button>
@@ -225,7 +225,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
               // Mode Penolakan
             ) : apakahMenolak ? (
               <>
-                <button onClick={() => setApakahMenolak(false)} className="flex-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95 border border-slate-300">Batal</button>
+                <button onClick={() => setApakahMenolak(false)} className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95">Batal</button>
                 <button onClick={() => tanganiVerifikasi('rejected')} disabled={loading} className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black transition-all shadow-lg flex items-center justify-center uppercase tracking-wide active:scale-95 disabled:opacity-50">
                   {loading ? <Loader2 className="animate-spin" size={16} /> : "Kirim Penolakan"}
                 </button>
@@ -237,7 +237,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 {/* Tombol Batal */}
                 <button
                   onClick={tanganiBatalRefund}
-                  className="flex-1 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95 border border-slate-300"
+                  className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
                 >
                   Batal
                 </button>
@@ -323,37 +323,56 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
 
                   {/* Container Input File */}
                   <div className="relative group">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          setFileRefund(file);
-                          setPreviewRefund(URL.createObjectURL(file));
-                        }
-                      }}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                    />
-
-                    {/* Container Preview Bukti Refund */}
-                    <div className={`w-full p-8 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${previewRefund
-                      ? (dataPeserta.status === 'Refunded' ? 'border-blue-500 bg-blue-50' : 'border-orange-500 bg-orange-50')
-                      : 'border-slate-200 bg-slate-50'
-                      }`}>
-                      {previewRefund ? (
-                        <img src={previewRefund} className="w-full h-40 object-contain rounded-lg" alt="Preview" />
-                      ) : (
-                        <>
+                    {previewRefund ? (
+                      <div className="space-y-2">
+                        {/* Container Gambar Zoom */}
+                        <GambarZoom src={previewRefund} alt="Preview Bukti Refund" scale="group-hover:scale-[2.5]" />
+                        
+                        {/* Tombol Ganti File */}
+                        <div className="relative border border-dashed border-slate-300 rounded-xl py-2 px-3 text-center bg-slate-50 hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              if (file) {
+                                setFileRefund(file);
+                                setPreviewRefund(URL.createObjectURL(file));
+                              }
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                          />
+                          <RotateCcw size={12} className="text-slate-500" />
+                          <span className="text-[10.5px] font-bold text-slate-700">Ganti File</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              setFileRefund(file);
+                              setPreviewRefund(URL.createObjectURL(file));
+                            }
+                          }}
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                        />
+                        {/* Container Upload Box */}
+                        <div className={`w-full p-8 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${
+                          dataPeserta.status === 'Refunded' ? 'border-blue-500 bg-blue-50' : 'border-orange-500 bg-orange-50'
+                        }`}>
                           <div className={`p-4 text-white rounded-full shadow-lg ${dataPeserta.status === 'Refunded' ? 'bg-blue-500 shadow-blue-200' : 'bg-orange-500 shadow-orange-200'}`}>
                             <RotateCcw size={24} />
                           </div>
-                          <p className="text-[10px] font-black text-slate-950 uppercase tracking-wider">
+                          <p className="text-[10px] font-black text-slate-950 tracking-wider">
                             {dataPeserta.status === 'Refunded' ? 'Pilih File Koreksi Baru' : 'Pilih File Bukti Transfer'}
                           </p>
-                        </>
-                      )}
-                    </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

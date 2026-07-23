@@ -283,7 +283,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         {/* Container Jenjang */}
         <div className="space-y-1">
           {/* Label */}
-          <label className="text-slate-950 text-[12.5px] font-semibold ml-1">Jenjang</label>
+          <label className="text-slate-950 text-[14.5px] md:text-[15px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Jenjang</label>
 
           {/* Container Opsi Jenjang */}
           <div className="relative group">
@@ -293,7 +293,7 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
             </div>
 
             {/* Opsi Jenjang */}
-            <select required value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full bg-white border border-slate-300 text-slate-950 text-[12px] rounded-xl py-2 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] appearance-none cursor-pointer">
+            <select required value={formData.jenjang} onChange={(e) => setFormData({ ...formData, jenjang: e.target.value })} className="w-full text-[14px] md:text-[14.5px] lg:text-[13px] xl:text-[13.5px] 2xl:text-[14px] tracking-tight bg-white border-2 border-slate-200 text-slate-950 rounded-xl py-2.5 pl-10 pr-10 focus:outline-none focus:border-[#0B255D] transition-all duration-300 font-medium appearance-none cursor-pointer">
               <option value="">Pilih Jenjang</option>
               {dapatkanOpsiJenjang().map(j => (
                 <option key={j} value={j}>{j}</option>

@@ -84,7 +84,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
                 >
                   {/* Icon dan Nama */}
                   <item.ikon size={18} />
-                  <span className="text-[14px] font-semibold tracking-wide">{item.nama}</span>
+                  <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">{item.nama}</span>
                 </Link>
               </div>
             );
@@ -106,7 +106,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
                 {/* Ikon dan Nama Menu Utama */}
                 <div className="flex items-center gap-3">
                   <Users size={18} />
-                  <span className="text-[14px] font-semibold tracking-wide">Peserta</span>
+                  <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">Peserta</span>
                 </div>
 
                 {/* Icon Panah Dropdown */}
@@ -131,7 +131,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
                         }`}
                     >
                       {/* Nama Lomba */}
-                      <span className="text-[11.5px] font-medium tracking-wide whitespace-nowrap">{lomba.nama}</span>
+                      <span className="text-[11.8px] lg:text-[11.5px] font-medium tracking-wide whitespace-nowrap">{lomba.nama}</span>
                     </Link>
                   );
                 })}
@@ -152,7 +152,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
 
               {/* Icon dan Nama Menu */}
               <Award size={18} />
-              <span className="text-[14px] font-semibold tracking-wide">Pemenang</span>
+              <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">Pemenang</span>
             </Link>
           </div>
 
@@ -169,7 +169,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
 
               {/* Icon dan Nama Menu */}
               <Settings size={18} />
-              <span className="text-[14px] font-semibold tracking-wide">Informasi</span>
+              <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">Informasi</span>
             </Link>
           </div>
         </div>
@@ -188,7 +188,7 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
 
             {/* Icon dan Nama Menu */}
             <LogOut size={18} />
-            <span className="text-[14px] tracking-wide">Keluar</span>
+            <span className="text-[14.3px] lg:text-[14px] tracking-wide font-bold">Keluar</span>
           </button>
         </div>
       </nav>

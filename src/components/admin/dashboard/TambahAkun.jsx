@@ -109,8 +109,6 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
           label="Email"
           icon={Mail}
           required
-          readOnly
-          onFocus={(e) => e.target.removeAttribute('readonly')}
           name="user_email_sgdrc_admin_final"
           autoComplete="new-password"
           value={formData.email}
@@ -120,14 +118,12 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
 
         {/* Container Password */}
         <div className="space-y-1">
-          <label className="text-slate-950 text-[12px] font-semibold ml-1">Password</label>
+          <label className="text-slate-950 text-[14.5px] md:text-[15px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Password</label>
           <div className="relative group">
             <FormInput
               icon={Lock}
               type={tampilkanSandi ? 'text' : 'password'}
               required
-              readOnly
-              onFocus={(e) => e.target.removeAttribute('readonly')}
               name="p_s_w_d_sgdrc_final"
               autoComplete="new-password"
               value={formData.password}
@@ -143,14 +139,12 @@ const TambahAkun = ({ setApakahModalTambahTerbuka, onSuccess }) => {
 
         {/* Container Konfirmasi Password */}
         <div className="space-y-1">
-          <label className="text-slate-950 text-[12px] font-semibold ml-1">Konfirmasi Password</label>
+          <label className="text-slate-950 text-[14.5px] md:text-[15px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Konfirmasi Password</label>
           <div className="relative group">
             <FormInput
               icon={Lock}
               type={tampilkanKonfirmasiSandi ? 'text' : 'password'}
               required
-              readOnly
-              onFocus={(e) => e.target.removeAttribute('readonly')}
               name="c_p_s_w_d_sgdrc_final"
               autoComplete="new-password"
               value={formData.konfirmasiPassword}

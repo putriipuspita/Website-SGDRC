@@ -261,7 +261,7 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
                 href={dataPeserta.bukti}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[10px] font-black text-[#16B9FF] hover:underline flex items-center gap-1.5 uppercase tracking-wider"
+                className="text-[10px] font-black text-[#16B9FF] hover:underline flex items-center gap-1.5 tracking-wider"
               >
                 <ExternalLink size={12} /> Lihat Full
               </a>
