@@ -79,7 +79,7 @@ const Register = () => {
           {/* Logo */}
           <div className="flex justify-center mb-2 sm:mb-3">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full p-1 shadow-[0_10px_25px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden">
-              <img src="/aset/logo/logo.jpg" alt="Logo SGDRC" className="w-full h-full object-cover rounded-full" />
+              <img src="/aset/logo/logo.webp" alt="Logo SGDRC" className="w-full h-full object-cover rounded-full" />
             </div>
           </div>
 
@@ -185,7 +185,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={apakahLoading}
-              className="w-full bg-[#E40011] hover:bg-[#c4000e] text-white font-black py-2.5 sm:py-3 rounded-xl mt-2 text-[14px] tracking-wider uppercase transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
+              className="w-full bg-[#E40011] hover:bg-[#c4000e] text-white font-black py-2.5 sm:py-3 rounded-xl mt-2 text-[14px] tracking-normal uppercase transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
             >
               {apakahLoading ? 'Mendaftarkan...' : 'DAFTAR'}
             </button>

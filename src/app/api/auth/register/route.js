@@ -36,7 +36,7 @@ export async function POST(req) {
     // Ambil host dan protocol untuk link verifikasi
     const host = req.headers.get('x-forwarded-host') || req.headers.get('host');
     const protocol = req.headers.get('x-forwarded-proto') || 'https';
-    const linkVerifikasi = `${protocol}://${host}/api/auth/verify?token=${tokenVerifikasi}`;
+    const linkVerifikasi = `${protocol}://${host}/verifikasi?token=${tokenVerifikasi}`;
 
     // Kirim email verifikasi
     kirimEmailVerifikasi(email, nama, linkVerifikasi).catch(err => console.error("Gagal kirim email verifikasi:", err));

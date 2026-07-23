@@ -17,10 +17,10 @@ export async function GET() {
       bank_atas_nama: `SGD RC ${new Date().getFullYear()}`,
       wa_link_umum: 'https://wa.me/628123456789',
       ketua_pelaksana: 'Sarah Nurul Yakin',
-      path_ttd: '/aset/legal/ttd putra.png',
-      path_cap: '/aset/legal/cap sgdrc.png',
-      path_logo_robotika: '/aset/logo/robotika.png',
-      path_logo_sgdrc: '/aset/logo/logo.jpg',
+      path_ttd: '/aset/legal/ttd putra.webp',
+      path_cap: '/aset/legal/cap sgdrc.webp',
+      path_logo_robotika: '/aset/logo/robotika.webp',
+      path_logo_sgdrc: '/aset/logo/logo.webp',
       link_dokumentasi: '',
       foto_dokumentasi_list: '[]'
     };
