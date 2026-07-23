@@ -7,6 +7,65 @@ import toast from 'react-hot-toast';
 // Import Utility
 import { fetchDenganToken } from '../../lib/apiClient';
 
+// Helper untuk kompres gambar di sisi klien (browser) sebelum diupload
+const kompresGambar = (file, maxQuality = 0.6) => {
+  return new Promise((resolve) => {
+    if (!file || !file.type.startsWith('image/')) {
+      resolve(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Batasi resolusi maksimal 1200px agar tetap tajam tapi ukurannya kecil
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 1200;
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          if (width > height) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          } else {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const fileTerkompres = new File([blob], file.name.replace(/\.[^/.]+$/, ".jpg"), {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              });
+              resolve(fileTerkompres);
+            } else {
+              resolve(file);
+            }
+          },
+          'image/jpeg',
+          maxQuality
+        );
+      };
+      img.onerror = () => resolve(file);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(file);
+    reader.readAsDataURL(file);
+  });
+};
+
 // Sub-Komponen untuk Input Upload Berkas
 const InputFilePendaftaran = ({ id, label, file, ikonSrc, ikonAlt, bgIkon, accept, onChange, onPreview, error }) => {
   return (
@@ -201,7 +260,14 @@ const FormPendaftaran = ({ lomba, kembali }) => {
       const formData = new FormData();
       formData.append('lomba_id', lomba.id);
       Object.keys(dataFormulir).forEach(k => formData.append(k, dataFormulir[k]));
-      Object.keys(berkas).forEach(k => { if (berkas[k]) formData.append(k, berkas[k]); });
+      
+      // Kompres seluruh file secara asinkron di browser sebelum diupload
+      for (const k of Object.keys(berkas)) {
+        if (berkas[k]) {
+          const fileTerkompres = await kompresGambar(berkas[k]);
+          formData.append(k, fileTerkompres);
+        }
+      }
 
       // Kirim Request ke Backend
       const res = await fetchDenganToken('/api/peserta/daftar', {

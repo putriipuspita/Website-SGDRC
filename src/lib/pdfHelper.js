@@ -147,9 +147,35 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
   ctx.font = `${getFs(config.size_nomor)}px "Montserrat"`;
   ctx.fillText(`Nomor: ${nomorSurat}`, img.width / 2, img.height * (config.y_nomor / 100));
 
-  // Nama
+  // Nama (Mendukung baris baru & pembungkusan otomatis dengan line height yang lebih longgar)
   ctx.font = `bold ${getFs(config.size_nama)}px "${config.font_nama || 'Cinzel'}"`;
-  ctx.fillText(nama.toUpperCase(), img.width / 2, img.height * (config.y_nama / 100));
+  const nameUpper = (nama || "").toUpperCase();
+  let lines = [];
+  if (nameUpper.includes('\n')) {
+    lines = nameUpper.split('\n');
+  } else if (nameUpper.length > 28 && nameUpper.includes(' ')) {
+    const words = nameUpper.split(' ');
+    let currentLine = '';
+    words.forEach(word => {
+      if ((currentLine + ' ' + word).trim().length > 25) {
+        lines.push(currentLine.trim());
+        currentLine = word;
+      } else {
+        currentLine = (currentLine + ' ' + word).trim();
+      }
+    });
+    if (currentLine) lines.push(currentLine);
+  } else {
+    lines = [nameUpper];
+  }
+
+  const fontSizeNama = getFs(config.size_nama);
+  const lineHeight = fontSizeNama * 1.50; // Jarak antar baris lebih longgar (1.5x)
+  const startY = img.height * (config.y_nama / 100);
+  
+  lines.forEach((line, index) => {
+    ctx.fillText(line, img.width / 2, startY + (index * lineHeight));
+  });
 
   // Teks status sertifikat
   if (jenis === 'PESERTA') {

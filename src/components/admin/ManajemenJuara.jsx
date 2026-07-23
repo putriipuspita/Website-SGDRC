@@ -488,14 +488,14 @@ const ManajemenJuara = () => {
             {/* Container Tabel */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="overflow-x-auto custom-scrollbar">
-                <table className="w-full text-left border-collapse min-w-[850px]">
+                <table className="w-full text-left border-collapse min-w-[1000px]">
  
                    {/* Header Tabel */}
                   <thead>
                     <tr className="bg-[#0B255D] text-white text-[10.8px] lg:text-[10px] xl:text-[10.8px] 2xl:text-[11.8px] font-black uppercase tracking-wide whitespace-nowrap">
                       <th className="px-8 py-3.5 border-r border-white/5 w-20 text-center font-black">No</th>
-                      <th className="px-8 py-3.5 border-r border-white/5 text-left font-black">Nama Tim / Peserta</th>
-                      <th className="px-8 py-3.5 border-r border-white/5 text-left font-black">Instansi</th>
+                      <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Nama Tim / Peserta</th>
+                      <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Instansi</th>
                       <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Juara</th>
                       <th className="px-8 py-3.5 text-center w-40 font-black">Sertifikat</th>
                     </tr>
@@ -509,8 +509,16 @@ const ManajemenJuara = () => {
                       dataTampil.map((tim, index) => (
                         <tr key={tim.id} className="hover:bg-slate-50 transition-colors whitespace-nowrap">
                           <td className="px-8 py-3 text-center"><span className="text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950">#{index + 1}</span></td>
-                          <td className="px-8 py-3"><h4 className="text-[12.5px] lg:text-[11.7px] xl:text-[12.5px] 2xl:text-[13.5px] font-bold text-[#0B255D] uppercase tracking-tight">{tim.nama_tim || tim.nama_peserta1}</h4></td>
-                          <td className="px-8 py-3 text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-semibold text-slate-950 uppercase">{tim.asal_instansi}</td>
+                          <td className="px-8 py-3 text-left">
+                            <div className="min-w-[220px]">
+                              <h4 className="text-[12.5px] lg:text-[11.7px] xl:text-[12.5px] 2xl:text-[13.5px] font-bold text-[#0B255D] uppercase tracking-tight">{tim.nama_tim || tim.nama_peserta1}</h4>
+                            </div>
+                          </td>
+                          <td className="px-8 py-3 text-left">
+                            <div className="min-w-[200px] text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-semibold text-slate-950 uppercase">
+                              {tim.asal_instansi}
+                            </div>
+                          </td>
  
                           {/* Dropdown Status Juara */}
                           <td className="px-8 py-3 border-r border-slate-100">

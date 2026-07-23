@@ -452,14 +452,14 @@ const PesertaLomba = () => {
               notFoundText="Data tidak ditemukan"
               headers={[
                 { label: 'Tanggal' },
-                ...(!apakahSolo ? [{ label: 'Nama Tim' }] : []),
-                { label: 'Peserta 1' },
-                ...(!apakahSolo ? [{ label: 'Peserta 2' }] : []),
-                ...(apakahKelompokMaks3 ? [{ label: 'Peserta 3' }] : []),
+                ...(!apakahSolo ? [{ label: <div className="min-w-[160px] text-center">Nama Tim</div> }] : []),
+                { label: <div className="min-w-[150px] text-center">Peserta 1</div> },
+                ...(!apakahSolo ? [{ label: <div className="min-w-[150px] text-center">Peserta 2</div> }] : []),
+                ...(apakahKelompokMaks3 ? [{ label: <div className="min-w-[150px] text-center">Peserta 3</div> }] : []),
                 { label: 'WhatsApp' },
                 { label: 'Jenjang' },
-                { label: 'Asal Instansi' },
-                { label: 'Status' },
+                { label: <div className="min-w-[160px] text-center">Asal Instansi</div> },
+                { label: <div className="min-w-[120px] text-center">Status</div> },
                 { label: 'Aksi' }
               ]}
             >
@@ -469,32 +469,45 @@ const PesertaLomba = () => {
                   {/* Tanggal */}
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.tanggal}</td>
 
-                  {/* Nama Tim */}
                   {!apakahSolo && (
-                    <td className="px-4 py-2 border-r border-slate-200 text-center text-[11.6px] lg:text-[10.2px] xl:text-[11.1px] 2xl:text-[12.1px] font-black text-[#16B9FF] uppercase tracking-wider leading-relaxed">
-                      {p.namaTim || '-'}
+                    <td className="px-4 py-2 border-r border-slate-200 text-left text-[11.6px] lg:text-[10.2px] xl:text-[11.1px] 2xl:text-[12.1px] font-black text-[#16B9FF] uppercase tracking-normal leading-relaxed">
+                      <div className="min-w-[160px]">{p.namaTim || '-'}</div>
                     </td>
                   )}
 
                   {/* Nama Peserta */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta1}</td>
-                  {!apakahSolo && <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta2 || '-'}</td>}
-                  {apakahKelompokMaks3 && <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.peserta3 || '-'}</td>}
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
+                    <div className="min-w-[150px]">{p.peserta1}</div>
+                  </td>
+                  {!apakahSolo && (
+                    <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
+                      <div className="min-w-[150px]">{p.peserta2 || '-'}</div>
+                    </td>
+                  )}
+                  {apakahKelompokMaks3 && (
+                    <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
+                      <div className="min-w-[150px]">{p.peserta3 || '-'}</div>
+                    </td>
+                  )}
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.whatsapp}</td>
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.jenjang}</td>
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.instansi}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
+                    <div className="min-w-[160px]">{p.instansi}</div>
+                  </td>
 
                   {/* Status */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-center leading-tight">
-                    <span className={`text-[11.2px] lg:text-[10px] xl:text-[10.7px] 2xl:text-[11.5px] font-black uppercase tracking-wider leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
-                      p.status === 'Ditolak' ? 'text-red-500' :
-                        p.status === 'Refunded' ? 'text-orange-500' :
-                          'text-amber-500'
-                      }`}>
-                      {p.status}
-                    </span>
+                  <td className="px-4 py-2 border-r border-slate-200 text-left leading-tight">
+                    <div className="min-w-[120px]">
+                      <span className={`text-[11.2px] lg:text-[10px] xl:text-[10.7px] 2xl:text-[11.5px] font-black uppercase tracking-normal leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
+                        p.status === 'Ditolak' ? 'text-red-500' :
+                          p.status === 'Refunded' ? 'text-orange-500' :
+                            'text-amber-500'
+                        }`}>
+                        {p.status}
+                      </span>
+                    </div>
                   </td>
 
                   {/* Aksi */}

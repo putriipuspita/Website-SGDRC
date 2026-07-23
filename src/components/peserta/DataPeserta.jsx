@@ -338,9 +338,9 @@ const DataPeserta = () => {
                   ) : (
 
                     /* Container Tabel Daftar Peserta*/
-                    <div className="bg-white border border-slate-200 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.05),0_0_20px_rgba(22,185,255,0.06)] overflow-x-auto scrollbar-hide">
+                    <div className="bg-white border border-slate-200 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.05),0_0_20px_rgba(22,185,255,0.06)] overflow-x-auto custom-scrollbar pb-2">
                       <div>
-                        <table className="w-full text-left border-collapse">
+                        <table className="w-full md:min-w-[1240px] text-left border-collapse">
                           <thead>
                             <tr className="hidden md:table-row bg-[#0B255D] border-b border-white/20">
 
@@ -348,15 +348,15 @@ const DataPeserta = () => {
                               <th className="px-2 py-2 border-r border-white/30 text-center lg:hidden w-10"></th>
 
                               {/* Header Tabel */}
-                              <th className="px-2 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed min-w-[120px]">Jenis Lomba</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 text-center leading-relaxed">Nama Tim</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 1</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 2</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 hidden lg:table-cell min-w-[120px] text-center">Peserta 3</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 whitespace-nowrap hidden lg:table-cell">Jenjang</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider border-r border-white/10 min-w-[120px] text-center">Asal Instansi</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center border-r border-white/10 min-w-[85px]">Status</th>
-                              <th className="px-3 py-3 text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider text-center">Aksi</th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Jenis Lomba</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Nama Tim</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 1</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 2</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 3</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider whitespace-nowrap text-center">Jenjang</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Asal Instansi</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[120px] whitespace-nowrap text-center">Status</div></th>
+                              <th className="px-3 py-3 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider whitespace-nowrap">Aksi</div></th>
                             </tr>
 
                             {/* Header Tampilan HP */}
@@ -384,34 +384,48 @@ const DataPeserta = () => {
                                   </td>
 
                                   {/* Kolom Lomba */}
-                                  <td className="px-2 py-3 border-r border-slate-200 min-w-[120px]">
-                                    <span className="text-[12px] xl:text-[10.6px] 2xl:text-[11.6px] font-black text-[#16B9FF] uppercase tracking-tight block text-center leading-normal">
-                                      {data.lomba}
-                                    </span>
+                                  <td className="px-3 py-3 border-r border-slate-200 whitespace-nowrap">
+                                    <div className="min-w-[150px]">
+                                      <span className="text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-black text-[#16B9FF] uppercase tracking-tight block text-left leading-normal whitespace-nowrap">
+                                        {data.lomba}
+                                      </span>
+                                    </div>
                                   </td>
 
                                   {/* Kolom Nama Tim */}
                                   <td className="px-3 py-3 border-r border-slate-200 leading-normal">
-                                    <span className="text-[12px] xl:text-[10.6px] 2xl:text-[11.6px] font-black text-slate-950 uppercase tracking-tight block text-center leading-normal">
-                                      {data.tim || "-"}
-                                    </span>
+                                    <div className="min-w-[160px]">
+                                      <span className="text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-black text-slate-950 uppercase tracking-tight block text-left leading-normal">
+                                        {data.tim || "-"}
+                                      </span>
+                                    </div>
                                   </td>
 
                                   {/* Kolom Peserta */}
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[0])}</td>
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[1])}</td>
-                                  <td className="px-3 py-3 border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-normal hidden lg:table-cell text-slate-950 min-w-[105px]">{formatJudul(data.peserta[2])}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
+                                    <div className="min-w-[150px]">{formatJudul(data.peserta[0])}</div>
+                                  </td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
+                                    <div className="min-w-[150px]">{formatJudul(data.peserta[1])}</div>
+                                  </td>
+                                  <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
+                                    <div className="min-w-[150px]">{formatJudul(data.peserta[2])}</div>
+                                  </td>
 
                                   {/* Kolom Jenjang */}
-                                  <td className="px-3 py-3 text-center border-r border-slate-200 text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold leading-relaxed hidden lg:table-cell text-slate-950">{data.jenjang}</td>
+                                  <td className="px-3 py-3 text-center border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-relaxed hidden lg:table-cell text-slate-950">
+                                    {data.jenjang}
+                                  </td>
 
                                   {/* Kolom Instansi */}
-                                  <td className="px-3 py-3 border-r border-slate-200 font-bold text-[12px] xl:text-[11.2px] 2xl:text-[12.2px] tracking-tight leading-normal text-slate-950">{data.instansi}</td>
+                                  <td className="px-3 py-3 border-r border-slate-200 font-bold text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] tracking-tight leading-normal text-slate-950">
+                                    <div className="min-w-[160px]">{data.instansi}</div>
+                                  </td>
 
                                   {/* Kolom Status Verifikasi */}
                                   <td className="px-3 py-3 text-center border-r border-slate-200">
-                                    <div className="flex items-center justify-center">
-                                      <span className={`text-[12px] xl:text-[11.2px] 2xl:text-[12.2px] font-bold tracking-wider ${ambilWarnaStatus(data.status)} whitespace-normal break-words`}>
+                                    <div className="flex items-center justify-center min-w-[120px]">
+                                      <span className={`text-[12.5px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold tracking-normal ${ambilWarnaStatus(data.status)} whitespace-nowrap`}>
                                         {data.status.split(' ').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ')}
                                       </span>
                                     </div>

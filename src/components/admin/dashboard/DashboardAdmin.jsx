@@ -175,13 +175,13 @@ const DashboardAdmin = () => {
 
                   {/* Container Tabel */}
                   <div className="overflow-x-auto custom-scrollbar min-h-[400px]">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left border-collapse min-w-[500px]">
                       {/* Header Tabel */}
                       <thead>
                         <tr className="bg-[#0B255D] text-white text-[11.8px] lg:text-[10px] xl:text-[10.8px] 2xl:text-[11.8px] font-black uppercase tracking-wide">
-                          <th className="px-8 py-4 border-r border-white/5 font-black text-left">Nama Lengkap</th>
-                          <th className="px-6 py-4 border-r border-white/5 font-black text-left">Email</th>
-                          <th className="pr-11 py-4 font-black uppercase tracking-wide text-right">Aksi</th>
+                          <th className="px-8 py-4 border-r border-white/5 font-black text-center"><div className="min-w-[180px]">Nama Lengkap</div></th>
+                          <th className="px-6 py-4 border-r border-white/5 font-black text-center"><div className="min-w-[200px]">Email</div></th>
+                          <th className="pr-11 py-4 font-black uppercase tracking-wide text-center">Aksi</th>
                         </tr>
                       </thead>
 
@@ -192,9 +192,9 @@ const DashboardAdmin = () => {
                         ) : akunTampil.length > 0 ? (
                           akunTampil.map((akun) => (
                             <tr key={akun.id} className="hover:bg-slate-50/50 transition-colors group">
-                              <td className="px-8 py-3"><div className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950">{akun.nama}</div></td>
-                              <td className="px-6 py-3 text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950">{akun.email}</td>
-                              <td className="px-8 py-3"><div className="flex justify-end"><button onClick={() => { setDataAkunHapus(akun); setApakahModalHapusTerbuka(true); }} className="flex items-center gap-2 px-3 py-1 text-red-500 hover:text-red-700 transition-all font-bold"><Trash2 size={16} /><span className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium">Hapus</span></button></div></td>
+                              <td className="px-8 py-3"><div className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 min-w-[180px] text-left">{akun.nama}</div></td>
+                              <td className="px-6 py-3 text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium text-slate-950 text-left"><div className="min-w-[200px]">{akun.email}</div></td>
+                              <td className="px-8 py-3"><div className="flex justify-center"><button onClick={() => { setDataAkunHapus(akun); setApakahModalHapusTerbuka(true); }} className="flex items-center gap-2 px-3 py-1 text-red-500 hover:text-red-700 transition-all font-bold"><Trash2 size={16} /><span className="text-[13.2px] lg:text-[11px] xl:text-[12.2px] 2xl:text-[13.2px] font-medium">Hapus</span></button></div></td>
                             </tr>
                           ))
                         ) : (

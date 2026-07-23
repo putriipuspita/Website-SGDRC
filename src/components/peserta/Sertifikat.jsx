@@ -331,7 +331,7 @@ const Sertifikat = () => {
                               {/* Nama */}
                               <div>
                                 <p className="text-[9px] md:text-[8.5px] lg:text-[7.5px] font-bold text-slate-950 uppercase tracking-normal mb-1">Diberikan Kepada</p>
-                                <h3 className="text-[19px] lg:text-[18.5px] font-black text-slate-950 uppercase tracking-tight leading-tight break-words">
+                                <h3 className="text-[19px] lg:text-[18.5px] font-black text-slate-950 uppercase tracking-tight leading-[1.5] break-words">
                                   {item.nama}
                                 </h3>
                               </div>
