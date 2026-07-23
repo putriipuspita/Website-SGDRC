@@ -74,7 +74,7 @@ const DataPending = () => {
               {/* Search */}
               <div className="relative group w-full md:w-80">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#16B9FF] transition-colors" size={13} />
-                <input type="text" placeholder="Cari Antrian..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[10.5px] font-bold text-slate-950 placeholder:text-slate-600 shadow-sm w-full" />
+                <input type="text" placeholder="Cari Antrian..." value={kataKunci} onChange={(e) => setKataKunci(e.target.value)} className="pl-9 pr-4 py-2 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[11px] font-bold text-slate-950 placeholder:text-slate-600 shadow-sm w-full" />
               </div>
 
             </div>
@@ -87,53 +87,57 @@ const DataPending = () => {
               emptyText="Data Belum Ada"
               notFound={dataTampil.length === 0 && (daftarPeserta.length > 0 || kataKunci !== '')}
               notFoundText="Data tidak ditemukan"
-              minWidth="min-w-[700px] w-full"
+              minWidth="w-full"
               headers={[
-                { label: 'Jenis Lomba' },
-                { label: 'Nama Tim / Peserta', className: 'min-w-[185px]' },
-                { label: 'Nomor WhatsApp' },
-                { label: 'Asal Instansi' },
-                { label: 'Verifikasi' }
+                { label: <div className="min-w-[110px] text-center">Jenis Lomba</div> },
+                { label: <div className="min-w-[140px] text-center">Nama Tim / Peserta</div> },
+                { label: <div className="min-w-[90px] text-center whitespace-nowrap">Nomor WhatsApp</div> },
+                { label: <div className="min-w-[130px] text-center">Asal Instansi</div> },
+                { label: <div className="min-w-[50px] text-center">Verifikasi</div> }
               ]}
             >
               {dataTampil.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-50 transition-colors">
                   {/* Nama Lomba */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-center leading-relaxed">
-                    <span className="text-[9.9px] font-black text-[#16B9FF] uppercase tracking-tight block text-center leading-normal">{p.nama_lomba}</span>
+                  <td className="px-6 py-2 border-r border-slate-200 text-center">
+                    <div className="min-w-[110px] whitespace-nowrap text-[12.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-black text-[#16B9FF] uppercase tracking-normal leading-relaxed">
+                      {p.nama_lomba}
+                    </div>
                   </td>
 
                   {/* Nama Tim */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed uppercase min-w-[185px]">
-                    {p.nama_tim || p.nama_peserta1}
+                  <td className="px-6 py-2 border-r border-slate-200 text-left">
+                    <div className="min-w-[140px] text-[12.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 uppercase leading-relaxed">{p.nama_tim || p.nama_peserta1}</div>
                   </td>
 
                   {/* Nomor WhatsApp */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed">
-                    {p.whatsapp}
+                  <td className="px-6 py-2 border-r border-slate-200 text-center">
+                    <div className="min-w-[90px] text-[12.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 leading-relaxed">{p.whatsapp}</div>
                   </td>
 
                   {/* Asal Instansi */}
-                  <td className="px-6 py-2 border-r border-slate-200 text-[11.3px] font-bold text-slate-950 text-center leading-relaxed uppercase">
-                    {p.asal_instansi}
+                  <td className="px-6 py-2 border-r border-slate-200 text-left">
+                    <div className="min-w-[130px] text-[12.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 uppercase leading-relaxed">{p.asal_instansi}</div>
                   </td>
 
                   {/* Tombol Verifikasi */}
-                  <td className="px-6 py-2 text-center leading-relaxed">
-                    <button
-                      onClick={() => {
-                        setDataVerifikasi({
-                          id: p.id,
-                          nama: p.nama_tim || p.nama_peserta1,
-                          lomba: p.nama_lomba,
-                          bukti: p.file_bukti_bayar
-                        });
-                        setApakahVerifikasiTerbuka(true);
-                      }}
-                      className="w-7 h-7 inline-flex items-center justify-center bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 rounded-md transition-all border border-emerald-500/20 mx-auto"
-                    >
-                      <FileText size={14} />
-                    </button>
+                  <td className="px-6 py-2 text-center">
+                    <div className="min-w-[50px] flex justify-center">
+                      <button
+                        onClick={() => {
+                          setDataVerifikasi({
+                            id: p.id,
+                            nama: p.nama_tim || p.nama_peserta1,
+                            lomba: p.nama_lomba,
+                            bukti: p.file_bukti_bayar
+                          });
+                          setApakahVerifikasiTerbuka(true);
+                        }}
+                        className="w-7 h-7 inline-flex items-center justify-center bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 rounded-md transition-all border border-emerald-500/20 mx-auto"
+                      >
+                        <FileText size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

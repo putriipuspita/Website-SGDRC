@@ -477,16 +477,16 @@ const PesertaLomba = () => {
 
                   {/* Nama Peserta */}
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                    <div className="min-w-[150px]">{p.peserta1}</div>
+                    <div className="min-w-[150px]">{formatJudul(p.peserta1)}</div>
                   </td>
                   {!apakahSolo && (
                     <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                      <div className="min-w-[150px]">{p.peserta2 || '-'}</div>
+                      <div className="min-w-[150px]">{formatJudul(p.peserta2)}</div>
                     </td>
                   )}
                   {apakahKelompokMaks3 && (
                     <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                      <div className="min-w-[150px]">{p.peserta3 || '-'}</div>
+                      <div className="min-w-[150px]">{formatJudul(p.peserta3)}</div>
                     </td>
                   )}
 

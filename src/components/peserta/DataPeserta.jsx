@@ -55,7 +55,7 @@ const BarisDetailPeserta = ({ label, value }) => (
 const GaleriBuktiRefund = ({ buktiRefund }) => (
   <div className="w-full">
     <div className="space-y-2 text-left max-w-md">
-      <label className="text-[10px] font-black text-orange-400 uppercase tracking-wider block ml-1">Bukti Transfer Refund (Panitia)</label>
+      <label className="text-[10px] font-black text-orange-400 uppercase tracking-normal block ml-1">Bukti Transfer Refund (Panitia)</label>
 
       {/* Container Gambar Bukti Refund dan Tombol Lihat */}
       <div className="relative group cursor-pointer" onClick={() => window.open(buktiRefund, '_blank')}>
@@ -347,7 +347,6 @@ const DataPeserta = () => {
                               {/* Kolom Toggle khusus iPad Standar */}
                               <th className="px-2 py-2 border-r border-white/30 text-center lg:hidden w-10"></th>
 
-                              {/* Header Tabel */}
                               <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Jenis Lomba</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Nama Tim</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9px] xl:text-[9.8px] 2xl:text-[10.8px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 1</div></th>
@@ -361,7 +360,7 @@ const DataPeserta = () => {
 
                             {/* Header Tampilan HP */}
                             <tr className="md:hidden bg-[#0B255D] border-b border-white/20">
-                              <th colSpan="10" className="px-3 py-4 text-[13px] md:text-[9.5px] font-black text-white uppercase tracking-wider text-center leading-relaxed">Jenis Lomba & Nama Tim</th>
+                              <th colSpan="10" className="px-3 py-4 text-[13px] md:text-[9.5px] font-black text-white uppercase tracking-normal text-center leading-relaxed">Jenis Lomba & Nama Tim</th>
                             </tr>
                           </thead>
 
@@ -521,8 +520,8 @@ const DataPeserta = () => {
                                         {barisTerbuka.includes(data.id) ? <Minus size={12} className="text-white" /> : <Plus size={12} className="text-white" />}
                                       </div>
                                       <div className="flex flex-col leading-relaxed">
-                                        <span className="text-[11.5px] md:text-[10px] font-black text-[#16B9FF] uppercase tracking-wider">{data.lomba}</span>
-                                        <span className="text-[13.5px] md:text-[11px] font-black text-slate-950 uppercase">{data.tim}</span>
+                                        <span className="text-[11.5px] md:text-[10px] font-black text-[#16B9FF] uppercase tracking-normal">{data.lomba}</span>
+                                        <span className="text-[11.5px] md:text-[10px] font-black text-slate-950 uppercase tracking-normal">{data.tim}</span>
                                       </div>
                                     </div>
 
