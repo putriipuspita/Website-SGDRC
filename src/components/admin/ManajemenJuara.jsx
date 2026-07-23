@@ -488,40 +488,40 @@ const ManajemenJuara = () => {
             {/* Container Tabel */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="overflow-x-auto custom-scrollbar">
-                <table className="w-full text-left border-collapse min-w-[1000px]">
+                <table className="w-full text-left border-collapse">
  
                    {/* Header Tabel */}
                   <thead>
-                    <tr className="bg-[#0B255D] text-white text-[10.8px] lg:text-[10px] xl:text-[10.8px] 2xl:text-[11.8px] font-black uppercase tracking-wide whitespace-nowrap">
-                      <th className="px-8 py-3.5 border-r border-white/5 w-20 text-center font-black">No</th>
-                      <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Nama Tim / Peserta</th>
-                      <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Instansi</th>
-                      <th className="px-8 py-3.5 border-r border-white/5 text-center font-black">Juara</th>
-                      <th className="px-8 py-3.5 text-center w-40 font-black">Sertifikat</th>
+                    <tr className="bg-[#0B255D] text-white text-[11.3px] lg:text-[10.5px] xl:text-[11.3px] 2xl:text-[12.3px] font-black uppercase tracking-wide whitespace-nowrap">
+                      <th className="px-4 py-3.5 border-r border-white/5 w-12 text-center font-black">No</th>
+                      <th className="px-5 py-3.5 border-r border-white/5 text-center font-black">Nama Tim / Peserta</th>
+                      <th className="px-5 py-3.5 border-r border-white/5 text-center font-black">Instansi</th>
+                      <th className="px-5 py-3.5 border-r border-white/5 text-center font-black">Juara</th>
+                      <th className="px-5 py-3.5 text-center w-40 font-black">Sertifikat</th>
                     </tr>
                   </thead>
  
                   {/* Isi Tabel */}
                   <tbody className="divide-y divide-slate-100">
                     {loading ? (
-                      <tr><td colSpan="5" className="px-8 py-20 text-center"><div className="w-8 h-8 border-4 border-[#16B9FF] border-t-transparent rounded-full animate-spin mx-auto mb-2"></div><p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Memuat...</p></td></tr>
+                      <tr><td colSpan="5" className="px-5 py-20 text-center"><div className="w-8 h-8 border-4 border-[#16B9FF] border-t-transparent rounded-full animate-spin mx-auto mb-2"></div><p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Memuat...</p></td></tr>
                     ) : dataTampil.length > 0 ? (
                       dataTampil.map((tim, index) => (
                         <tr key={tim.id} className="hover:bg-slate-50 transition-colors whitespace-nowrap">
-                          <td className="px-8 py-3 text-center"><span className="text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950">#{index + 1}</span></td>
-                          <td className="px-8 py-3 text-left">
+                          <td className="px-4 py-3 text-center"><span className="text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950">#{index + 1}</span></td>
+                          <td className="px-5 py-3 text-left">
                             <div className="min-w-[220px]">
                               <h4 className="text-[12.5px] lg:text-[11.7px] xl:text-[12.5px] 2xl:text-[13.5px] font-bold text-[#0B255D] uppercase tracking-tight">{tim.nama_tim || tim.nama_peserta1}</h4>
                             </div>
                           </td>
-                          <td className="px-8 py-3 text-left">
+                          <td className="px-5 py-3 text-left">
                             <div className="min-w-[200px] text-[11.7px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-semibold text-slate-950 uppercase">
                               {tim.asal_instansi}
                             </div>
                           </td>
  
                           {/* Dropdown Status Juara */}
-                          <td className="px-8 py-3 border-r border-slate-100">
+                          <td className="px-5 py-3 border-r border-slate-100">
                             <div className="flex justify-center">
                               {/* Opsi Klasifikasi Juara */}
                               <select value={tim.peringkat || ""} onChange={(e) => handleSetJuara(tim.id, e.target.value)} className="pl-3 pr-8 py-1.5 rounded-lg text-[10.3px] lg:text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-bold uppercase tracking-wider outline-none border-2 bg-white border-slate-200 text-slate-950">
@@ -534,7 +534,7 @@ const ManajemenJuara = () => {
                           </td>
  
                           {/* Status Sertifikat */}
-                          <td className="px-8 py-3 text-center">
+                          <td className="px-5 py-3 text-center">
                             <label className="relative inline-flex items-center cursor-pointer">
                               <input type="checkbox" className="sr-only peer" checked={tim.is_sertifikat_siap === 1} onChange={(e) => handleSetSertifikat(tim.id, e.target.checked ? 1 : 0)} />
                               <div className="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:bg-emerald-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
@@ -543,9 +543,9 @@ const ManajemenJuara = () => {
                         </tr>
                       ))
                     ) : daftarPemenang.length === 0 ? (
-                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
+                      <tr><td colSpan="5" className="px-5 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Belum Ada</td></tr>
                     ) : (
-                      <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Tidak Ditemukan</td></tr>
+                      <tr><td colSpan="5" className="px-5 py-10 text-center text-slate-500 font-bold uppercase text-[11px]">Data Tidak Ditemukan</td></tr>
                     )}
                   </tbody>
                 </table>
