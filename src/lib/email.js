@@ -3,12 +3,16 @@ import { join } from 'path';
 
 // Konfigurasi Email
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.EMAIL_HOST || 'mail.sgdrc-robotika.uinsgd.ac.id',
+  port: parseInt(process.env.EMAIL_PORT || '465'),
+  secure: process.env.EMAIL_SECURE !== 'false', // true untuk port 465, false untuk port 587
   auth: {
-    user: process.env.EMAIL_USER || 'adminsgdrc@gmail.com',
-    pass: process.env.EMAIL_PASS || 'rxtq hlbo bmsh xeed'
+    user: process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id',
+    pass: process.env.EMAIL_PASS || ''
   }
 });
+
+const EMAIL_SENDER = process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id';
 
 // Tahun RealTime
 const TAHUN = new Date().getFullYear();
@@ -44,7 +48,7 @@ export async function kirimEmailVerifikasi(emailTujuan, namaUser, linkVerifikasi
   // Pengirim Email
   try {
     await transporter.sendMail({
-      from: '"SGD Robotic Competition" <adminsgdrc@gmail.com>',
+      from: `"SGD Robotic Competition" <${EMAIL_SENDER}>`,
       to: emailTujuan,
       subject: `VERIFIKASI AKUN SGDRC ${TAHUN}`,
       html: pesanHtml
@@ -156,7 +160,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
   // Pengirim Email
   try {
     await transporter.sendMail({
-      from: '"Panitia SGDRC" <adminsgdrc@gmail.com>',
+      from: `"Panitia SGDRC" <${EMAIL_SENDER}>`,
       to: emailTujuan,
       subject: subjek,
       html: pesanHtml,
@@ -214,7 +218,7 @@ export async function kirimEmailResetPassword(emailTujuan, namaUser, token, host
   // Pengirim Email
   try {
     await transporter.sendMail({
-      from: '"IT Support SGDRC" <adminsgdrc@gmail.com>',
+      from: `"IT Support SGDRC" <${EMAIL_SENDER}>`,
       to: emailTujuan,
       subject: "PERMINTAAN RESET PASSWORD AKUN SGDRC",
       html: pesanHtml
