@@ -6,7 +6,8 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test-email": "node test-email.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

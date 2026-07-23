@@ -2,10 +2,11 @@ import nodemailer from 'nodemailer';
 import { join } from 'path';
 
 // Konfigurasi Email
+const port = parseInt(process.env.EMAIL_PORT || '465');
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || 'mail.sgdrc-robotika.uinsgd.ac.id',
-  port: parseInt(process.env.EMAIL_PORT || '465'),
-  secure: process.env.EMAIL_SECURE !== 'false', // true untuk port 465, false untuk port 587
+  port: port,
+  secure: port === 465,
   auth: {
     user: process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id',
     pass: process.env.EMAIL_PASS || ''
