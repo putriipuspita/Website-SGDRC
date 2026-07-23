@@ -4,11 +4,11 @@ import { join } from 'path';
 // Konfigurasi Email
 const port = parseInt(process.env.EMAIL_PORT || '465');
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'mail.sgdrc-robotika.uinsgd.ac.id',
+  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
   port: port,
   secure: port === 465,
   auth: {
-    user: process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id',
+    user: process.env.EMAIL_USER || '',
     pass: process.env.EMAIL_PASS || ''
   },
   tls: {
@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const EMAIL_SENDER = process.env.EMAIL_USER || 'admin@sgdrc-robotika.uinsgd.ac.id';
+const EMAIL_SENDER = process.env.EMAIL_USER || '';
 
 // Tahun RealTime
 const TAHUN = new Date().getFullYear();
