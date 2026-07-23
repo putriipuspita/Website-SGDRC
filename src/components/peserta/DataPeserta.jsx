@@ -40,13 +40,13 @@ const BarisDetailPeserta = ({ label, value }) => (
 
     {/* Label dan Titik Dua */}
     <div className="w-[100px] md:w-[120px] flex-shrink-0 flex justify-between">
-      <span className="text-[12.2px] font-bold text-slate-950 leading-relaxed">{label}</span>
-      <span className="text-[12.2px] font-bold text-slate-950 mr-2 md:mr-4 leading-relaxed">:</span>
+      <span className="text-[12.2px] md:text-[11.9px] font-bold text-slate-950 leading-relaxed">{label}</span>
+      <span className="text-[12.2px] md:text-[11.9px] font-bold text-slate-950 mr-2 md:mr-4 leading-relaxed">:</span>
     </div>
 
     {/* Nilai */}
     <div className="flex-1 text-left">
-      <span className="text-[12.2px] font-bold leading-relaxed block text-slate-950">{value || "-"}</span>
+      <span className="text-[12.2px] md:text-[11.9px] font-bold leading-relaxed block text-slate-950">{value || "-"}</span>
     </div>
   </div>
 );
