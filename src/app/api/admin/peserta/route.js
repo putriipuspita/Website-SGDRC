@@ -145,7 +145,7 @@ export async function PATCH(req) {
     kirimEmailNotifikasi(peserta[0].email, peserta[0].nama_tim || peserta[0].nama_peserta1, status, catatan, host, linkBukti, isKoreksi);
 
     // Respons Berhasil
-    return new Response(JSON.stringify({ pesan: "Status berhasil diupdate" }), { status: 200 });
+    return new Response(JSON.stringify({ pesan: "Status berhasil diupdate", pathBukti: linkBukti }), { status: 200 });
 
     // Error Server
   } catch (error) {

@@ -7,6 +7,7 @@ import { CheckCircle, AlertCircle, ShieldCheck, XCircle, Loader2, RotateCcw, Ale
 import toast from 'react-hot-toast';
 import ModalBase from '../../element/ModalBase';
 import Konfirmasi from '../../element/Konfirmasi';
+import PopUpSuksesWa from '../../element/PopUpSuksesWa';
 
 // Import Utility
 import { fetchDenganToken } from '../../../lib/apiClient';
@@ -49,6 +50,10 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
   const [fileRefund, setFileRefund] = useState(null);
   const [previewRefund, setPreviewRefund] = useState(null);
   const [apakahTampilkanSuksesWa, setApakahTampilkanSuksesWa] = useState(false);
+  const [waPopupTerbuka, setWaPopupTerbuka] = useState(false);
+  const [waPopupStatus, setWaPopupStatus] = useState('success');
+  const [waPopupLinkBuktiRefund, setWaPopupLinkBuktiRefund] = useState('');
+  const [waPopupCatatan, setWaPopupCatatan] = useState('');
   const [grupWaPeserta, setGrupWaPeserta] = useState('');
 
   // Ambil Link Grup WA Peserta dari pengaturan saat modal dibuka
@@ -109,6 +114,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
 
       // Cek Satus
       if (res.ok) {
+        const dataRes = await res.json();
         let pesan = "Status Berhasil Diperbarui";
         if (statusBaru === 'success') pesan = "Peserta Berhasil Diverifikasi!";
         if (statusBaru === 'rejected') pesan = "Pendaftaran Ditolak";
@@ -118,16 +124,19 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
         toast.success(pesan);
         if (onSuccess) onSuccess();
 
-        if (statusBaru === 'success' && dataPeserta.whatsapp) {
-          // Jangan langsung tutup, tampilkan layar sukses WA
-          setApakahTampilkanSuksesWa(true);
-        } else {
-          setApakahTerbuka(false);
-          // Reset state
-          setApakahProsesRefund(false);
-          setFileRefund(null);
-          setPreviewRefund(null);
+        setApakahTerbuka(false);
+
+        if (dataPeserta.whatsapp && statusBaru !== 'refund') {
+          setWaPopupStatus(statusBaru);
+          setWaPopupLinkBuktiRefund(dataRes.pathBukti || '');
+          setWaPopupCatatan(catatan);
+          setWaPopupTerbuka(true);
         }
+
+        // Reset state
+        setApakahProsesRefund(false);
+        setFileRefund(null);
+        setPreviewRefund(null);
       }
       // Jika Gagal
       else {
@@ -216,36 +225,13 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
       <ModalBase
         apakahTerbuka={apakahTerbuka && !apakahKonfirmasiReset}
         setApakahTerbuka={setApakahTerbuka}
-        judul={apakahTampilkanSuksesWa ? "Verifikasi Berhasil" : dataPeserta.nama}
-        subJudul={apakahTampilkanSuksesWa ? "Kirim Notifikasi" : dataPeserta.lomba}
+        judul={dataPeserta.nama}
+        subJudul={dataPeserta.lomba}
         icon={ShieldCheck}
         iconColor="text-emerald-600"
         lebar="max-w-[380px]"
         footer={
-          apakahTampilkanSuksesWa ? (
-            <div className="flex flex-col gap-2 w-full">
-              {/* Tombol Kirim WA */}
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => {
-                  setApakahTerbuka(false);
-                }}
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 text-center"
-              >
-                Kirim Notifikasi WhatsApp
-              </a>
-              {/* Tombol Tutup */}
-              <button
-                onClick={() => setApakahTerbuka(false)}
-                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-950 rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95"
-              >
-                Tutup & Selesai
-              </button>
-            </div>
-          ) : (
-            <div className="flex gap-3 w-full">
+          <div className="flex gap-3 w-full">
               {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
                 // Container Tombol
                 <div className="flex gap-3 w-full">
@@ -341,24 +327,10 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 </>
               )}
             </div>
-          )
         }
       >
         {/* Container Isi Kontent */}
-        {apakahTampilkanSuksesWa ? (
-          <div className="flex flex-col items-center justify-center pt-1 pb-3 text-center space-y-2.5 animate-in fade-in-50 duration-300">
-            <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-100">
-              <CheckCircle size={32} />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-black text-slate-950 uppercase tracking-wide">Verifikasi Berhasil!</h3>
-              <p className="text-[12.2px] font-bold text-slate-950 leading-relaxed max-w-[280px]">
-                Pendaftaran <span className="text-slate-900 font-black">"{dataPeserta.nama}"</span> telah berhasil diverifikasi. Silakan kirimkan notifikasi WA ke peserta.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-5">
+        <div className="space-y-5">
             {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
               // Container Bukti
               <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
@@ -488,8 +460,20 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
               </div>
             )}
           </div>
-        )}
       </ModalBase>
+
+      {/* Pop Up Sukses WhatsApp (Modular, tanpa header biru) */}
+      <PopUpSuksesWa
+        apakahTerbuka={waPopupTerbuka}
+        setApakahTerbuka={setWaPopupTerbuka}
+        status={waPopupStatus}
+        namaPeserta={dataPeserta.nama}
+        namaTim={dataPeserta.namaTim}
+        namaLomba={dataPeserta.lomba}
+        whatsapp={dataPeserta.whatsapp}
+        catatan={waPopupCatatan}
+        grupWaPeserta={grupWaPeserta}
+      />
     </>
   );
 };

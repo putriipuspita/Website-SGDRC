@@ -120,7 +120,7 @@ const InputFilePendaftaran = ({ id, label, file, ikonSrc, ikonAlt, bgIkon, accep
 };
 
 // Sub-Komponen untuk Input Teks agar kode pendaftaran lebih ringkas dan efisien
-const InputTeksPendaftaran = ({ label, type = "text", name, value, onChange, placeholder }) => {
+const InputTeksPendaftaran = ({ label, type = "text", name, value, onChange, placeholder, autocomplete }) => {
   return (
     <div>
       <label className="block text-[12.5px] font-bold text-black tracking-normal mb-2">{label}</label>
@@ -130,6 +130,7 @@ const InputTeksPendaftaran = ({ label, type = "text", name, value, onChange, pla
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        autoComplete={autocomplete}
         className="w-full px-4 py-2.5 sm:py-1.5 rounded-lg border-2 border-gray-300 focus:border-[#16B9FF] focus:ring-0 outline-none transition-all font-sans font-bold text-[12.5px] text-black placeholder:text-gray-400 placeholder:font-normal placeholder:text-[11.5px]"
       />
     </div>
@@ -173,6 +174,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [tipeFilePreview, setTipeFilePreview] = useState('');
   const [pengaturan, setPengaturan] = useState(null);
+  const [apakahPopUpSuksesTerbuka, setApakahPopUpSuksesTerbuka] = useState(false);
 
   // Mengambil Data Pengaturan Dari Database
   React.useEffect(() => {
@@ -260,7 +262,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
       const formData = new FormData();
       formData.append('lomba_id', lomba.id);
       Object.keys(dataFormulir).forEach(k => formData.append(k, dataFormulir[k]));
-      
+
       // Kompres seluruh file secara asinkron di browser sebelum diupload
       for (const k of Object.keys(berkas)) {
         if (berkas[k]) {
@@ -277,8 +279,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
 
       // Jika Formulir Berhasil Di Kirim
       if (res.ok) {
-        toast.success('Pendaftaran Berhasil! Sedang diproses admin.');
-        setTimeout(() => kembali(), 1500);
+        setApakahPopUpSuksesTerbuka(true);
       }
       // Jika Formulir Gagal Di Kirim
       else {
@@ -329,6 +330,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   value={dataFormulir.namaTim}
                   onChange={tanganiPerubahanInput}
                   placeholder="Contoh: Tim Inovator"
+                  autocomplete="off"
                 />
               )}
 
@@ -341,6 +343,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                   value={dataFormulir[`peserta${nomor}`] || ''}
                   onChange={tanganiPerubahanInput}
                   placeholder={`Nama Lengkap Peserta ${nomor}${(maxAnggota === 3 && nomor === 3) ? ' (Opsional)' : ''}`}
+                  autocomplete="off"
                 />
               ))}
 
@@ -387,16 +390,16 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                       }
                     } else {
                       const mentah = teksJenjang
-                        .split(/ - |, | dan | & | \/ /i)
+                        .split(/\s*-\s*|,\s*|\s+dan\s+|\s+&\s+|\s*\/\s*/i)
                         .map(item => item.trim())
                         .filter(item => item !== "");
-                      
+
                       daftar = mentah.map(item => {
                         const low = item.toLowerCase();
                         if (low.includes('mahasiswa') || low.includes('perguruan tinggi')) return 'Perguruan Tinggi';
-                        if (low.includes('sd') || low.includes('mi')) return 'SD';
-                        if (low.includes('smp') || low.includes('mts')) return 'SMP';
-                        if (low.includes('sma') || low.includes('smk') || low.includes('ma')) return 'SMA';
+                        if (low.includes('sd') || low.includes('mi')) return 'SD / MI';
+                        if (low.includes('smp') || low.includes('mts')) return 'SMP / MTS';
+                        if (low.includes('sma') || low.includes('smk') || low.includes('ma') || low === 'k') return 'SMA / SMK / MA';
                         return item;
                       });
                     }
@@ -428,7 +431,7 @@ const FormPendaftaran = ({ lomba, kembali }) => {
 
             {/* Container Upload Berkas */}
             <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/60 mb-6 animate-in zoom-in-95 duration-700">
-               <div className="space-y-4">
+              <div className="space-y-4">
                 {/* Upload Kartu Tanda Siswa */}
                 <InputFilePendaftaran
                   id="kartuSiswa"
@@ -574,6 +577,37 @@ const FormPendaftaran = ({ lomba, kembali }) => {
                 />
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pop Up Sukses Pendaftaran */}
+      {apakahPopUpSuksesTerbuka && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300">
+          {/* Backdrop (tanpa blur) */}
+          <div className="absolute inset-0 bg-slate-900/50"></div>
+
+          {/* Modal Box */}
+          <div className="relative bg-white rounded-3xl p-6 md:p-8 shadow-2xl max-w-sm w-full text-center flex flex-col items-center animate-in zoom-in-95 duration-300 border border-slate-150">
+            {/* Title */}
+            <h3 className="text-[16.5px] md:text-[17.5px] font-bold text-slate-800 uppercase tracking-tight mb-4 mt-2">
+              Pendaftaran Berhasil Dikirim
+            </h3>
+
+            {/* Description */}
+            <p className="text-slate-950 text-[12.6px] leading-[1.8em] mb-6 font-medium">
+              Terima kasih telah melakukan pendaftaran. Data akan segera diverifikasi oleh admin. Informasi mengenai hasil verifikasi akan dikirim melalui <span className="font-bold text-slate-950">Email</span> dan <span className="font-bold text-slate-950">WhatsApp</span> yang telah didaftarkan.</p>
+
+            {/* Action Button */}
+            <button
+              onClick={() => {
+                setApakahPopUpSuksesTerbuka(false);
+                kembali();
+              }}
+              className="w-full py-3 bg-[#0B255D] hover:bg-blue-600 active:scale-[0.98] text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-blue-900/10"
+            >
+              Kembali ke Dashboard
+            </button>
           </div>
         </div>
       )}

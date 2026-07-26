@@ -92,7 +92,7 @@ INSERT INTO `lomba_dashboard` (`id`, `nama`, `jenjang`, `harga`, `tanggal`, `tim
 (5, 'WEDO 2.0', '3 SD - 6 SD', 'Rp. 175.000', '01 November 2026', '1 Orang', '/aset/lomba/wedo.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (6, 'PROJECT INNOVATIVE', 'SMP/MTS - SMA/K/MA', 'Rp. 200.000', '02 November 2026', '1 - 3 Orang', '/aset/lomba/project innovative.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (7, 'LINE FOLLOWER JUNIOR', 'SD/MI - SMP/MTS', 'Rp. 150.000', '01 November 2026', '2 Orang', '/aset/lomba/line follower.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
-(8, 'LINE FOLLOWER SENIOR', 'SMA/K/MA- Mahasiswa', 'Rp. 150.000', '01 November 2026', '2 Orang', '/aset/lomba/line follower.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
+(8, 'LINE FOLLOWER SENIOR', 'SMA/K/MA - Mahasiswa', 'Rp. 150.000', '01 November 2026', '2 Orang', '/aset/lomba/line follower.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (9, 'TRANSPORTER', 'Mahasiswa', 'Rp. 150.000', '02 November 2026', '2 Orang', '/aset/lomba/transporter.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6');
 
 -- ===================================================

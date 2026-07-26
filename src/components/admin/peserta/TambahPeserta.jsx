@@ -142,10 +142,19 @@ const TambahPeserta = ({ apakahTerbuka, setApakahTerbuka, slugLomba, lombaInfo, 
         daftar = ['SD'];
       }
     } else {
-      daftar = teksJenjang
-        .split(/ - |, | dan | & /i)
+      const mentah = teksJenjang
+        .split(/\s*-\s*|,\s*|\s+dan\s+|\s+&\s+|\s*\/\s*/i)
         .map(item => item.trim())
         .filter(item => item !== "");
+
+      daftar = mentah.map(item => {
+        const low = item.toLowerCase();
+        if (low.includes('mahasiswa') || low.includes('perguruan tinggi')) return 'Perguruan Tinggi';
+        if (low.includes('sd') || low.includes('mi')) return 'SD / MI';
+        if (low.includes('smp') || low.includes('mts')) return 'SMP / MTS';
+        if (low.includes('sma') || low.includes('smk') || low.includes('ma') || low === 'k') return 'SMA / SMK / MA';
+        return item;
+      });
     }
 
     return [...new Set(daftar)];
