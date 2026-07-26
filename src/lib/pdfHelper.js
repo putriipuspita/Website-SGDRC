@@ -147,35 +147,35 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
   ctx.font = `${getFs(config.size_nomor)}px "Montserrat"`;
   ctx.fillText(`Nomor: ${nomorSurat}`, img.width / 2, img.height * (config.y_nomor / 100));
 
-  // Nama (Mendukung baris baru & pembungkusan otomatis dengan line height yang lebih longgar)
-  ctx.font = `bold ${getFs(config.size_nama)}px "${config.font_nama || 'Cinzel'}"`;
+  // Nama (Dibuat fleksibel menyesuaikan lebar garis secara dinamis dalam 1 baris)
+  const fontSizeNamaOriginal = getFs(config.size_nama);
+  let fontSizeNama = fontSizeNamaOriginal;
+  ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+
   const nameUpper = (nama || "").toUpperCase();
-  let lines = [];
-  if (nameUpper.includes('\n')) {
-    lines = nameUpper.split('\n');
-  } else if (nameUpper.length > 28 && nameUpper.includes(' ')) {
-    const words = nameUpper.split(' ');
-    let currentLine = '';
-    words.forEach(word => {
-      if ((currentLine + ' ' + word).trim().length > 25) {
-        lines.push(currentLine.trim());
-        currentLine = word;
-      } else {
-        currentLine = (currentLine + ' ' + word).trim();
-      }
-    });
-    if (currentLine) lines.push(currentLine);
-  } else {
-    lines = [nameUpper];
+  const maxLebarGaris = img.width * 0.66; // Batas lebar garis horizontal
+  const maxLebarKertas = img.width * 0.82; // Batas aman maksimal agar tidak meluber keluar kertas (82% lebar sertifikat)
+
+  // Lapis 1: Kecilkan font maksimal 4px agar pas dengan garis horizontal
+  const minFontSizeEstetika = Math.max(fontSizeNamaOriginal - 4, 10);
+  let lebarNama = ctx.measureText(nameUpper).width;
+  while (lebarNama > maxLebarGaris && fontSizeNama > minFontSizeEstetika) {
+    fontSizeNama -= 0.5;
+    ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+    lebarNama = ctx.measureText(nameUpper).width;
   }
 
-  const fontSizeNama = getFs(config.size_nama);
-  const lineHeight = fontSizeNama * 1.50; // Jarak antar baris lebih longgar (1.5x)
-  const startY = img.height * (config.y_nama / 100);
-  
-  lines.forEach((line, index) => {
-    ctx.fillText(line, img.width / 2, startY + (index * lineHeight));
-  });
+  // Lapis 2: Jika masih meluber melebihi batas kertas, kecilkan lebih jauh tanpa batasan 4px demi keamanan
+  while (lebarNama > maxLebarKertas && fontSizeNama > 8) {
+    fontSizeNama -= 0.5;
+    ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+    lebarNama = ctx.measureText(nameUpper).width;
+  }
+
+  // Koreksi posisi Y agar bagian bawah nama tetap sejajar di atas garis (tidak melayang ke atas)
+  const offset = fontSizeNamaOriginal - fontSizeNama;
+  const startY = (img.height * (config.y_nama / 100)) + offset;
+  ctx.fillText(nameUpper, img.width / 2, startY);
 
   // Teks status sertifikat
   if (jenis === 'PESERTA') {

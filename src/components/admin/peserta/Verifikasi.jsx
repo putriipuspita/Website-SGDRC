@@ -48,6 +48,26 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
   const [apakahKonfirmasiReset, setApakahKonfirmasiReset] = useState(false);
   const [fileRefund, setFileRefund] = useState(null);
   const [previewRefund, setPreviewRefund] = useState(null);
+  const [apakahTampilkanSuksesWa, setApakahTampilkanSuksesWa] = useState(false);
+  const [grupWaPeserta, setGrupWaPeserta] = useState('');
+
+  // Ambil Link Grup WA Peserta dari pengaturan saat modal dibuka
+  React.useEffect(() => {
+    const ambilGrupPeserta = async () => {
+      try {
+        const res = await fetch('/api/pengaturan', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setGrupWaPeserta(data.grup_wa_peserta || '');
+        }
+      } catch (err) {
+        console.error("Gagal mengambil grup_wa_peserta:", err);
+      }
+    };
+    if (apakahTerbuka) {
+      ambilGrupPeserta();
+    }
+  }, [apakahTerbuka]);
 
   // Reset semua state saat modal ditutup
   React.useEffect(() => {
@@ -58,6 +78,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
       setApakahKonfirmasiReset(false);
       setFileRefund(null);
       setPreviewRefund(null);
+      setApakahTampilkanSuksesWa(false);
     }
   }, [apakahTerbuka]);
 
@@ -96,12 +117,17 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
         // Tampilkan Notifikasi Sukses
         toast.success(pesan);
         if (onSuccess) onSuccess();
-        setApakahTerbuka(false);
 
-        // Reset state
-        setApakahProsesRefund(false);
-        setFileRefund(null);
-        setPreviewRefund(null);
+        if (statusBaru === 'success' && dataPeserta.whatsapp) {
+          // Jangan langsung tutup, tampilkan layar sukses WA
+          setApakahTampilkanSuksesWa(true);
+        } else {
+          setApakahTerbuka(false);
+          // Reset state
+          setApakahProsesRefund(false);
+          setFileRefund(null);
+          setPreviewRefund(null);
+        }
       }
       // Jika Gagal
       else {
@@ -152,6 +178,23 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
     setPreviewRefund(null);
   };
 
+  // Fungsi membersihkan dan memformat nomor HP ke standar WhatsApp internasional (62)
+  const formatPhoneNumber = (num) => {
+    if (!num) return '';
+    let cleaned = num.replace(/\D/g, ''); // Hanya ambil angka
+    if (cleaned.startsWith('0')) {
+      cleaned = '62' + cleaned.substring(1);
+    }
+    return cleaned;
+  };
+
+  // Mengirim Whatsapp Notifikasi Verifikasi
+  const apakahTim = !!dataPeserta.namaTim && dataPeserta.namaTim.trim() !== '';
+  const subjekTimPesan = apakahTim ? `Tim *${dataPeserta.nama}*` : `*${dataPeserta.nama}*`;
+
+  const textMsg = `Halo, *${dataPeserta.nama}* 👋\n\nSelamat! Pendaftaran ${subjekTimPesan} pada *Sunan Gunung Djati Robotic Competition (SGDRC) 2026* telah *berhasil diverifikasi* oleh panitia.  🎉\n\nSilakan bergabung ke *Grup Umum Peserta SGDRC 2026* melalui tautan berikut agar seluruh informasi dan pengumuman selama pelaksanaan kompetisi tidak terlewat.\n\n🔗 ${grupWaPeserta}\n\nSelanjutnya, silakan login ke *Dashboard Website SGDRC* untuk:\n\n* 📄 Mengunduh *Bukti Pendaftaran Resmi*.\n* 👥 Bergabung ke *Grup WhatsApp sesuai cabang perlombaan* yang diikuti.\n\nTerima kasih telah menjadi bagian dari *SGDRC 2026*.\n\nSampai jumpa di arena kompetisi! 🚀\n\n—\n*Panitia Sunan Gunung Djati Robotic Competition (SGDRC) 2026*`;
+  const waUrl = `https://api.whatsapp.com/send?phone=${formatPhoneNumber(dataPeserta.whatsapp)}&text=${encodeURIComponent(textMsg)}`;
+
   return (
     <>
       {/* Konfirmasi Hapus */}
@@ -173,138 +216,152 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
       <ModalBase
         apakahTerbuka={apakahTerbuka && !apakahKonfirmasiReset}
         setApakahTerbuka={setApakahTerbuka}
-        judul={dataPeserta.nama}
-        subJudul={dataPeserta.lomba}
+        judul={apakahTampilkanSuksesWa ? "Verifikasi Berhasil" : dataPeserta.nama}
+        subJudul={apakahTampilkanSuksesWa ? "Kirim Notifikasi" : dataPeserta.lomba}
         icon={ShieldCheck}
         iconColor="text-emerald-600"
         lebar="max-w-[380px]"
         footer={
-          <div className="flex gap-3 w-full">
-            {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
-              // Container Tombol
-              <div className="flex gap-3 w-full">
-                {/* Tombol Reset Status */}
-                <button
-                  onClick={() => setApakahKonfirmasiReset(true)}
-                  disabled={loading}
-                  className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-rose-100 active:scale-95 disabled:opacity-50"
-                >
-                  Reset Status
-                </button>
-
-                {/* Tombol Edit Bukti */}
-                <button
-                  onClick={() => setApakahProsesRefund(true)}
-                  className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-blue-100 active:scale-95 shadow-sm"
-                >
-                  Edit Bukti
-                </button>
-              </div>
-
-              // Kondisi Status Refund
-            ) : dataPeserta.status === 'Refunded' && apakahProsesRefund ? (
-              <>
-                {/* Tombol Batal */}
-                <button
-                  onClick={tanganiBatalRefund}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
-                >
-                  Batal
-                </button>
-
-                {/* Tombol Simpan */}
-                <button
-                  onClick={() => tanganiVerifikasi('refund')}
-                  disabled={loading || !fileRefund}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 disabled:opacity-50"
-                >
-                  {loading ? <Loader2 className="animate-spin" size={16} /> : "Simpan"}
-                </button>
-              </>
-
-              // Mode Penolakan
-            ) : apakahMenolak ? (
-              <>
-                <button onClick={() => setApakahMenolak(false)} className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95">Batal</button>
-                <button onClick={() => tanganiVerifikasi('rejected')} disabled={loading} className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black transition-all shadow-lg flex items-center justify-center uppercase tracking-wide active:scale-95 disabled:opacity-50">
-                  {loading ? <Loader2 className="animate-spin" size={16} /> : "Kirim Penolakan"}
-                </button>
-              </>
-
-              // Mode Verifikasi
-            ) : apakahProsesRefund ? (
-              <>
-                {/* Tombol Batal */}
-                <button
-                  onClick={tanganiBatalRefund}
-                  className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
-                >
-                  Batal
-                </button>
-
-                {/* Tombol Refund */}
-                <button
-                  onClick={() => tanganiVerifikasi('refund')}
-                  disabled={loading || !fileRefund}
-                  className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 disabled:opacity-50"
-                >
-                  {loading ? <Loader2 className="animate-spin" size={16} /> : "Refund"}
-                </button>
-              </>
-            ) : dataPeserta.status === 'Refunded' ? (
-              <button onClick={() => setApakahTerbuka(false)} className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95 shadow-lg">Tutup</button>
-            ) : (
-              <>
-                {/* Tombol Tolak */}
-                <button onClick={() => { setApakahMenolak(true); setApakahProsesRefund(false); }} className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-rose-100 shadow-sm">
-                  Tolak
-                </button>
-
-                {dataPeserta.status === 'Terverifikasi' ? (
-                  /* Tombol Refund Hanya Muncul Jika Sudah Terverifikasi */
-                  <button onClick={() => { setApakahProsesRefund(true); setApakahMenolak(false); }} disabled={loading} className="flex-1 py-2.5 bg-orange-50 hover:bg-orange-500 text-orange-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-orange-100 shadow-sm flex items-center justify-center">
-                    Refund
+          apakahTampilkanSuksesWa ? (
+            <div className="flex flex-col gap-2 w-full">
+              {/* Tombol Kirim WA */}
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => {
+                  setApakahTerbuka(false);
+                }}
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 text-center"
+              >
+                Kirim Notifikasi WhatsApp
+              </a>
+              {/* Tombol Tutup */}
+              <button
+                onClick={() => setApakahTerbuka(false)}
+                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-[10px] font-bold transition-all uppercase tracking-wide active:scale-95"
+              >
+                Tutup & Selesai
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-3 w-full">
+              {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
+                // Container Tombol
+                <div className="flex gap-3 w-full">
+                  {/* Tombol Reset Status */}
+                  <button
+                    onClick={() => setApakahKonfirmasiReset(true)}
+                    disabled={loading}
+                    className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-rose-100 active:scale-95 disabled:opacity-50"
+                  >
+                    Reset Status
                   </button>
-                ) : (
 
-                  /* Tombol Verifikasi Muncul Jika Belum Terverifikasi / Ditolak */
-                  <button onClick={() => { setApakahMenolak(false); setApakahProsesRefund(false); tanganiVerifikasi('success'); }} disabled={loading} className="flex-1 py-2.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-emerald-100 shadow-sm flex items-center justify-center">
-                    {loading ? <Loader2 className="animate-spin" size={16} /> : "Verifikasi"}
+                  {/* Tombol Edit Bukti */}
+                  <button
+                    onClick={() => setApakahProsesRefund(true)}
+                    className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-normal border border-blue-100 active:scale-95 shadow-sm"
+                  >
+                    Edit Bukti
                   </button>
-                )}
-              </>
-            )}
-          </div>
+                </div>
+
+                // Kondisi Status Refund
+              ) : dataPeserta.status === 'Refunded' && apakahProsesRefund ? (
+                <>
+                  {/* Tombol Batal */}
+                  <button
+                    onClick={tanganiBatalRefund}
+                    className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
+                  >
+                    Batal
+                  </button>
+
+                  {/* Tombol Simpan */}
+                  <button
+                    onClick={() => tanganiVerifikasi('refund')}
+                    disabled={loading || !fileRefund}
+                    className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 className="animate-spin" size={16} /> : "Simpan"}
+                  </button>
+                </>
+
+                // Mode Penolakan
+              ) : apakahMenolak ? (
+                <>
+                  <button onClick={() => setApakahMenolak(false)} className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95">Batal</button>
+                  <button onClick={() => tanganiVerifikasi('rejected')} disabled={loading} className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] font-black transition-all shadow-lg flex items-center justify-center uppercase tracking-wide active:scale-95 disabled:opacity-50">
+                    {loading ? <Loader2 className="animate-spin" size={16} /> : "Kirim Penolakan"}
+                  </button>
+                </>
+
+                // Mode Verifikasi
+              ) : apakahProsesRefund ? (
+                <>
+                  {/* Tombol Batal */}
+                  <button
+                    onClick={tanganiBatalRefund}
+                    className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-950 font-bold py-2.5 rounded-xl text-[12px] uppercase transition-all active:scale-95"
+                  >
+                    Batal
+                  </button>
+
+                  {/* Tombol Refund */}
+                  <button
+                    onClick={() => tanganiVerifikasi('refund')}
+                    disabled={loading || !fileRefund}
+                    className="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-[10.5px] font-black transition-all shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2 uppercase tracking-wide active:scale-95 disabled:opacity-50"
+                  >
+                    {loading ? <Loader2 className="animate-spin" size={16} /> : "Refund"}
+                  </button>
+                </>
+              ) : dataPeserta.status === 'Refunded' ? (
+                <button onClick={() => setApakahTerbuka(false)} className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95 shadow-lg">Tutup</button>
+              ) : (
+                <>
+                  {/* Tombol Tolak */}
+                  <button onClick={() => { setApakahMenolak(true); setApakahProsesRefund(false); }} className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-rose-100 shadow-sm">
+                    Tolak
+                  </button>
+
+                  {dataPeserta.status === 'Terverifikasi' ? (
+                    /* Tombol Refund Hanya Muncul Jika Sudah Terverifikasi */
+                    <button onClick={() => { setApakahProsesRefund(true); setApakahMenolak(false); }} disabled={loading} className="flex-1 py-2.5 bg-orange-50 hover:bg-orange-500 text-orange-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-orange-100 shadow-sm flex items-center justify-center">
+                      Refund
+                    </button>
+                  ) : (
+
+                    /* Tombol Verifikasi Muncul Jika Belum Terverifikasi / Ditolak */
+                    <button onClick={() => { setApakahMenolak(false); setApakahProsesRefund(false); tanganiVerifikasi('success'); }} disabled={loading} className="flex-1 py-2.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-600 hover:text-white rounded-xl text-[10px] font-black transition-all uppercase tracking-tight active:scale-95 border border-emerald-100 shadow-sm flex items-center justify-center">
+                      {loading ? <Loader2 className="animate-spin" size={16} /> : "Verifikasi"}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          )
         }
       >
         {/* Container Isi Kontent */}
-        <div className="space-y-5">
-          {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
-
-            // Container Bukti
-            <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
-              {/* Container Bukti Pembayaran */}
-              <div className="space-y-2 text-left">
-                {/* Label */}
-                <label className="text-[10px] font-black text-slate-950 block ml-1">Bukti Pembayaran Peserta</label>
-
-                {/* Container Gambar Bukti */}
-                <GambarZoom src={dataPeserta.bukti} />
-              </div>
-
-              {/* Container Bukti Refund */}
-              <div className="space-y-2 text-left">
-                {/* Label */}
-                <label className="text-[10px] font-black text-orange-500 block ml-1">Bukti Transfer Refund Panitia</label>
-
-                {/* Container Gambar Refund */}
-                <GambarZoom src={dataPeserta.buktiRefund} className="border-orange-100 bg-orange-50" />
-              </div>
+        {apakahTampilkanSuksesWa ? (
+          <div className="flex flex-col items-center justify-center py-6 text-center space-y-4 animate-in fade-in-50 duration-300">
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-100">
+              <CheckCircle size={32} />
             </div>
-          ) :
-            // Mode Proses Refund
-            apakahProsesRefund ? (
-              <div className="animate-in slide-in-from-top-2 duration-300 space-y-4">
+            <div className="space-y-2">
+              <h3 className="text-sm font-black text-slate-950 uppercase tracking-wide">Verifikasi Berhasil!</h3>
+              <p className="text-[11.5px] font-bold text-slate-950 leading-relaxed max-w-[280px]">
+                Pendaftaran <span className="text-slate-900 font-black">"{dataPeserta.nama}"</span> telah berhasil diverifikasi. Silakan kirimkan notifikasi WA ke peserta.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-5">
+            {dataPeserta.status === 'Refunded' && !apakahProsesRefund ? (
+              // Container Bukti
+              <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
                 {/* Container Bukti Pembayaran */}
                 <div className="space-y-2 text-left">
                   {/* Label */}
@@ -317,19 +374,59 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                 {/* Container Bukti Refund */}
                 <div className="space-y-2 text-left">
                   {/* Label */}
-                  <label className={`text-[11px] font-black block ml-1 ${dataPeserta.status === 'Refunded' ? 'text-blue-600' : 'text-orange-600'}`}>
-                    {dataPeserta.status === 'Refunded' ? 'Upload Bukti Koreksi Baru' : 'Upload Bukti Transfer Refund'}
-                  </label>
+                  <label className="text-[10px] font-black text-orange-500 block ml-1">Bukti Transfer Refund Panitia</label>
 
-                  {/* Container Input File */}
-                  <div className="relative group">
-                    {previewRefund ? (
-                      <div className="space-y-2">
-                        {/* Container Gambar Zoom */}
-                        <GambarZoom src={previewRefund} alt="Preview Bukti Refund" scale="group-hover:scale-[2.5]" />
-                        
-                        {/* Tombol Ganti File */}
-                        <div className="relative border border-dashed border-slate-300 rounded-xl py-2 px-3 text-center bg-slate-50 hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                  {/* Container Gambar Refund */}
+                  <GambarZoom src={dataPeserta.buktiRefund} className="border-orange-100 bg-orange-50" />
+                </div>
+              </div>
+            ) :
+              // Mode Proses Refund
+              apakahProsesRefund ? (
+                <div className="animate-in slide-in-from-top-2 duration-300 space-y-4">
+                  {/* Container Bukti Pembayaran */}
+                  <div className="space-y-2 text-left">
+                    {/* Label */}
+                    <label className="text-[10px] font-black text-slate-950 block ml-1">Bukti Pembayaran Peserta</label>
+
+                    {/* Container Gambar Bukti */}
+                    <GambarZoom src={dataPeserta.bukti} />
+                  </div>
+
+                  {/* Container Bukti Refund */}
+                  <div className="space-y-2 text-left">
+                    {/* Label */}
+                    <label className={`text-[11px] font-black block ml-1 ${dataPeserta.status === 'Refunded' ? 'text-blue-600' : 'text-orange-600'}`}>
+                      {dataPeserta.status === 'Refunded' ? 'Upload Bukti Koreksi Baru' : 'Upload Bukti Transfer Refund'}
+                    </label>
+
+                    {/* Container Input File */}
+                    <div className="relative group">
+                      {previewRefund ? (
+                        <div className="space-y-2">
+                          {/* Container Gambar Zoom */}
+                          <GambarZoom src={previewRefund} alt="Preview Bukti Refund" scale="group-hover:scale-[2.5]" />
+
+                          {/* Tombol Ganti File */}
+                          <div className="relative border border-dashed border-slate-300 rounded-xl py-2 px-3 text-center bg-slate-50 hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  setFileRefund(file);
+                                  setPreviewRefund(URL.createObjectURL(file));
+                                }
+                              }}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                            />
+                            <RotateCcw size={12} className="text-slate-500" />
+                            <span className="text-[10.5px] font-bold text-slate-700">Ganti File</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
                           <input
                             type="file"
                             accept="image/*"
@@ -340,76 +437,58 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
                                 setPreviewRefund(URL.createObjectURL(file));
                               }
                             }}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                           />
-                          <RotateCcw size={12} className="text-slate-500" />
-                          <span className="text-[10.5px] font-bold text-slate-700">Ganti File</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                              setFileRefund(file);
-                              setPreviewRefund(URL.createObjectURL(file));
-                            }
-                          }}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                        />
-                        {/* Container Upload Box */}
-                        <div className={`w-full p-8 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${
-                          dataPeserta.status === 'Refunded' ? 'border-blue-500 bg-blue-50' : 'border-orange-500 bg-orange-50'
-                        }`}>
-                          <div className={`p-4 text-white rounded-full shadow-lg ${dataPeserta.status === 'Refunded' ? 'bg-blue-500 shadow-blue-200' : 'bg-orange-500 shadow-orange-200'}`}>
-                            <RotateCcw size={24} />
+                          {/* Container Upload Box */}
+                          <div className={`w-full p-8 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${dataPeserta.status === 'Refunded' ? 'border-blue-500 bg-blue-50' : 'border-orange-500 bg-orange-50'
+                            }`}>
+                            <div className={`p-4 text-white rounded-full shadow-lg ${dataPeserta.status === 'Refunded' ? 'bg-blue-500 shadow-blue-200' : 'bg-orange-500 shadow-orange-200'}`}>
+                              <RotateCcw size={24} />
+                            </div>
+                            <p className="text-[10px] font-black text-slate-950 tracking-wider">
+                              {dataPeserta.status === 'Refunded' ? 'Pilih File Koreksi Baru' : 'Pilih File Bukti Transfer'}
+                            </p>
                           </div>
-                          <p className="text-[10px] font-black text-slate-950 tracking-wider">
-                            {dataPeserta.status === 'Refunded' ? 'Pilih File Koreksi Baru' : 'Pilih File Bukti Transfer'}
-                          </p>
-                        </div>
-                      </>
-                    )}
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              // Mode Awal ( Belum Ditolak dan Belum Refund )
-              <div className="space-y-2">
-                {/* Label */}
-                <label className="text-[11px] font-black text-slate-950 ml-1">Bukti Pembayaran</label>
+              ) : (
+                // Mode Awal ( Belum Ditolak dan Belum Refund )
+                <div className="space-y-2">
+                  {/* Label */}
+                  <label className="text-[11px] font-black text-slate-950 ml-1">Bukti Pembayaran</label>
 
-                {/* Container Gambar Bukti */}
-                <GambarZoom
-                  src={dataPeserta.bukti || "/aset/legal/bukti.jpg"}
-                  alt="Bukti"
-                  scale="group-hover:scale-[2.5]"
-                  onError={(e) => { e.target.src = "https://placehold.co/600x400/f8fafc/64748b?text=Gambar+Tidak+Ditemukan"; }}
+                  {/* Container Gambar Bukti */}
+                  <GambarZoom
+                    src={dataPeserta.bukti || "/aset/legal/bukti.jpg"}
+                    alt="Bukti"
+                    scale="group-hover:scale-[2.5]"
+                    onError={(e) => { e.target.src = "https://placehold.co/600x400/f8fafc/64748b?text=Gambar+Tidak+Ditemukan"; }}
+                  />
+                </div>
+              )}
+
+            {/* Container Alasan Menolak / Proses Refund */}
+            {dataPeserta.status === 'Refunded' ? null : apakahMenolak ? (
+              <div className="animate-in slide-in-from-top-2 duration-300">
+                <label className="text-[11px] font-black text-rose-600 ml-1 mb-2 block">Alasan Penolakan</label>
+                <textarea
+                  value={catatan}
+                  onChange={(e) => setCatatan(e.target.value)}
+                  placeholder="Contoh: Bukti transfer tidak terbaca atau nominal kurang..."
+                  className="w-full p-3 bg-rose-50 border-2 border-rose-100 rounded-xl text-xs font-bold text-rose-800 outline-none focus:border-rose-300 placeholder:text-[11px] placeholder:font-normal leading-relaxed min-h-[80px]"
                 />
               </div>
+            ) : (
+              <div className="flex items-center gap-2.5 p-3 bg-amber-50/70 rounded-xl border border-amber-100/50">
+                <AlertCircle className="text-amber-500 shrink-0" size={16} />
+                <p className="text-[10px] font-bold text-amber-700 leading-relaxed">Pastikan Nominal & Nama Pengirim Sudah Sesuai Sebelum Verifikasi.</p>
+              </div>
             )}
-
-          {/* Container Alasan Menolak / Proses Refund */}
-          {dataPeserta.status === 'Refunded' ? null : apakahMenolak ? (
-            <div className="animate-in slide-in-from-top-2 duration-300">
-              <label className="text-[11px] font-black text-rose-600 ml-1 mb-2 block">Alasan Penolakan</label>
-              <textarea
-                value={catatan}
-                onChange={(e) => setCatatan(e.target.value)}
-                placeholder="Contoh: Bukti transfer tidak terbaca atau nominal kurang..."
-                className="w-full p-3 bg-rose-50 border-2 border-rose-100 rounded-xl text-xs font-bold text-rose-800 outline-none focus:border-rose-300 placeholder:text-[11px] placeholder:font-normal leading-relaxed min-h-[80px]"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center gap-2.5 p-3 bg-amber-50/70 rounded-xl border border-amber-100/50">
-              <AlertCircle className="text-amber-500 shrink-0" size={16} />
-              <p className="text-[10px] font-bold text-amber-700 leading-relaxed">Pastikan Nominal & Nama Pengirim Sudah Sesuai Sebelum Verifikasi.</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </ModalBase>
     </>
   );

@@ -19,7 +19,7 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (1, 'judul_hero', 'SGDRC 2026', NULL),
 (2, 'deskripsi_hero', '“Sustainable Robotics Systems: Towards a Shared Future”', 'Slogan di bawah judul utama'),
 (3, 'tanggal_event', '2026-06-30 08:00:00', 'Target hitung mundur'),
-(4, 'wa_link_umum', 'https://wa.me/6289653263532', NULL),
+(4, 'wa_link_umum', 'https://wa.me/6289653263531', NULL),
 
 -- Rekening Bank
 (5, 'bank_nama', 'Bank BSI (Bank Syariah Indonesia)', NULL),
@@ -33,6 +33,7 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (11, 'path_cap', '/aset/legal/cap sgdrc.webp', NULL),
 (12, 'path_logo_robotika', '/aset/logo/robotika.webp', NULL),
 (13, 'path_logo_sgdrc', '/aset/logo/logo.webp', NULL),
+
 -- Sertifikat
 (14, 'sertifikat_peserta', '/aset/legal/peserta.webp', NULL),
 (15, 'sertifikat_juara', '/aset/legal/juara.webp', NULL),

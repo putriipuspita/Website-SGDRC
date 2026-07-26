@@ -128,8 +128,10 @@ const DataPending = () => {
                           setDataVerifikasi({
                             id: p.id,
                             nama: p.nama_tim || p.nama_peserta1,
+                            namaTim: p.nama_tim,
                             lomba: p.nama_lomba,
-                            bukti: p.file_bukti_bayar
+                            bukti: p.file_bukti_bayar,
+                            whatsapp: p.whatsapp
                           });
                           setApakahVerifikasiTerbuka(true);
                         }}

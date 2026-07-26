@@ -519,10 +519,12 @@ const PesertaLomba = () => {
                           setDataVerifikasi({
                             id: p.id,
                             nama: p.namaTim || p.peserta1,
+                            namaTim: p.namaTim,
                             lomba: namaLombaHeader,
                             bukti: p.bukti,
                             buktiRefund: p.buktiRefund,
-                            status: p.status
+                            status: p.status,
+                            whatsapp: p.whatsapp
                           });
                           setApakahVerifikasiTerbuka(true);
                         }}

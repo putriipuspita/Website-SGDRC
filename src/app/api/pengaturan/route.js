@@ -16,6 +16,7 @@ export async function GET() {
       bank_rekening: '1234567890',
       bank_atas_nama: `SGD RC ${new Date().getFullYear()}`,
       wa_link_umum: 'https://wa.me/628123456789',
+      grup_wa_peserta: 'https://chat.whatsapp.com/',
       ketua_pelaksana: 'Sarah Nurul Yakin',
       path_ttd: '/aset/legal/ttd putra.webp',
       path_cap: '/aset/legal/cap sgdrc.webp',

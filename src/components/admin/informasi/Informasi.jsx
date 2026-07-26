@@ -46,6 +46,7 @@ const Informasi = () => {
     deskripsi_hero: '',
     tanggal_event: '',
     wa_link_umum: '',
+    grup_wa_peserta: '',
     bank_nama: '',
     bank_rekening: '',
     bank_atas_nama: '',
@@ -80,6 +81,7 @@ const Informasi = () => {
 
           // Data Wa
           wa_link_umum: data.wa_link_umum || '',
+          grup_wa_peserta: data.grup_wa_peserta || '',
           whatsapp_list: data.whatsapp_list ? JSON.parse(data.whatsapp_list) : [],
 
           // Data Bank
