@@ -89,7 +89,7 @@ const ManajemenJuara = () => {
         dataTerverifikasi = dataTerverifikasi.map(tim => {
           const startIdxPeserta = currentGlobalPesertaIndex;
           const startIdxJuara = currentGlobalJuaraIndex;
-          const members = [tim.nama_peserta1, tim.nama_peserta2, tim.nama_peserta3].filter(n => n && n.trim() !== "");
+          const members = [tim.nama_peserta1, tim.nama_peserta2, tim.nama_peserta3].filter(n => n && n.trim() !== "" && n.trim() !== "-");
           currentGlobalPesertaIndex += members.length;
           if (tim.peringkat) {
             currentGlobalJuaraIndex += members.length;
@@ -175,7 +175,7 @@ const ManajemenJuara = () => {
 
       let pdf = null;
       for (const team of readyTeams) {
-        const members = [team.nama_peserta1, team.nama_peserta2, team.nama_peserta3].filter(n => n && n.trim() !== "");
+        const members = [team.nama_peserta1, team.nama_peserta2, team.nama_peserta3].filter(n => n && n.trim() !== "" && n.trim() !== "-");
         for (let i = 0; i < members.length; i++) {
 
           // Gambar Sertifikat Peserta
@@ -279,7 +279,7 @@ const ManajemenJuara = () => {
         const team = readyTeams[tIdx];
         const namaLomba = (team.nama_lomba || "LAINNYA").toUpperCase();
         const folderLomba = zip.folder(namaLomba);
-        const members = [team.nama_peserta1, team.nama_peserta2, team.nama_peserta3].filter(n => n && n.trim() !== "");
+        const members = [team.nama_peserta1, team.nama_peserta2, team.nama_peserta3].filter(n => n && n.trim() !== "" && n.trim() !== "-");
 
         for (let i = 0; i < members.length; i++) {
           const namaFile = `${members[i].replace(/[/\\?%*:|"<>]/g, '-')}.pdf`;
@@ -410,7 +410,7 @@ const ManajemenJuara = () => {
                 {/* Icon */}
                 <LayoutGrid className="absolute left-3 top-1/2 -translate-y-1/2 text-[#16B9FF]" size={14} />
 
-                 {/* Dropdown */}
+                {/* Dropdown */}
                 <select suppressHydrationWarning value={kategoriTerpilih} onChange={(e) => setKategoriTerpilih(e.target.value)} className="w-full pl-9 pr-10 py-2.5 bg-white border-2 border-slate-200 rounded-xl outline-none focus:border-[#16B9FF] transition-all text-[11.5px] lg:text-[10.8px] xl:text-[11.5px] 2xl:text-[12.2px] font-bold text-slate-950 appearance-none shadow-sm uppercase">
                   {daftarLomba.map(lomba => (
                     <option key={lomba.id} value={lomba.nama.toUpperCase()}>
@@ -435,7 +435,6 @@ const ManajemenJuara = () => {
                   onClick={() => {
                     const targetState = apakahSemuaAktif ? 0 : 1;
                     setDaftarPemenang(prev => prev.map(p => (p.nama_lomba || "").toUpperCase() === kategoriTerpilih.toUpperCase() ? { ...p, is_sertifikat_siap: targetState } : p));
-                    import('react-hot-toast').then(m => m.default.success(`Sertifikat ${apakahSemuaAktif ? 'Dinonaktifkan' : 'Diaktifkan'}!`));
                   }}
                   className={`flex-1 ${apakahSemuaAktif ? 'bg-slate-400 hover:bg-slate-500' : 'bg-emerald-500 hover:bg-emerald-600'} text-white px-2 py-2.5 rounded-xl text-[10.5px] lg:text-[10px] xl:text-[11px] 2xl:text-[12px] font-black tracking-wide transition-all flex items-center justify-center gap-1 active:scale-95 uppercase`}
                 >
@@ -489,8 +488,8 @@ const ManajemenJuara = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="overflow-x-auto custom-scrollbar">
                 <table className="w-full text-left border-collapse">
- 
-                   {/* Header Tabel */}
+
+                  {/* Header Tabel */}
                   <thead>
                     <tr className="bg-[#0B255D] text-white text-[11.3px] lg:text-[10.5px] xl:text-[11.3px] 2xl:text-[12.3px] font-black uppercase tracking-wide whitespace-nowrap">
                       <th className="px-4 py-3.5 border-r border-white/5 w-12 text-center font-black">No</th>
@@ -500,7 +499,7 @@ const ManajemenJuara = () => {
                       <th className="px-5 py-3.5 text-center w-40 font-black">Sertifikat</th>
                     </tr>
                   </thead>
- 
+
                   {/* Isi Tabel */}
                   <tbody className="divide-y divide-slate-100">
                     {loading ? (
@@ -519,7 +518,7 @@ const ManajemenJuara = () => {
                               {tim.asal_instansi}
                             </div>
                           </td>
- 
+
                           {/* Dropdown Status Juara */}
                           <td className="px-5 py-3 border-r border-slate-100">
                             <div className="flex justify-center">
@@ -532,7 +531,7 @@ const ManajemenJuara = () => {
                               </select>
                             </div>
                           </td>
- 
+
                           {/* Status Sertifikat */}
                           <td className="px-5 py-3 text-center">
                             <label className="relative inline-flex items-center cursor-pointer">

@@ -239,7 +239,7 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
               {/* Tombol Tutup */}
               <button
                 onClick={() => setApakahTerbuka(false)}
-                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-[10px] font-bold transition-all uppercase tracking-wide active:scale-95"
+                className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-950 rounded-xl text-[10px] font-black transition-all uppercase tracking-wide active:scale-95"
               >
                 Tutup & Selesai
               </button>
@@ -346,13 +346,13 @@ const Verifikasi = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, onSuccess })
       >
         {/* Container Isi Kontent */}
         {apakahTampilkanSuksesWa ? (
-          <div className="flex flex-col items-center justify-center py-6 text-center space-y-4 animate-in fade-in-50 duration-300">
+          <div className="flex flex-col items-center justify-center pt-1 pb-3 text-center space-y-2.5 animate-in fade-in-50 duration-300">
             <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-100">
               <CheckCircle size={32} />
             </div>
             <div className="space-y-2">
               <h3 className="text-sm font-black text-slate-950 uppercase tracking-wide">Verifikasi Berhasil!</h3>
-              <p className="text-[11.5px] font-bold text-slate-950 leading-relaxed max-w-[280px]">
+              <p className="text-[12.2px] font-bold text-slate-950 leading-relaxed max-w-[280px]">
                 Pendaftaran <span className="text-slate-900 font-black">"{dataPeserta.nama}"</span> telah berhasil diverifikasi. Silakan kirimkan notifikasi WA ke peserta.
               </p>
             </div>

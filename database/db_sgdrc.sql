@@ -39,7 +39,7 @@ INSERT INTO `pengaturan` (`id`, `nama_key`, `nilai`, `deskripsi`) VALUES
 (15, 'sertifikat_juara', '/aset/legal/juara.webp', NULL),
 (16, 'sertifikat_nomor_mulai', '0001', NULL),
 (17, 'sertifikat_nomor_mulai_juara', '0001', NULL),
-(18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI', NULL),
+(18, 'sertifikat_format_nomor', '[no]/B/SPH/PAN-SGDRC/BSORobotika.UIN-SGD-BDG/XI/2026', NULL),
 (19, 'sertifikat_config_peserta', '{"y_nomor":33,"y_nama":43,"y_status":50,"y_kategori":72,"size_nomor":12,"size_nama":31,"size_status":15,"size_kategori":13,"font_nama":"Cormorant Garamond"}', NULL),
 (20, 'sertifikat_config_juara', '{"y_nomor":29,"y_nama":37,"y_status":51,"y_kategori":57,"size_nomor":10,"size_nama":28,"size_status":16,"size_kategori":13,"font_nama":"UnifrakturMaguntia"}', NULL),
 

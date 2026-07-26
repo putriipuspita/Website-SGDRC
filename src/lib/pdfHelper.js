@@ -50,18 +50,17 @@ export const unduhKwitansi = async (data, pengaturan, dapatkanPengaturanBaru) =>
 };
 
 // Fungsi Sertifikat
-export const muatFontSertifikat = async (customFonts = []) => {
+export const muatFontSertifikat = async (customFonts = [], apakahTebal = false, apakahMiring = false) => {
   // Font Default
   const fontsToLoad = [
-    { name: 'Montserrat', url: 'https://fonts.gstatic.com/s/montserrat/v31/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM70w-.ttf', weight: 'bold' },
-    { name: 'Cinzel', url: 'https://fonts.gstatic.com/s/cinzel/v26/8vIU7ww63mVu7gtR-kwKxNvkNOjw-jHgTYo.ttf', weight: 'bold' }
+    { name: 'Montserrat', url: 'https://fonts.gstatic.com/s/montserrat/v31/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM70w-.ttf', weight: 'bold' }
   ];
 
   // Tambahkan font kustom
   for (const fontName of customFonts) {
-    if (fontName && fontName !== 'Montserrat' && fontName !== 'Cinzel') {
+    if (fontName && fontName !== 'Montserrat') {
       try {
-        const response = await fetch(`/api/font-proxy?font=${fontName.replace(/ /g, '+')}`);
+        const response = await fetch(`/api/font-proxy?font=${fontName.replace(/ /g, '+')}&bold=${apakahTebal}&italic=${apakahMiring}`);
         if (response.ok) {
           const data = await response.json();
           if (data.url) {
@@ -77,17 +76,14 @@ export const muatFontSertifikat = async (customFonts = []) => {
   // Load semua font 
   const loadPromises = fontsToLoad.map(async (fInfo) => {
     try {
-      const scriptFonts = [
-        'great vibes', 'alex brush', 'dancing script', 'pacifico', 'sacramento',
-        'caveat', 'pinyon script', 'allura', 'parisienne', 'tangerine',
-        'satisfy', 'cookie', 'kaushan script', 'courgette', 'lobster',
-        'shadows into light', 'permanent marker', 'amatic sc', 'playball',
-        'italianno', 'clicker script', 'rochester', 'petit formal script', 'qwigley'
-      ];
-
-      // Cek jenis font
-      const isScript = scriptFonts.includes((fInfo.name || '').toLowerCase());
-      const descriptor = isScript ? {} : { weight: fInfo.weight || 'bold' };
+      // Atur descriptor FontFace agar mengenali weight & style yang tepat
+      // Atur descriptor FontFace agar mengenali weight & style yang tepat
+      const descriptor = (fInfo.name === 'Montserrat')
+        ? { weight: 'bold' }
+        : {
+            weight: apakahTebal ? 'bold' : 'normal',
+            style: apakahMiring ? 'italic' : 'normal'
+          };
 
       // Buat font face
       const fontFace = new FontFace(fInfo.name, `url(${fInfo.url})`, descriptor);
@@ -97,14 +93,15 @@ export const muatFontSertifikat = async (customFonts = []) => {
       // Buat elemen dummy agar font ter-render di canvas
       const span = document.createElement('span');
       span.style.fontFamily = `"${fInfo.name}"`;
-      span.style.fontWeight = isScript ? 'normal' : 'bold';
+      span.style.fontWeight = fInfo.name === 'Montserrat' || apakahTebal ? 'bold' : 'normal';
+      span.style.fontStyle = apakahMiring ? 'italic' : 'normal';
       span.style.position = 'absolute';
       span.style.visibility = 'hidden';
       span.innerText = 'font-loader';
       document.body.appendChild(span);
 
       // Paksa browser memuat font
-      await document.fonts.load(`${isScript ? 'normal' : 'bold'} 12px "${fInfo.name}"`);
+      await document.fonts.load(`${apakahMiring ? 'italic' : 'normal'} ${fInfo.name === 'Montserrat' || apakahTebal ? 'bold' : 'normal'} 12px "${fInfo.name}"`);
 
       // Hapus element dummy setelah selesai load
       document.body.removeChild(span);
@@ -150,32 +147,51 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
   // Nama (Dibuat fleksibel menyesuaikan lebar garis secara dinamis dalam 1 baris)
   const fontSizeNamaOriginal = getFs(config.size_nama);
   let fontSizeNama = fontSizeNamaOriginal;
-  ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+  
+  // Mengatur gaya font berdasarkan konfigurasi
+  const gayaTebal = config.apakah_tebal ? 'bold ' : '';
+  const gayaMiring = config.apakah_miring ? 'italic ' : '';
+  const gayaFont = `${gayaMiring}${gayaTebal}`;
+  ctx.font = `${gayaFont}${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
 
-  const nameUpper = (nama || "").toUpperCase();
+  // Mengatur format huruf berdasarkan konfigurasi
+  const namaBersih = (nama || "").trim().replace(/\s+/g, ' ');
+  let nameFormatted = namaBersih.toUpperCase();
+  if (config.format_huruf === 'lowercase') {
+    nameFormatted = namaBersih.toLowerCase();
+  } else if (config.format_huruf === 'capitalize') {
+    nameFormatted = namaBersih.split(' ').map(kata => kata.charAt(0).toUpperCase() + kata.slice(1).toLowerCase()).join(' ');
+  }
+
   const maxLebarGaris = img.width * 0.66; // Batas lebar garis horizontal
-  const maxLebarKertas = img.width * 0.82; // Batas aman maksimal agar tidak meluber keluar kertas (82% lebar sertifikat)
+  const maxLebarKertas = img.width * 0.82; // Batas aman maksimal agar tidak meluber keluar kertas
 
   // Lapis 1: Kecilkan font maksimal 4px agar pas dengan garis horizontal
   const minFontSizeEstetika = Math.max(fontSizeNamaOriginal - 4, 10);
-  let lebarNama = ctx.measureText(nameUpper).width;
+  let lebarNama = ctx.measureText(nameFormatted).width;
   while (lebarNama > maxLebarGaris && fontSizeNama > minFontSizeEstetika) {
     fontSizeNama -= 0.5;
-    ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
-    lebarNama = ctx.measureText(nameUpper).width;
+    ctx.font = `${gayaFont}${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+    lebarNama = ctx.measureText(nameFormatted).width;
   }
 
   // Lapis 2: Jika masih meluber melebihi batas kertas, kecilkan lebih jauh tanpa batasan 4px demi keamanan
   while (lebarNama > maxLebarKertas && fontSizeNama > 8) {
     fontSizeNama -= 0.5;
-    ctx.font = `bold ${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
-    lebarNama = ctx.measureText(nameUpper).width;
+    ctx.font = `${gayaFont}${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
+    lebarNama = ctx.measureText(nameFormatted).width;
   }
+
+  // Letak X dinamis untuk nama:
+  // Jika nama pendek, gunakan center (50%) agar pas di tengah garis.
+  // Jika nama panjang, gunakan offset (48%) agar tidak menabrak aksesoris ornamen biru di sebelah kanan.
+  const isNamaPanjang = lebarNama > maxLebarGaris || fontSizeNama < fontSizeNamaOriginal;
+  const targetXNama = isNamaPanjang ? img.width * 0.48 : img.width / 2;
 
   // Koreksi posisi Y agar bagian bawah nama tetap sejajar di atas garis (tidak melayang ke atas)
   const offset = fontSizeNamaOriginal - fontSizeNama;
   const startY = (img.height * (config.y_nama / 100)) + offset;
-  ctx.fillText(nameUpper, img.width / 2, startY);
+  ctx.fillText(nameFormatted, targetXNama, startY);
 
   // Teks status sertifikat
   if (jenis === 'PESERTA') {
@@ -187,6 +203,10 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
     ctx.fillStyle = '#ffffff';
     ctx.font = `bold ${getFs(config.size_status)}px "Montserrat"`;
     ctx.fillText((peringkat || 'JUARA').toUpperCase(), img.width / 2, img.height * (config.y_status / 100));
+  }
+
+  // Teks Kategori Juara (Hanya jika sertifikat juara)
+  if (jenis === 'JUARA') {
     ctx.fillStyle = '#000000';
     ctx.font = `bold ${getFs(config.size_kategori || 13)}px "Montserrat"`;
     ctx.fillText(`KATEGORI ${(namaLomba || "").toUpperCase()}`, img.width / 2, img.height * ((config.y_kategori || 72) / 100));

@@ -1,12 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 // Import Icon
-import { Upload, FileText, Eye, Save, Sliders, MoveVertical, Type, Award } from 'lucide-react';
+import { Upload, FileText, Eye, Save, Sliders, MoveVertical, Type, Award, ChevronDown } from 'lucide-react';
 
 // Import Komponent
 import toast from 'react-hot-toast';
 import KwitansiPendaftaran from '@/components/peserta/bukti-pendaftaran/RegistrationReceipt';
 import { fetchDenganToken } from '@/lib/apiClient';
+import { muatFontSertifikat } from '@/lib/pdfHelper';
 
 // Sub-komponen Input File Template Sertifikat
 const InputTemplateSertifikat = ({ label, value, tipe, modeEdit, onChange, getNamaFile }) => (
@@ -84,6 +85,29 @@ const SliderConfigCard = ({ judul, ikon: Ikon, ikonColor, fields, min, max, curr
   </div>
 );
 
+// Pemetaan Gaya Font
+const pemetaanFont = {
+  'Cinzel': { bold: 'toggle', italic: 'force-normal', hanya_kapital: true },
+  'Playfair Display': { bold: 'toggle', italic: 'toggle' },
+  'Lora': { bold: 'toggle', italic: 'toggle' },
+  'Merriweather': { bold: 'toggle', italic: 'toggle' },
+  'Instrument Serif': { bold: 'toggle', italic: 'toggle' },
+  'DM Serif Text': { bold: 'toggle', italic: 'toggle' },
+  'Montserrat': { bold: 'force-bold', italic: 'toggle' },
+  'Roboto': { bold: 'toggle', italic: 'toggle' },
+  'Poppins': { bold: 'toggle', italic: 'toggle' },
+  'Oswald': { bold: 'toggle', italic: 'force-normal' },
+  'Anton': { bold: 'force-bold', italic: 'force-normal' },
+  'Great Vibes': { bold: 'force-normal', italic: 'force-normal' },
+  'Alex Brush': { bold: 'force-normal', italic: 'force-normal' },
+  'Dancing Script': { bold: 'toggle', italic: 'force-normal' },
+  'Parisienne': { bold: 'force-normal', italic: 'force-normal' },
+  'Satisfy': { bold: 'force-normal', italic: 'force-normal' },
+  'Pinyon Script': { bold: 'force-normal', italic: 'force-normal' },
+  'Yellowtail': { bold: 'force-normal', italic: 'force-normal' },
+  'Lobster Two': { bold: 'toggle', italic: 'toggle' }
+};
+
 // Komponen Utama Sertifikat
 const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
   const [configTab, setConfigTab] = useState('sertifikat');
@@ -94,20 +118,27 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
   const [nomorMulaiJuara, setNomorMulaiJuara] = useState(data.sertifikat_nomor_mulai_juara || '001');
   const [formatNomor, setFormatNomor] = useState(data.sertifikat_format_nomor || '[no]/SPH/PAN-SGDRC/XII/2024');
   const [previewTipe, setPreviewTipe] = useState('peserta');
+  const [apakahDropdownFontTerbuka, setApakahDropdownFontTerbuka] = useState(false);
 
   // State Konfigurasi Peserta
   const [configPeserta, setConfigPeserta] = useState(data.sertifikat_config_peserta ? JSON.parse(data.sertifikat_config_peserta) : {
     y_nomor: 33, y_nama: 48, y_status: 62, y_kategori: 72,
     size_nomor: 11, size_nama: 32, size_status: 18, size_kategori: 13,
-    font_nama: 'Cinzel'
+    font_nama: 'Cinzel', apakah_tebal: true, apakah_miring: false, format_huruf: 'uppercase'
   });
 
   // State Konfigurasi Juara
   const [configJuara, setConfigJuara] = useState(data.sertifikat_config_juara ? JSON.parse(data.sertifikat_config_juara) : {
     y_nomor: 33, y_nama: 48, y_status: 62, y_kategori: 72,
     size_nomor: 11, size_nama: 32, size_status: 18, size_kategori: 13,
-    font_nama: 'Cinzel'
+    font_nama: 'Cinzel', apakah_tebal: true, apakah_miring: false, format_huruf: 'uppercase'
   });
+
+  const currentConfig = previewTipe === 'peserta' ? configPeserta : configJuara;
+
+  const infoFont = pemetaanFont[currentConfig.font_nama || 'Cinzel'] || { bold: 'toggle', italic: 'toggle' };
+  const apakahBisaBold = infoFont.bold === 'toggle';
+  const apakahBisaItalic = infoFont.italic === 'toggle';
 
   // Sinkronisasi Data ke State Komponen
   React.useEffect(() => {
@@ -135,6 +166,32 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
     }
   }, [data]);
 
+  // Efek Pemuatan Font
+  React.useEffect(() => {
+    if (currentConfig && currentConfig.font_nama) {
+      muatFontSertifikat([currentConfig.font_nama], currentConfig.apakah_tebal, currentConfig.apakah_miring).catch(err => {
+        console.error("Gagal memuat font preview:", err);
+      });
+
+      const infoFont = pemetaanFont[currentConfig.font_nama] || { bold: 'toggle', italic: 'toggle' };
+      if (infoFont.bold === 'force-bold' && !currentConfig.apakah_tebal) {
+        updateConfig('apakah_tebal', true);
+      } else if (infoFont.bold === 'force-normal' && currentConfig.apakah_tebal) {
+        updateConfig('apakah_tebal', false);
+      }
+
+      if (infoFont.italic === 'force-bold' && !currentConfig.apakah_miring) {
+        updateConfig('apakah_miring', true);
+      } else if (infoFont.italic === 'force-normal' && currentConfig.apakah_miring) {
+        updateConfig('apakah_miring', false);
+      }
+
+      if (infoFont.hanya_kapital && currentConfig.format_huruf !== 'uppercase') {
+        updateConfig('format_huruf', 'uppercase');
+      }
+    }
+  }, [currentConfig?.font_nama, currentConfig?.apakah_tebal, currentConfig?.apakah_miring]);
+
   // List Font
   const listFont = [
     // Serif (Elegant & Classic)
@@ -142,16 +199,15 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
     { name: 'Playfair Display', value: 'Playfair Display' },
     { name: 'Lora', value: 'Lora' },
     { name: 'Merriweather', value: 'Merriweather' },
-    { name: 'Cormorant Garamond', value: 'Cormorant Garamond' },
-    { name: 'Bodoni Moda', value: 'Bodoni Moda' },
+    { name: 'Instrument Serif', value: 'Instrument Serif' },
+    { name: 'DM Serif Text', value: 'DM Serif Text' },
 
     // Sans-Serif (Modern & Clean)
     { name: 'Montserrat', value: 'Montserrat' },
+    { name: 'Roboto', value: 'Roboto' },
     { name: 'Poppins', value: 'Poppins' },
-    { name: 'Inter', value: 'Inter' },
     { name: 'Oswald', value: 'Oswald' },
-    { name: 'Raleway', value: 'Raleway' },
-    { name: 'Outfit', value: 'Outfit' },
+    { name: 'Anton', value: 'Anton' },
 
     // Script & Calligraphy (Beautiful Script)
     { name: 'Great Vibes', value: 'Great Vibes' },
@@ -160,10 +216,8 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
     { name: 'Parisienne', value: 'Parisienne' },
     { name: 'Satisfy', value: 'Satisfy' },
     { name: 'Pinyon Script', value: 'Pinyon Script' },
-
-    // Display & Decorative (Unique)
-    { name: 'Cinzel Decorative', value: 'Cinzel Decorative' },
-    { name: 'UnifrakturMaguntia', value: 'UnifrakturMaguntia' }
+    { name: 'Yellowtail', value: 'Yellowtail' },
+    { name: 'Lobster Two', value: 'Lobster Two' }
   ];
 
   // State Surat Bukti
@@ -179,7 +233,6 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
     else setConfigJuara(prev => ({ ...prev, [field]: value }));
   };
 
-  const currentConfig = previewTipe === 'peserta' ? configPeserta : configJuara;
 
   // Fungsi Upload Sertifikat
   const tanganiUpload = async (e, tipe) => {
@@ -232,11 +285,22 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
     // Halaman Bagian Sertifikat
     <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 animate-in fade-in duration-700">
       {/* Memuat Fonts */}
-      <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?family=${(currentConfig.font_nama || 'Cinzel').replace(/ /g, '+')}&display=swap`} />
+      <link
+        rel="stylesheet"
+        href={`https://fonts.googleapis.com/css2?family=${(currentConfig.font_nama || 'Cinzel').replace(/ /g, '+')}${
+          currentConfig.apakah_miring && currentConfig.apakah_tebal
+            ? ':ital,wght@1,700'
+            : currentConfig.apakah_miring
+            ? ':ital,wght@1,400'
+            : currentConfig.apakah_tebal
+            ? ':wght@700'
+            : ''
+        }&display=swap`}
+      />
 
       {/* Container Isi Dokument */}
-      <div className="lg:col-span-5 space-y-6">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="lg:col-span-5">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col lg:h-[580px] xl:h-[640px] 2xl:h-[700px]">
 
           {/* Container Header */}
           <div className="bg-[#0B255D] p-1 flex items-center gap-1">
@@ -252,7 +316,7 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
           </div>
 
           {/* Container Isi Dokument */}
-          <div className="p-6 space-y-6">
+          <div className="p-6 space-y-6 flex-1 overflow-y-auto pr-1 custom-scrollbar">
             {configTab === 'sertifikat' ? (
               // Bagian Sertifikat
               <div className="space-y-6 animate-in slide-in-from-left duration-300">
@@ -279,7 +343,7 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
                 {/* Format Nomor Sertifikat */}
                 <div className="space-y-2">
                   <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Format Nomor Sertifikat</label>
-                  <input type="text" value={formatNomor} disabled={!modeEdit} onChange={(e) => setFormatNomor(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                  <input type="text" value={formatNomor} disabled={!modeEdit} onChange={(e) => setFormatNomor(e.target.value)} className={`w-full px-4 py-2 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                 </div>
 
                 {/* Container Nomor Mulai */}
@@ -287,37 +351,146 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
                   {/* No Mulai Peserta */}
                   <div className="space-y-2">
                     <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">No. Mulai Peserta</label>
-                    <input type="number" value={nomorMulai} disabled={!modeEdit} onChange={(e) => setNomorMulai(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                    <input type="number" value={nomorMulai} disabled={!modeEdit} onChange={(e) => setNomorMulai(e.target.value)} className={`w-full px-4 py-2 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                   </div>
 
                   {/* No Mulai Juara */}
                   <div className="space-y-2">
                     <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">No. Mulai Juara</label>
-                    <input type="number" value={nomorMulaiJuara} disabled={!modeEdit} onChange={(e) => setNomorMulaiJuara(e.target.value)} className={`w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
+                    <input type="number" value={nomorMulaiJuara} disabled={!modeEdit} onChange={(e) => setNomorMulaiJuara(e.target.value)} className={`w-full px-4 py-2 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium ${modeEdit ? 'bg-white border-slate-200 text-slate-950' : 'bg-slate-50 border-slate-100 text-slate-400'}`} />
                   </div>
                 </div>
 
-                 {/* Jenis Font Nama */}
-                <div className="space-y-2">
+                {/* Jenis Font Nama */}
+                <div className="space-y-2 relative">
                   <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Jenis Font Nama ({previewTipe === 'peserta' ? 'Peserta' : 'Juara'})</label>
                   {!modeEdit ? (
                     <input
                       type="text"
                       readOnly
                       value={currentConfig.font_nama || 'Cinzel'}
-                      className="w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium bg-slate-50 border-slate-100 text-slate-400"
+                      className="w-full px-4 py-2 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-normal bg-slate-50 border-slate-100 text-slate-400"
                     />
                   ) : (
-                    <select
-                      value={currentConfig.font_nama || 'Cinzel'}
-                      onChange={(e) => updateConfig('font_nama', e.target.value)}
-                      className="w-full px-4 py-2.5 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-medium bg-white border-slate-200"
-                    >
-                      {listFont.map(font => (
-                        <option key={font.value} value={font.value}>{font.name}</option>
-                      ))}
-                    </select>
+                    <div>
+                      {/* Tombol Pemicu Dropdown */}
+                      <button
+                        type="button"
+                        onClick={() => setApakahDropdownFontTerbuka(!apakahDropdownFontTerbuka)}
+                        style={{ fontFamily: 'Montserrat, sans-serif' }}
+                        className="w-full px-4 py-2 border-2 rounded-xl outline-none text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-normal bg-white border-slate-200 text-slate-800 flex items-center justify-between transition-all hover:bg-slate-50 text-left"
+                      >
+                        <span>{currentConfig.font_nama || 'Cinzel'}</span>
+                        <ChevronDown size={14} className={`text-slate-400 transition-transform duration-200 ${apakahDropdownFontTerbuka ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* Menu List Dropdown */}
+                      {apakahDropdownFontTerbuka && (
+                        <>
+                          {/* Backdrop untuk menutup dropdown saat klik luar */}
+                          <div className="fixed inset-0 z-40" onClick={() => setApakahDropdownFontTerbuka(false)} />
+                          
+                          <div className="absolute left-0 right-0 mt-1 bg-white border-2 border-slate-200 rounded-xl shadow-lg z-50 max-h-40 overflow-y-auto custom-scrollbar divide-y divide-slate-100 animate-in fade-in slide-in-from-top-1 duration-150">
+                            {listFont.map(font => (
+                              <button
+                                key={font.value}
+                                type="button"
+                                onClick={() => {
+                                  updateConfig('font_nama', font.value);
+                                  setApakahDropdownFontTerbuka(false);
+                                }}
+                                style={{ fontFamily: 'Montserrat, sans-serif' }}
+                                className={`w-full text-left px-4 py-2 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] transition-all ${
+                                  (currentConfig.font_nama || 'Cinzel') === font.value
+                                    ? 'bg-slate-100 font-bold text-[#0B255D]'
+                                    : 'hover:bg-slate-50 text-slate-700'
+                                }`}
+                              >
+                                {font.name}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
                   )}
+                </div>
+
+                {/* Pengaturan Gaya Font Nama */}
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Gaya Tebal */}
+                  <div className={`flex items-center justify-between p-3 border rounded-xl transition-all ${
+                    !modeEdit
+                      ? 'bg-slate-50 border-slate-100 text-slate-600'
+                      : apakahBisaBold
+                      ? 'bg-slate-50 border-slate-200 text-slate-950'
+                      : 'bg-slate-100 border-slate-200 text-slate-400 opacity-60'
+                  }`}>
+                    <span className="text-[12px] font-semibold">Tebal (Bold)</span>
+                    <label className={`relative inline-flex items-center ${apakahBisaBold && modeEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
+                      <input
+                        type="checkbox"
+                        disabled={!modeEdit || !apakahBisaBold}
+                        checked={!!currentConfig.apakah_tebal}
+                        onChange={(e) => updateConfig('apakah_tebal', e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className={`w-9 h-5 bg-slate-200 rounded-full peer peer-checked:bg-[#0B255D] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full ${!modeEdit ? 'peer-checked:bg-slate-400' : ''}`}></div>
+                    </label>
+                  </div>
+
+                  {/* Gaya Miring */}
+                  <div className={`flex items-center justify-between p-3 border rounded-xl transition-all ${
+                    !modeEdit
+                      ? 'bg-slate-50 border-slate-100 text-slate-600'
+                      : apakahBisaItalic
+                      ? 'bg-slate-50 border-slate-200 text-slate-950'
+                      : 'bg-slate-100 border-slate-200 text-slate-400 opacity-60'
+                  }`}>
+                    <span className="text-[12px] font-semibold">Miring (Italic)</span>
+                    <label className={`relative inline-flex items-center ${apakahBisaItalic && modeEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
+                      <input
+                        type="checkbox"
+                        disabled={!modeEdit || !apakahBisaItalic}
+                        checked={!!currentConfig.apakah_miring}
+                        onChange={(e) => updateConfig('apakah_miring', e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className={`w-9 h-5 bg-slate-200 rounded-full peer peer-checked:bg-[#0B255D] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full ${!modeEdit ? 'peer-checked:bg-slate-400' : ''}`}></div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Pengaturan Format Huruf Nama */}
+                <div className="space-y-2">
+                  <label className="text-slate-950 text-[12.5px] lg:text-[12.2px] xl:text-[12.9px] 2xl:text-[13.7px] font-semibold ml-1">Format Huruf Nama</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['KAPITAL', 'Judul', 'kecil'].map((format) => {
+                      const apakahTombolDisabled = infoFont.hanya_kapital && format !== 'KAPITAL';
+                      return (
+                        <button
+                          key={format}
+                          type="button"
+                          disabled={!modeEdit || apakahTombolDisabled}
+                          onClick={() => updateConfig('format_huruf', format === 'KAPITAL' ? 'uppercase' : format === 'Judul' ? 'capitalize' : 'lowercase')}
+                          style={{ fontFamily: 'Montserrat, sans-serif' }}
+                          className={`py-2 px-3 text-[11px] font-bold rounded-xl border transition-all ${
+                            !modeEdit
+                              ? (currentConfig.format_huruf || 'uppercase') === (format === 'KAPITAL' ? 'uppercase' : format === 'Judul' ? 'capitalize' : 'lowercase')
+                                ? 'bg-slate-200 border-slate-200 text-slate-500 cursor-not-allowed shadow-none'
+                                : 'bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed shadow-none'
+                              : apakahTombolDisabled
+                              ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed opacity-60'
+                              : (currentConfig.format_huruf || 'uppercase') === (format === 'KAPITAL' ? 'uppercase' : format === 'Judul' ? 'capitalize' : 'lowercase')
+                              ? 'bg-[#0B255D] border-[#0B255D] text-white shadow-sm'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-95'
+                          }`}
+                        >
+                          {format === 'KAPITAL' ? 'Kapital Semua' : format === 'Judul' ? 'Kapital Awal' : 'Kecil Semua'}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Container Slider */}
@@ -406,7 +579,7 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
             )}
 
             {/* Tombol Simpan atau Edit */}
-            <button onClick={() => { if (modeEdit) simpanPerubahan(); else setModeEdit(true); }} disabled={sedangMenyimpan} className={`w-full py-3 rounded-xl text-[13px] font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${modeEdit ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-[#0B255D] hover:bg-blue-500 text-white'}`}>
+            <button onClick={() => { if (modeEdit) simpanPerubahan(); else setModeEdit(true); }} disabled={sedangMenyimpan} className="w-full py-3 rounded-xl text-[13px] font-bold transition-all shadow-lg flex items-center justify-center gap-2 bg-[#0B255D] hover:bg-blue-500 text-white mt-4">
               {sedangMenyimpan ? 'Menyimpan...' : (modeEdit ? <><Save size={16} /> Simpan Perubahan</> : <><Sliders size={16} /> Edit Pengaturan</>)}
             </button>
           </div>
@@ -415,7 +588,7 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
 
       {/* Container Preview */}
       <div className="lg:col-span-7">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col lg:h-[580px] xl:h-[640px] 2xl:h-[700px]">
 
           {/* Container Header */}
           <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
@@ -464,12 +637,17 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
                           top: `${currentConfig.y_nama}%`,
                           fontSize: `${currentConfig.size_nama * 0.9}px`,
                           fontFamily: `"${currentConfig.font_nama || 'Cinzel'}", serif`,
-                          fontWeight: 'bold',
+                          fontWeight: currentConfig.apakah_tebal ? 'bold' : 'normal',
+                          fontStyle: currentConfig.apakah_miring ? 'italic' : 'normal',
                           lineHeight: 1
                         }}
                         className="absolute w-full text-center text-black"
                       >
-                        NAMA PESERTA CONTOH
+                        {(currentConfig.format_huruf === 'lowercase')
+                          ? 'nama peserta contoh'
+                          : (currentConfig.format_huruf === 'capitalize')
+                          ? 'Nama Peserta Contoh'
+                          : 'NAMA PESERTA CONTOH'}
                       </div>
 
                       {/* Status */}

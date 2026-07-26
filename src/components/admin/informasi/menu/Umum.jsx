@@ -101,7 +101,6 @@ const Umum = ({
       ...prev,
       foto_dokumentasi_list: JSON.stringify(newList.filter(Boolean))
     }));
-    toast.success("Foto dihapus");
   };
 
   // Fungsi Upload Dokumentasi Massal
