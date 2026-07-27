@@ -89,7 +89,6 @@ const Umum = ({
         ...prev,
         foto_dokumentasi_list: JSON.stringify(newList.filter(Boolean))
       }));
-      toast.success("Foto berhasil diunggah");
     }
   };
 
@@ -131,7 +130,7 @@ const Umum = ({
           ...prev,
           foto_dokumentasi_list: JSON.stringify(newList.filter(Boolean))
         }));
-        toast.success(`Berhasil mengunggah ${validPaths.length} foto`, { id: toastId });
+        if (toastId) toast.dismiss(toastId);
       } else {
         toast.error("Gagal mengunggah foto", { id: toastId });
       }

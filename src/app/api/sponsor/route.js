@@ -1,6 +1,8 @@
 import { hubungkanDB } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 // Fungsi mengambil data sponsor
 export async function GET() {
   try {

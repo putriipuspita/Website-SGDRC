@@ -116,22 +116,22 @@ const Informasi = () => {
       }
 
       // Ambil Data Sponsor
-      const resSponsor = await fetchPublik('/api/sponsor');
+      const resSponsor = await fetchPublik('/api/sponsor', { cache: 'no-store' });
       if (resSponsor.ok) {
         const data = await resSponsor.json();
         setUmum(prev => ({ ...prev, sponsor_list: data }));
       }
 
       // Ambil Data Lomba Landing Page
-      const resLombaLanding = await fetchPublik('/api/lomba');
+      const resLombaLanding = await fetchPublik('/api/lomba', { cache: 'no-store' });
       if (resLombaLanding.ok) setDaftarLombaLanding(await resLombaLanding.json());
 
       // Ambil Data Lomba Dashboard
-      const resLombaDashboard = await fetchPublik('/api/peserta/lomba');
+      const resLombaDashboard = await fetchPublik('/api/peserta/lomba', { cache: 'no-store' });
       if (resLombaDashboard.ok) setDaftarLombaDashboard(await resLombaDashboard.json());
 
       // Ambil Data Guide Book
-      const resGb = await fetchPublik('/api/guidebook');
+      const resGb = await fetchPublik('/api/guidebook', { cache: 'no-store' });
       if (resGb.ok) setDaftarGuidebook(await resGb.json());
 
       // Ambil Data Aksi

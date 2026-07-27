@@ -1,6 +1,8 @@
 import { hubungkanDB } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 // Fungsi mengambil data lomba dari halaman landing page
 export async function GET() {
   try {

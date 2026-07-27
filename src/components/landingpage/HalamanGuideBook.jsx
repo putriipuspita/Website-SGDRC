@@ -8,15 +8,17 @@ import Link from 'next/link';
 const HalamanGuideBook = ({ dataAwal = [] }) => {
   const [daftarGuideBook, setDaftarGuideBook] = useState(dataAwal);
 
+  // Selalu fetch data guidebook terbaru dari API di client-side untuk menghindari caching Next.js di cPanel
   useEffect(() => {
-    // Jika Data Belum Tersedia (Ambil Dari API)
-    if (daftarGuideBook.length === 0) {
-      fetch('/api/guidebook')
-        .then(res => res.json())
-        .then(data => setDaftarGuideBook(data))
-        .catch(err => console.error("Gagal ambil guidebook:", err));
-    }
-  }, [dataAwal]);
+    fetch('/api/guidebook?t=' + Date.now(), { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setDaftarGuideBook(data);
+        }
+      })
+      .catch(err => console.error("Gagal ambil guidebook:", err));
+  }, []);
 
   return (
     // Container Utama Halaman Guide Book

@@ -43,6 +43,22 @@ export async function POST(request) {
     // Update Pengaturan Umum
     if (data.umum) {
       for (const [key, nilaiRaw] of Object.entries(data.umum)) {
+        if (key === 'sponsor_list') {
+          try {
+            const listSponsor = Array.isArray(nilaiRaw) ? nilaiRaw : JSON.parse(nilaiRaw);
+            if (Array.isArray(listSponsor)) {
+              for (const sp of listSponsor) {
+                if (sp.id) {
+                  await db.query('UPDATE sponsor SET nama = ? WHERE id = ?', [sp.nama || '', sp.id]);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("Gagal sinkronisasi nama sponsor:", err.message);
+          }
+          continue;
+        }
+
         const nilai = typeof nilaiRaw === 'object' ? JSON.stringify(nilaiRaw) : String(nilaiRaw);
 
         // Daftar key yang menyimpan file upload

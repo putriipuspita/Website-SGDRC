@@ -250,7 +250,6 @@ const Sertifikat = ({ data, onSave, sedangMenyimpan, prosesUploadFile }) => {
       else if (tipe === 'cap') setPathCap(path);
       else if (tipe === 'logo_robotika') setPathLogo(path);
       else if (tipe === 'logo_sgdrc') setPathLogoSgdrc(path);
-      toast.success("Berhasil diunggah");
     }
   };
 

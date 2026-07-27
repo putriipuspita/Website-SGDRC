@@ -19,10 +19,10 @@ export default function GaleriDokumentasi() {
 
   // Mengambil daftar foto dari API otomatis saat halaman dimuat
   useEffect(() => {
-    fetch('/api/dokumentasi')
+    fetch('/api/dokumentasi?t=' + Date.now(), { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setDaftarFoto(data);
         }
       })

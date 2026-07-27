@@ -124,7 +124,6 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
     const path = await prosesUploadFile(file, 'poster', "Mengunggah poster...");
     if (path) {
       setPosterBaru(path);
-      toast.success("Poster berhasil diunggah");
     }
   };
 

@@ -6,15 +6,17 @@ export default function BagianSponsor({ dataAwal = [] }) {
   // Menyimpan data sponsor yang akan ditampilkan
   const [sponsorUtama, setSponsorUtama] = useState(dataAwal);
 
-  // Jika Data Sponsor Tidak Tersedia (Ambil Dari API)
+  // Selalu fetch data sponsor terbaru dari API di client-side untuk menghindari caching Next.js di cPanel
   useEffect(() => {
-    if (sponsorUtama.length === 0) {
-      fetch("/api/sponsor")
-        .then((res) => res.json())
-        .then((data) => setSponsorUtama(data))
-        .catch((err) => console.error("Gagal ambil sponsor:", err));
-    }
-  }, [dataAwal]);
+    fetch("/api/sponsor?t=" + Date.now(), { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setSponsorUtama(data);
+        }
+      })
+      .catch((err) => console.error("Gagal ambil sponsor:", err));
+  }, []);
 
   // Jika tidak ada data sponsor, komponen tidak ditampilkan
   if (!sponsorUtama || sponsorUtama.length === 0) return null;

@@ -30,28 +30,13 @@ async function ambilDataLanding() {
       label: l.labels ? JSON.parse(l.labels) : [],
     }));
 
-    // Parse Sponsor dari Pengaturan
-    let dataSponsor = [];
-    if (pengaturan.sponsor_list) {
-      try {
-        const parsed = JSON.parse(pengaturan.sponsor_list);
-        dataSponsor = parsed.map((sp, idx) => ({
-          id: idx + 1,
-          nama: sp.nama,
-          gambarLogo: sp.logo,
-        }));
-      } catch (e) {
-        console.error("Gagal parse sponsor server:", e);
-      }
-    } else {
-      // Fallback ke tabel sponsor lama
-      const [oldSponsors] = await db.query("SELECT * FROM sponsor");
-      dataSponsor = oldSponsors.map((s) => ({
-        id: s.id,
-        nama: s.nama || s.judul || "",
-        gambarLogo: s.gambarLogo || s.gambar || "",
-      }));
-    }
+    // Ambil Data Sponsor dari tabel sponsor
+    const [semuaSponsor] = await db.query("SELECT * FROM sponsor ORDER BY id DESC");
+    const dataSponsor = semuaSponsor.map((s) => ({
+      id: s.id,
+      nama: s.nama || s.judul || "",
+      gambarLogo: s.gambarLogo || s.gambar || s.logo || "",
+    }));
 
     return { pengaturan, dataLomba, dataSponsor };
   } catch (error) {

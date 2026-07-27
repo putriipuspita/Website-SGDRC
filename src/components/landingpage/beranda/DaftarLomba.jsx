@@ -6,21 +6,17 @@ export default function DaftarLomba({ dataAwal = [] }) {
   // Menyimpan data lomba yang akan ditampilkan
   const [dataLomba, setDataLomba] = useState(dataAwal);
 
-  // Jika data belum tersedia dari server component (Ambil Dari API)
+  // Selalu fetch data lomba terbaru dari API di client-side untuk menghindari caching Next.js di cPanel
   useEffect(() => {
-    if (dataLomba.length === 0) {
-      fetch('/api/lomba')
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) {
-            setDataLomba(data);
-          } else {
-            console.error("Data lomba bukan array:", data);
-          }
-        })
-        .catch(err => console.error("Gagal ambil lomba:", err));
-    }
-  }, [dataAwal]);
+    fetch('/api/lomba?t=' + Date.now(), { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setDataLomba(data);
+        }
+      })
+      .catch(err => console.error("Gagal ambil lomba:", err));
+  }, []);
 
   // Data Yang Akan Di Tampilkan
   const dataLombaRender = dataLomba;
