@@ -466,7 +466,7 @@ const PesertaLomba = () => {
                 ...(!apakahSolo ? [{ label: <div className="min-w-[150px] text-center">Peserta 2</div> }] : []),
                 ...(apakahKelompokMaks3 ? [{ label: <div className="min-w-[150px] text-center">Peserta 3</div> }] : []),
                 { label: 'WhatsApp' },
-                { label: 'Jenjang' },
+                { label: <div className="min-w-[110px] text-center whitespace-nowrap">Jenjang</div> },
                 { label: <div className="min-w-[160px] text-center">Asal Instansi</div> },
                 { label: <div className="min-w-[120px] text-center">Status</div> },
                 { label: 'Aksi' }
@@ -501,7 +501,7 @@ const PesertaLomba = () => {
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.whatsapp}</td>
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.jenjang}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed"><div className="min-w-[110px] whitespace-nowrap text-center">{p.jenjang}</div></td>
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
                     <div className="min-w-[160px]">{p.instansi}</div>
                   </td>

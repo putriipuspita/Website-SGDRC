@@ -352,7 +352,7 @@ const DataPeserta = () => {
                               <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 1</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 2</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 3</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider whitespace-nowrap text-center">Jenjang</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[110px] whitespace-nowrap text-center">Jenjang</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Asal Instansi</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[120px] whitespace-nowrap text-center">Status</div></th>
                               <th className="px-3 py-3 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider whitespace-nowrap">Aksi</div></th>
@@ -413,7 +413,7 @@ const DataPeserta = () => {
 
                                   {/* Kolom Jenjang */}
                                   <td className="px-3 py-3 text-center border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-relaxed hidden lg:table-cell text-slate-950">
-                                    {data.jenjang}
+                                    <div className="min-w-[110px] whitespace-nowrap text-center">{data.jenjang}</div>
                                   </td>
 
                                   {/* Kolom Instansi */}
