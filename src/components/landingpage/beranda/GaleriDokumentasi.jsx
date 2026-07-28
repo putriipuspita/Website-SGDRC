@@ -29,18 +29,8 @@ export default function GaleriDokumentasi() {
       .catch(err => console.error("Gagal memuat galeri otomatis:", err));
   }, []);
 
-  // Fallback default jika API belum memberikan data
-  const galeriAsli = daftarFoto.length > 0 ? daftarFoto : [
-    "/aset/dokumentasi/IMG_0077.JPG",
-    "/aset/dokumentasi/IMG_0090.JPG",
-    "/aset/dokumentasi/IMG_5693.JPG",
-    "/aset/dokumentasi/IMG_5713.JPG",
-    "/aset/dokumentasi/IMG_5714.JPG",
-    "/aset/dokumentasi/IMG_5890.JPG",
-    "/aset/dokumentasi/LNS00702.JPG",
-    "/aset/dokumentasi/LNS00712.JPG",
-    "/aset/dokumentasi/LNS00866.JPG"
-  ];
+  // Tampilkan gambar dari API (otomatis dibaca dari folder /aset/dokumentasi)
+  const galeriAsli = daftarFoto;
   const galeriGanda = [...galeriAsli, ...galeriAsli];
 
   // Hitung lebar separuh galeri saat komponen dimuat atau ukuran berubah

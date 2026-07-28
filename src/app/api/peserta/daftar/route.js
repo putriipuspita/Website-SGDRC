@@ -33,7 +33,7 @@ export async function POST(req) {
     };
 
     // File upload handling
-    const fileKeys = ['kartuSiswa', 'ikutiInstagram', 'ikutiInstagramRobotika', 'ikutiTiktok', 'buktiBayar'];
+    const fileKeys = ['kartuSiswa', 'ikutiInstagram', 'ikutiInstagramRobotika', 'buktiBayar'];
     const paths = {};
     const UKURAN_MAKSIMAL = 2 * 1024 * 1024; // 2MB
 
@@ -62,7 +62,7 @@ export async function POST(req) {
           // Kartu Siswa cukup simpan teks penanda (tidak disimpan fisik di server)
           paths[key] = '/uploads/pendaftaran/kartu-siswa-terunggah.png';
         } else {
-          // Bukti follow IG dan Tiktok cukup simpan teks penanda (menghemat penyimpanan server)
+          // Bukti follow IG cukup simpan teks penanda (menghemat penyimpanan server)
           paths[key] = '/uploads/pendaftaran/bukti-follow-terunggah.png';
         }
       }
@@ -73,12 +73,12 @@ export async function POST(req) {
       `INSERT INTO pendaftaran (
         user_id, lomba_id, nama_tim, nama_peserta1, nama_peserta2, nama_peserta3, 
         asal_instansi, jenjang, whatsapp, 
-        file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok, file_bukti_bayar
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_bukti_bayar
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         data.user_id, data.lomba_id, data.nama_tim, data.nama_peserta1, data.nama_peserta2, data.nama_peserta3,
         data.asal_instansi, data.jenjang, data.whatsapp,
-        paths.kartuSiswa, paths.ikutiInstagram, paths.ikutiInstagramRobotika, paths.ikutiTiktok, paths.buktiBayar
+        paths.kartuSiswa, paths.ikutiInstagram, paths.ikutiInstagramRobotika, paths.buktiBayar
       ]
     );
 

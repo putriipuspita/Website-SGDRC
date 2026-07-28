@@ -206,24 +206,22 @@ const Informasi = () => {
     }
   };
 
-  // Fungsi Upload File
+  // Fungsi Upload File (tanpa notifikasi popup)
   const prosesUploadFile = async (file, folder, pesanLoading = "Mengunggah...") => {
     if (!file) return null;
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
-    const toastId = pesanLoading ? toast.loading(pesanLoading) : null;
     try {
       const res = await fetchDenganToken('/api/admin/upload', { method: 'POST', body: formData });
       if (res.ok) {
         const data = await res.json();
-        if (toastId) toast.dismiss(toastId);
         return data.path;
       }
-      if (toastId) toast.error("Gagal Mengunggah", { id: toastId });
+      toast.error("Gagal Mengunggah Gambar");
       return null;
     } catch (error) {
-      if (toastId) toast.error("Gagal Mengunggah: Terjadi kesalahan sistem", { id: toastId });
+      toast.error("Gagal Mengunggah: Terjadi kesalahan sistem");
       return null;
     }
   };

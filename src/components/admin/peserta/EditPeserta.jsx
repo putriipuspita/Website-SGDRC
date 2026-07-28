@@ -68,24 +68,25 @@ const EditPeserta = ({ apakahTerbuka, setApakahTerbuka, dataPeserta, slugLomba, 
     if (matchUmur) {
       const angkaUmur = parseInt(matchUmur[1]);
       if (angkaUmur < 9) {
-        daftar = ['TK', 'SD'];
+        daftar = ['TK', 'SD / MI'];
       } else {
-        daftar = ['SD'];
+        daftar = ['SD / MI'];
       }
     } else {
       const mentah = teksJenjang
         .split(/\s*-\s*|,\s*|\s+dan\s+|\s+&\s+|\s*\/\s*/i)
-        .map(item => item.trim())
-        .filter(item => item !== "");
+        .map(item => item.replace(/^\d+\s+/, '').replace(/\s+\d+$/, '').trim())
+        .filter(item => item !== '' && !/^\d+$/.test(item));
 
       daftar = mentah.map(item => {
         const low = item.toLowerCase();
         if (low.includes('mahasiswa') || low.includes('perguruan tinggi')) return 'Perguruan Tinggi';
-        if (low.includes('sd') || low.includes('mi')) return 'SD / MI';
+        if (low.includes('sd') || low === 'mi') return 'SD / MI';
         if (low.includes('smp') || low.includes('mts')) return 'SMP / MTS';
-        if (low.includes('sma') || low.includes('smk') || low.includes('ma') || low === 'k') return 'SMA / SMK / MA';
-        return item;
-      });
+        if (low.includes('sma') || low.includes('smk') || low === 'ma' || low === 'k') return 'SMA / SMK / MA';
+        if (low === 'tk') return 'TK';
+        return null;
+      }).filter(Boolean);
     }
 
     // Hapus Data Duplikat

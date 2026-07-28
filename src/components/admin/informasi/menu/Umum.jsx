@@ -106,7 +106,6 @@ const Umum = ({
   const handleUploadBatchFoto = async (files) => {
     if (!files || files.length === 0) return;
     const filesToUpload = Array.from(files).slice(0, 8);
-    const toastId = toast.loading(`Mengunggah ${filesToUpload.length} foto...`);
     try {
       const uploadPromises = filesToUpload.map(file =>
         prosesUploadFile(file, 'dokumentasi', null)
@@ -130,13 +129,12 @@ const Umum = ({
           ...prev,
           foto_dokumentasi_list: JSON.stringify(newList.filter(Boolean))
         }));
-        if (toastId) toast.dismiss(toastId);
       } else {
-        toast.error("Gagal mengunggah foto", { id: toastId });
+        toast.error("Gagal mengunggah foto");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Gagal unggah massal", { id: toastId });
+      toast.error("Gagal unggah massal");
     }
   };
 

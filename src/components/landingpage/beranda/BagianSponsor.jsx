@@ -44,7 +44,7 @@ export default function BagianSponsor({ dataAwal = [] }) {
               {/* Gambar Logo Sponsor */}
               <div className="w-full h-full flex items-center justify-center">
                 <img
-                  src={sponsor.gambarLogo}
+                  src={sponsor.logo || sponsor.gambarLogo}
                   alt={sponsor.nama}
                   className="max-w-full max-h-full object-contain block mx-auto transition-all duration-500"
                 />

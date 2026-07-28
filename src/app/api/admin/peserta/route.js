@@ -24,11 +24,12 @@ export async function GET(req) {
 
     let params = [];
 
-    // Filter berdasarka nama lomba
+    // Filter berdasarkan nama lomba (normalisasi: hapus karakter non-alphanumeric)
     if (slug) {
-      const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
-      query += ` AND l.nama = ?`;
-      params.push(namaLombaDB);
+      const slugNormal = slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+      // Gunakan REGEXP_REPLACE di MySQL untuk menghapus karakter non-alphanumeric dari nama
+      query += ` AND LOWER(REGEXP_REPLACE(l.nama, '[^a-zA-Z0-9]', '')) = ?`;
+      params.push(slugNormal);
     }
 
     // Filter Pencarian Peserta
@@ -218,7 +219,7 @@ export async function DELETE(req) {
 
     // Ambil Seluruh File Peserta
     const [pendaftar] = await db.query(
-      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE id = ?",
+      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika FROM pendaftaran WHERE id = ?",
       [id]
     );
 
@@ -234,8 +235,7 @@ export async function DELETE(req) {
         p.file_bukti_refund,
         p.file_kartu_siswa,
         p.file_follow_ig,
-        p.file_follow_ig_robotika,
-        p.file_follow_tiktok
+        p.file_follow_ig_robotika
       ];
 
       for (const path of filePaths) {
@@ -262,10 +262,13 @@ export async function POST(req) {
     const email = formData.get('email');
 
     let lombaId = null;
-    // Ambil ID Lomba Berdasarakan Slug
+    // Ambil ID Lomba Berdasarkan Slug (normalisasi: hapus karakter non-alphanumeric)
     if (slug) {
-      const namaLombaDB = slug.replace(/-/g, ' ').toUpperCase();
-      const [lomba] = await db.query("SELECT id FROM lomba_dashboard WHERE nama = ?", [namaLombaDB]);
+      const slugNormal = slug.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const [lomba] = await db.query(
+        "SELECT id FROM lomba_dashboard WHERE LOWER(REGEXP_REPLACE(nama, '[^a-zA-Z0-9]', '')) = ?",
+        [slugNormal]
+      );
       if (lomba.length > 0) lombaId = lomba[0].id;
     }
 

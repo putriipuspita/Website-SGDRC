@@ -88,7 +88,7 @@ export async function DELETE(req) {
 
     // Ambil Seluruh File Pendaftaran dari user ini sebelum dihapus
     const [daftarPendaftaran] = await db.query(
-      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika, file_follow_tiktok FROM pendaftaran WHERE user_id = ?",
+      "SELECT file_bukti_bayar, file_bukti_refund, file_kartu_siswa, file_follow_ig, file_follow_ig_robotika FROM pendaftaran WHERE user_id = ?",
       [id]
     );
 
@@ -106,8 +106,7 @@ export async function DELETE(req) {
         p.file_bukti_refund,
         p.file_kartu_siswa,
         p.file_follow_ig,
-        p.file_follow_ig_robotika,
-        p.file_follow_tiktok
+        p.file_follow_ig_robotika
       ];
 
       for (const path of filePaths) {
