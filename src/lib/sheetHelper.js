@@ -38,6 +38,7 @@ export async function kirimKeSpreadsheet(dataPendaftaran) {
 
     const opsi = {
       method: 'POST',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -49,10 +50,17 @@ export async function kirimKeSpreadsheet(dataPendaftaran) {
       throw new Error(`HTTP error! status: ${respon.status}`);
     }
 
-    const hasil = await respon.json();
+    const teksRespon = await respon.text();
+    let hasil = {};
+    try {
+      hasil = JSON.parse(teksRespon);
+    } catch {
+      // Jika Google Apps Script merespon HTML 200 OK
+      return true;
+    }
     return hasil.status === 'sukses';
   } catch (kesalahan) {
-    console.error("Gagal mengirim data ke Google Sheets:", kesalahan);
+    console.error("Gagal mengirim data ke Google Sheets:", kesalahan.message || kesalahan);
     return false;
   }
 }
@@ -125,6 +133,7 @@ export async function sinkronisasiSemuaPendaftaran() {
     // Opsi Permintaan
     const opsi = {
       method: 'POST',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -137,11 +146,16 @@ export async function sinkronisasiSemuaPendaftaran() {
       throw new Error(`HTTP error! status: ${respon.status}`);
     }
 
-    // Response
-    const hasil = await respon.json();
+    const teksRespon = await respon.text();
+    let hasil = {};
+    try {
+      hasil = JSON.parse(teksRespon);
+    } catch {
+      return true;
+    }
     return hasil.status === 'sukses';
   } catch (kesalahan) {
-    console.error("Gagal melakukan sinkronisasi massal ke Google Sheets:", kesalahan);
+    console.error("Gagal melakukan sinkronisasi massal ke Google Sheets:", kesalahan.message || kesalahan);
     return false;
   }
 }

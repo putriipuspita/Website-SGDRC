@@ -59,16 +59,21 @@ export async function POST(req) {
   }
 }
 
-// Fungsi menghapus file fisik
+// Fungsi menghapus file
 async function hapusFileFisik(pathRelatif) {
   if (!pathRelatif || !pathRelatif.startsWith('/uploads/')) return;
+  // File dummy/penanda tidak disimpan fisik, jadi tidak perlu di-unlink
+  if (pathRelatif.includes('-terunggah.')) return;
+
   try {
     const { unlink } = await import('fs/promises');
     const { join } = await import('path');
     const fullPath = join(process.cwd(), 'public', pathRelatif);
     await unlink(fullPath);
   } catch (err) {
-    console.error(`Gagal hapus file: ${pathRelatif}`, err.message);
+    if (err.code !== 'ENOENT') {
+      console.error(`Gagal hapus file: ${pathRelatif}`, err.message);
+    }
   }
 }
 

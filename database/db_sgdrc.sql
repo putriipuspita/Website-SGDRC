@@ -170,7 +170,6 @@ CREATE TABLE `pendaftaran` (
   `file_kartu_siswa` varchar(255) DEFAULT NULL,
   `file_follow_ig` varchar(255) DEFAULT NULL,
   `file_follow_ig_robotika` varchar(255) DEFAULT NULL,
-  `file_follow_tiktok` varchar(255) DEFAULT NULL,
   `file_bukti_bayar` varchar(255) DEFAULT NULL,
   `file_bukti_refund` varchar(255) DEFAULT NULL,  
   `status_pendaftaran` enum('pending','success','rejected','refund') DEFAULT 'pending',
