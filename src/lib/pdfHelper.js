@@ -81,9 +81,9 @@ export const muatFontSertifikat = async (customFonts = [], apakahTebal = false, 
       const descriptor = (fInfo.name === 'Montserrat')
         ? { weight: 'bold' }
         : {
-            weight: apakahTebal ? 'bold' : 'normal',
-            style: apakahMiring ? 'italic' : 'normal'
-          };
+          weight: apakahTebal ? 'bold' : 'normal',
+          style: apakahMiring ? 'italic' : 'normal'
+        };
 
       // Buat font face
       const fontFace = new FontFace(fInfo.name, `url(${fInfo.url})`, descriptor);
@@ -144,17 +144,17 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
   ctx.font = `${getFs(config.size_nomor)}px "Montserrat"`;
   ctx.fillText(`Nomor: ${nomorSurat}`, img.width / 2, img.height * (config.y_nomor / 100));
 
-  // Nama (Dibuat fleksibel menyesuaikan lebar garis secara dinamis dalam 1 baris)
+  // Nama
   const fontSizeNamaOriginal = getFs(config.size_nama);
   let fontSizeNama = fontSizeNamaOriginal;
-  
+
   // Mengatur gaya font berdasarkan konfigurasi
   const gayaTebal = config.apakah_tebal ? 'bold ' : '';
   const gayaMiring = config.apakah_miring ? 'italic ' : '';
   const gayaFont = `${gayaMiring}${gayaTebal}`;
   ctx.font = `${gayaFont}${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
 
-  // Mengatur format huruf berdasarkan konfigurasi
+  // Format Nama
   const namaBersih = (nama || "").trim().replace(/\s+/g, ' ');
   let nameFormatted = namaBersih.toUpperCase();
   if (config.format_huruf === 'lowercase') {
@@ -163,10 +163,11 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
     nameFormatted = namaBersih.split(' ').map(kata => kata.charAt(0).toUpperCase() + kata.slice(1).toLowerCase()).join(' ');
   }
 
-  const maxLebarGaris = img.width * 0.66; // Batas lebar garis horizontal
-  const maxLebarKertas = img.width * 0.82; // Batas aman maksimal agar tidak meluber keluar kertas
+  // Lebar Garis
+  const maxLebarGaris = img.width * 0.66;
+  const maxLebarKertas = img.width * 0.82;
 
-  // Lapis 1: Kecilkan font maksimal 4px agar pas dengan garis horizontal
+  // Ukuran Font Nama
   const minFontSizeEstetika = Math.max(fontSizeNamaOriginal - 4, 10);
   let lebarNama = ctx.measureText(nameFormatted).width;
   while (lebarNama > maxLebarGaris && fontSizeNama > minFontSizeEstetika) {
@@ -175,20 +176,18 @@ export const gambarTeksSertifikat = (ctx, img, config, params) => {
     lebarNama = ctx.measureText(nameFormatted).width;
   }
 
-  // Lapis 2: Jika masih meluber melebihi batas kertas, kecilkan lebih jauh tanpa batasan 4px demi keamanan
+  // Batas Maksimal Kertas
   while (lebarNama > maxLebarKertas && fontSizeNama > 8) {
     fontSizeNama -= 0.5;
     ctx.font = `${gayaFont}${fontSizeNama}px "${config.font_nama || 'Cinzel'}"`;
     lebarNama = ctx.measureText(nameFormatted).width;
   }
 
-  // Letak X dinamis untuk nama:
-  // Jika nama pendek, gunakan center (50%) agar pas di tengah garis.
-  // Jika nama panjang, gunakan offset (48%) agar tidak menabrak aksesoris ornamen biru di sebelah kanan.
+  // Posisi X Nama
   const isNamaPanjang = lebarNama > maxLebarGaris || fontSizeNama < fontSizeNamaOriginal;
   const targetXNama = isNamaPanjang ? img.width * 0.48 : img.width / 2;
 
-  // Koreksi posisi Y agar bagian bawah nama tetap sejajar di atas garis (tidak melayang ke atas)
+  // Posisi Y Nama
   const offset = fontSizeNamaOriginal - fontSizeNama;
   const startY = (img.height * (config.y_nama / 100)) + offset;
   ctx.fillText(nameFormatted, targetXNama, startY);
