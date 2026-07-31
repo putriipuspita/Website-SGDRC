@@ -2,12 +2,13 @@
 import React, { useState, useEffect } from 'react';
 // Import Icon
 import {
-  Search, Filter, Download, CheckCircle2, UserCircle, ChevronDown, Plus, Minus, Database, Loader2, Eye
+  Search, Filter, Download, CheckCircle2, UserCircle, ChevronDown, Plus, Minus, Database, Loader2, Eye, QrCode
 } from 'lucide-react';
 
 // Import Link dan useRouter dari React
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { dapatkanDataKartuQr } from '@/lib/generateKartuQr';
 
 // Impot Navbar, Sidebar dan Bukti Pendaftaran
 import Navbar from './navigasi/Navbar';
@@ -219,6 +220,112 @@ const DataPeserta = () => {
     }
   };
 
+  // Fungsi Unduh Gambar Kartu QR Code (.PNG) BERFRAME untuk Absensi
+  const tanganiUnduhQr = async (data) => {
+    try {
+      const { regIdFormatted, namaSubjek, lombaTeks, instansiTeks } = dapatkanDataKartuQr(data);
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(regIdFormatted)}`;
+
+      // Load gambar QR Code dari API
+      const qrImg = new Image();
+      qrImg.crossOrigin = 'anonymous';
+      qrImg.src = qrApiUrl;
+
+      await new Promise((resolve, reject) => {
+        qrImg.onload = resolve;
+        qrImg.onerror = reject;
+      });
+
+      // Buat Canvas untuk menggambar Kartu Frame
+      const canvas = document.createElement('canvas');
+      const width = 600;
+      const height = 730;
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+
+      // 1. Background Kartu (Putih Bersih)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+
+      // Border Luar Elegan
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(10, 10, width - 20, height - 20);
+
+      // 2. Header Banner (Merah khas SGDRC #E40011)
+      ctx.fillStyle = '#E40011';
+      ctx.fillRect(10, 10, width - 20, 100);
+
+      // Teks Header (ROBOTICS pakai S)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 20px "Montserrat", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('SUNAN GUNUNG DJATI ROBOTICS COMPETITION', width / 2, 48);
+
+      // Subheader (Title Case: Awalan Kata Besar)
+      ctx.fillStyle = '#FFE4E6';
+      ctx.font = 'bold 13px "Montserrat", sans-serif';
+      ctx.fillText('Kartu Absensi Digital Peserta (SGDRC 2026)', width / 2, 75);
+
+      // 3. Nama Tim / Peserta Solo (Besar & Tegas)
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 28px "Montserrat", sans-serif';
+      ctx.fillText(namaSubjek, width / 2, 155);
+
+      // Subtitle Nama Lomba & Instansi
+      const subtitleInfo = [lombaTeks, instansiTeks].filter(Boolean).join(' • ');
+      ctx.fillStyle = '#16B9FF';
+      ctx.font = 'bold 15px "Montserrat", sans-serif';
+      ctx.fillText(subtitleInfo, width / 2, 188);
+
+      // Garis Pembatas
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, 208);
+      ctx.lineTo(width - 40, 208);
+      ctx.stroke();
+
+      // 4. Tempatkan QR Code di Tengah
+      const qrSize = 340;
+      const qrX = (width - qrSize) / 2;
+      const qrY = 228;
+
+      // Card Background untuk QR Code
+      ctx.fillStyle = '#F8FAFC';
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 2;
+      ctx.fillRect(qrX - 15, qrY - 15, qrSize + 30, qrSize + 30);
+      ctx.strokeRect(qrX - 15, qrY - 15, qrSize + 30, qrSize + 30);
+
+      // Gambarkan QR Code
+      ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+
+      // 5. No. Registrasi di Bawah QR Code
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(regIdFormatted, width / 2, 618);
+
+      // 6. Footer Informasi Petunjuk (Hitam Italic, Awalan Besar & Diakhiri Titik)
+      ctx.fillStyle = '#000000';
+      ctx.font = 'italic bold 13px "Montserrat", sans-serif';
+      ctx.fillText('Harap tunjukan QR ini kepada panitia pada saat registrasi.', width / 2, 668);
+
+      // 7. Simpan sebagai file PNG dan Download
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `KARTU_QR_ABSENSI_${namaSubjek.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (err) {
+      console.error("Gagal Mengunduh Kartu QR Code:", err);
+    }
+  };
+
   return (
     // Halaman Data Peserta
     <div className="h-screen bg-slate-50 text-slate-800 font-montserrat flex flex-col overflow-hidden">
@@ -340,21 +447,21 @@ const DataPeserta = () => {
                     /* Container Tabel Daftar Peserta*/
                     <div className="bg-white border border-slate-200 rounded-xl shadow-[0_15px_35px_rgba(0,0,0,0.05),0_0_20px_rgba(22,185,255,0.06)] overflow-x-auto custom-scrollbar pb-2">
                       <div>
-                        <table className="w-full md:min-w-[1240px] text-left border-collapse">
+                        <table className="w-full md:min-w-full lg:min-w-[1240px] text-left border-collapse">
                           <thead>
                             <tr className="hidden md:table-row bg-[#0B255D] border-b border-white/20">
 
                               {/* Kolom Toggle khusus iPad Standar */}
                               <th className="px-2 py-2 border-r border-white/30 text-center lg:hidden w-10"></th>
 
-                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Jenis Lomba</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Nama Tim</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 1</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 2</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[150px] whitespace-nowrap text-center">Peserta 3</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider lg:min-w-[150px] whitespace-nowrap text-center">Jenis Lomba</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider lg:min-w-[160px] whitespace-nowrap text-center">Nama Tim</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Peserta 1</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Peserta 2</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Peserta 3</div></th>
                               <th className="px-3 py-3 border-r border-white/10 text-center hidden lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[110px] whitespace-nowrap text-center">Jenjang</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[160px] whitespace-nowrap text-center">Asal Instansi</div></th>
-                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider min-w-[120px] whitespace-nowrap text-center">Status</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider lg:min-w-[160px] whitespace-nowrap text-center">Asal Instansi</div></th>
+                              <th className="px-3 py-3 border-r border-white/10 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider lg:min-w-[120px] whitespace-nowrap text-center">Status</div></th>
                               <th className="px-3 py-3 text-center lg:table-cell"><div className="text-[9.5px] xl:text-[10.3px] 2xl:text-[11.3px] font-black text-white uppercase tracking-wider whitespace-nowrap">Aksi</div></th>
                             </tr>
 
@@ -384,7 +491,7 @@ const DataPeserta = () => {
 
                                   {/* Kolom Lomba */}
                                   <td className="px-3 py-3 border-r border-slate-200 whitespace-nowrap">
-                                    <div className="min-w-[150px]">
+                                    <div className="lg:min-w-[150px]">
                                       <span className="text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-black text-[#16B9FF] uppercase tracking-tight block text-left leading-normal whitespace-nowrap">
                                         {data.lomba}
                                       </span>
@@ -393,7 +500,7 @@ const DataPeserta = () => {
 
                                   {/* Kolom Nama Tim */}
                                   <td className="px-3 py-3 border-r border-slate-200 leading-normal">
-                                    <div className="min-w-[160px]">
+                                    <div className="lg:min-w-[160px]">
                                       <span className="text-[10.6px] xl:text-[11.2px] 2xl:text-[12.2px] font-black text-slate-950 uppercase tracking-tight block text-left leading-normal">
                                         {data.tim || "-"}
                                       </span>
@@ -402,13 +509,13 @@ const DataPeserta = () => {
 
                                   {/* Kolom Peserta */}
                                   <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
-                                    <div className="min-w-[150px]">{formatJudul(data.peserta[0])}</div>
+                                    <div className="min-w-[160px]">{formatJudul(data.peserta[0])}</div>
                                   </td>
                                   <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
-                                    <div className="min-w-[150px]">{formatJudul(data.peserta[1])}</div>
+                                    <div className="min-w-[160px]">{formatJudul(data.peserta[1])}</div>
                                   </td>
                                   <td className="px-3 py-3 border-r border-slate-200 text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold leading-normal hidden lg:table-cell text-slate-950">
-                                    <div className="min-w-[150px]">{formatJudul(data.peserta[2])}</div>
+                                    <div className="min-w-[160px]">{formatJudul(data.peserta[2])}</div>
                                   </td>
 
                                   {/* Kolom Jenjang */}
@@ -418,12 +525,12 @@ const DataPeserta = () => {
 
                                   {/* Kolom Instansi */}
                                   <td className="px-3 py-3 border-r border-slate-200 font-bold text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] tracking-tight leading-normal text-slate-950">
-                                    <div className="min-w-[160px]">{data.instansi}</div>
+                                    <div className="lg:min-w-[160px]">{data.instansi}</div>
                                   </td>
 
                                   {/* Kolom Status Verifikasi */}
                                   <td className="px-3 py-3 text-center border-r border-slate-200">
-                                    <div className="flex items-center justify-center min-w-[120px]">
+                                    <div className="flex items-center justify-center lg:min-w-[120px]">
                                       <span className={`text-[12.5px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold tracking-normal ${ambilWarnaStatus(data.status)} whitespace-nowrap`}>
                                         {data.status.split(' ').map(word => word.charAt(0) + word.slice(1).toLowerCase()).join(' ')}
                                       </span>
@@ -431,10 +538,10 @@ const DataPeserta = () => {
                                   </td>
 
                                   {/* Kolom Tombol Aksi */}
-                                  <td className="px-3 py-2 text-center min-w-[70px] relative">
+                                  <td className="px-3 py-2 text-center min-w-[90px] relative">
                                     {data.status === 'TERVERIFIKASI' ? (
                                       <div className="flex items-center justify-center gap-2">
-                                        {/* Tombol Unduh Bukti */}
+                                        {/* Tombol Unduh Bukti (PDF) */}
                                         <div className="relative group/aksi cursor-pointer">
                                           <button
                                             onClick={() => sedangUnduh === null && tanganiUnduh(data)}
@@ -444,8 +551,22 @@ const DataPeserta = () => {
                                             {sedangUnduh === data.id ? <Loader2 size={12} className="text-slate-400 animate-spin" /> : <Download size={12} strokeWidth={3} />}
                                           </button>
                                           <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#16B9FF] text-white text-[9px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
-                                            {sedangUnduh === data.id ? 'Memproses...' : 'Unduh Bukti'}
+                                            {sedangUnduh === data.id ? 'Memproses...' : 'Unduh Bukti PDF'}
                                             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#16B9FF]"></div>
+                                          </span>
+                                        </div>
+
+                                        {/* Tombol Unduh QR Code (PNG) */}
+                                        <div className="relative group/aksi cursor-pointer">
+                                          <button
+                                            onClick={() => tanganiUnduhQr(data)}
+                                            className="w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-all active:scale-95 shadow-lg shadow-indigo-600/20 focus:outline-none"
+                                          >
+                                            <QrCode size={12} strokeWidth={2.5} />
+                                          </button>
+                                          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-indigo-600 text-white text-[9px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
+                                            Unduh QR Absensi
+                                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-indigo-600"></div>
                                           </span>
                                         </div>
 
@@ -554,30 +675,67 @@ const DataPeserta = () => {
                                             <span className="text-[12px] font-bold text-slate-950 mr-2 leading-relaxed">:</span>
                                           </div>
                                           <div className="flex-1 text-left">
-                                            <div className="flex gap-2 pt-0.5">
+                                            <div className="flex items-center gap-2.5 pt-0.5">
                                               {data.status === 'TERVERIFIKASI' ? (
                                                 <>
-                                                  <button
-                                                    onClick={(e) => { e.stopPropagation(); sedangUnduh === null && tanganiUnduh(data); }}
-                                                    className={`px-3 py-1.5 ${sedangUnduh === data.id ? 'bg-slate-200 text-slate-400' : 'bg-[#16B9FF] text-white'} text-[9.5px] font-black rounded-md active:scale-95 transition-all flex items-center gap-1`}
-                                                  >
-                                                    {sedangUnduh === data.id ? <Loader2 size={10} className="animate-spin" /> : 'Invoice'}
-                                                  </button>
+                                                  {/* Tombol Unduh Bukti (PDF) HP */}
+                                                  <div className="relative group/aksi cursor-pointer">
+                                                    <button
+                                                      onClick={() => sedangUnduh === null && tanganiUnduh(data)}
+                                                      disabled={sedangUnduh !== null}
+                                                      className={`w-7 h-7 flex items-center justify-center ${sedangUnduh === data.id ? 'bg-slate-200' : 'bg-[#16B9FF] hover:bg-[#1299d4]'} text-white rounded-md transition-all active:scale-95 shadow-md shadow-[#16B9FF]/20 focus:outline-none`}
+                                                    >
+                                                      {sedangUnduh === data.id ? <Loader2 size={13} className="text-slate-400 animate-spin" /> : <Download size={13} strokeWidth={3} />}
+                                                    </button>
+                                                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#16B9FF] text-white text-[9.5px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
+                                                      {sedangUnduh === data.id ? 'Memproses...' : 'Unduh Bukti PDF'}
+                                                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#16B9FF]"></div>
+                                                    </span>
+                                                  </div>
+
+                                                  {/* Tombol Unduh QR Code (PNG) HP */}
+                                                  <div className="relative group/aksi cursor-pointer">
+                                                    <button
+                                                      onClick={() => tanganiUnduhQr(data)}
+                                                      className="w-7 h-7 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition-all active:scale-95 shadow-md shadow-indigo-600/20 focus:outline-none"
+                                                    >
+                                                      <QrCode size={13} strokeWidth={2.5} />
+                                                    </button>
+                                                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-indigo-600 text-white text-[9.5px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
+                                                      Unduh QR Absensi
+                                                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-indigo-600"></div>
+                                                    </span>
+                                                  </div>
+
+                                                  {/* Link Grup WhatsApp HP */}
                                                   {data.grupWa && (
-                                                    <a href={data.grupWa} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="px-3 py-1.5 bg-emerald-600 text-white text-[9.5px] font-black rounded-md active:scale-95 transition-all">Grup WA</a>
+                                                    <div className="relative group/aksi cursor-pointer">
+                                                      <a
+                                                        href={data.grupWa}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="w-7 h-7 flex items-center justify-center bg-emerald-500/10 hover:bg-emerald-500/20 rounded-md transition-all border border-emerald-500/30 overflow-hidden focus:outline-none"
+                                                      >
+                                                        <img src="/aset/icon/whatsapp.webp" alt="WhatsApp" className="w-full h-full object-cover scale-150" />
+                                                      </a>
+                                                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-emerald-600 text-white text-[9.5px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
+                                                        Join Grup
+                                                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-emerald-600"></div>
+                                                      </span>
+                                                    </div>
                                                   )}
                                                 </>
                                               ) : data.status === 'REFUNDED' ? (
                                                 <div className="relative group/aksi cursor-pointer">
                                                   <button
                                                     onClick={(e) => { e.stopPropagation(); window.open(data.buktiRefund, '_blank'); }}
-                                                    className="w-7 h-7 bg-orange-500 hover:bg-orange-600 text-white rounded-md active:scale-95 transition-all flex items-center justify-center shadow-sm"
+                                                    className="w-7 h-7 bg-orange-500 hover:bg-orange-600 text-white rounded-md active:scale-95 transition-all flex items-center justify-center shadow-md shadow-orange-500/20 focus:outline-none"
                                                   >
-                                                    <Eye size={14} strokeWidth={2.5} />
+                                                    <Eye size={13} strokeWidth={3} />
                                                   </button>
-                                                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-orange-600 text-white text-[9.5px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
+                                                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-orange-500 text-white text-[9.5px] font-bold rounded opacity-0 invisible group-hover/aksi:opacity-100 group-hover/aksi:visible transition-all duration-200 whitespace-nowrap pointer-events-none z-[100] shadow-xl">
                                                     Bukti Refund
-                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-orange-600"></div>
+                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-orange-500"></div>
                                                   </span>
                                                 </div>
                                               ) : (

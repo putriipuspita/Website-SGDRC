@@ -1,4 +1,5 @@
 import React from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
 // Komponen Untuk Menampilkan Bukti Pendaftaran dan Invoice Peserta
 const KwitansiPendaftaran = ({ data, pengaturan = {} }) => {
@@ -199,8 +200,21 @@ const KwitansiPendaftaran = ({ data, pengaturan = {} }) => {
             </div>
           </div>
 
-          {/* Container Tanda Tangan */}
-          <div className="flex justify-end pr-0">
+          {/* Container Tanda Tangan & QR Code Absensi */}
+          <div className="flex justify-between items-end pr-0 mt-4">
+            
+            {/* QR Code Absensi Unik */}
+            <div className="flex flex-col items-center border border-gray-300 p-2.5 rounded-lg bg-gray-50/50">
+              <QRCodeSVG
+                value={nomorSurat}
+                size={85}
+                level="H"
+                includeMargin={false}
+              />
+              <span className="text-[7.5pt] font-mono font-bold text-gray-700 mt-1.5">{nomorSurat}</span>
+              <span className="text-[6.5pt] font-sans font-semibold text-gray-500 uppercase tracking-tighter">QR Code Registrasi</span>
+            </div>
+
             <div className="text-center relative w-72">
 
               {/* Kota, Tanggal, Jabatan */}

@@ -465,55 +465,61 @@ const PesertaLomba = () => {
               notFound={dataTampil.length === 0 && (daftarPeserta.length > 0 || kataKunci !== '')}
               notFoundText="Data tidak ditemukan"
               headers={[
-                { label: 'Tanggal' },
-                ...(!apakahSolo ? [{ label: <div className="min-w-[160px] text-center">Nama Tim</div> }] : []),
-                { label: <div className="min-w-[150px] text-center">Peserta 1</div> },
-                ...(!apakahSolo ? [{ label: <div className="min-w-[150px] text-center">Peserta 2</div> }] : []),
-                ...(apakahKelompokMaks3 ? [{ label: <div className="min-w-[150px] text-center">Peserta 3</div> }] : []),
-                { label: 'WhatsApp' },
-                { label: <div className="min-w-[110px] text-center whitespace-nowrap">Jenjang</div> },
-                { label: <div className="min-w-[160px] text-center">Asal Instansi</div> },
-                { label: <div className="min-w-[120px] text-center">Status</div> },
-                { label: 'Aksi' }
+                { label: <div className="w-[110px] min-w-[110px] text-center">Tanggal</div> },
+                ...(!apakahSolo ? [{ label: <div className="w-[170px] min-w-[170px] text-center">Nama Tim</div> }] : []),
+                { label: <div className="w-[210px] min-w-[210px] text-center">{apakahSolo ? 'Nama Peserta' : 'Peserta 1'}</div> },
+                ...(!apakahSolo ? [{ label: <div className="w-[210px] min-w-[210px] text-center">Peserta 2</div> }] : []),
+                ...(apakahKelompokMaks3 ? [{ label: <div className="w-[210px] min-w-[210px] text-center">Peserta 3</div> }] : []),
+                { label: <div className="w-[130px] min-w-[130px] text-center">WhatsApp</div> },
+                { label: <div className="w-[110px] min-w-[110px] text-center whitespace-nowrap">Jenjang</div> },
+                { label: <div className="w-[170px] min-w-[170px] text-center">Asal Instansi</div> },
+                { label: <div className="w-[120px] min-w-[120px] text-center">Status</div> },
+                { label: <div className="w-[100px] min-w-[100px] text-center">Aksi</div> }
               ]}
             >
               {dataTampil.map((p) => (
                 <tr key={p.id} className={`transition-colors group ${p.status === 'REFUNDED' ? 'bg-slate-100 opacity-70' : 'hover:bg-slate-50/50'}`}>
 
                   {/* Tanggal */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.tanggal}</td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">
+                    <div className="w-[110px] min-w-[110px] mx-auto">{p.tanggal}</div>
+                  </td>
 
                   {!apakahSolo && (
-                    <td className="px-4 py-2 border-r border-slate-200 text-left text-[11.6px] lg:text-[10.2px] xl:text-[11.1px] 2xl:text-[12.1px] font-black text-[#16B9FF] uppercase tracking-normal leading-relaxed">
-                      <div className="min-w-[160px]">{p.namaTim || '-'}</div>
+                    <td className="px-4 py-2 border-r border-slate-200 text-left text-[12.1px] lg:text-[10.7px] xl:text-[11.6px] 2xl:text-[12.6px] font-black text-[#16B9FF] uppercase tracking-normal leading-relaxed">
+                      <div className="w-[170px] min-w-[170px]">{p.namaTim || '-'}</div>
                     </td>
                   )}
 
                   {/* Nama Peserta */}
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                    <div className="min-w-[150px]">{formatJudul(p.peserta1)}</div>
+                    <div className="w-[210px] min-w-[210px]">{formatJudul(p.peserta1)}</div>
                   </td>
                   {!apakahSolo && (
                     <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                      <div className="min-w-[150px]">{formatJudul(p.peserta2)}</div>
+                      <div className="w-[210px] min-w-[210px]">{formatJudul(p.peserta2)}</div>
                     </td>
                   )}
                   {apakahKelompokMaks3 && (
                     <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                      <div className="min-w-[150px]">{formatJudul(p.peserta3)}</div>
+                      <div className="w-[210px] min-w-[210px]">{formatJudul(p.peserta3)}</div>
                     </td>
                   )}
 
                   {/* WhatsApp, Jenjang, Asal Instansi */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">{p.whatsapp}</td>
-                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed"><div className="min-w-[110px] whitespace-nowrap text-center">{p.jenjang}</div></td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">
+                    <div className="w-[130px] min-w-[130px] mx-auto">{p.whatsapp}</div>
+                  </td>
+                  <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-center leading-relaxed">
+                    <div className="w-[110px] min-w-[110px] whitespace-nowrap text-center mx-auto">{p.jenjang}</div>
+                  </td>
                   <td className="px-4 py-2 border-r border-slate-200 text-[12.2px] lg:text-[11.1px] xl:text-[11.7px] 2xl:text-[12.7px] font-bold text-slate-950 text-left leading-relaxed">
-                    <div className="min-w-[160px]">{p.instansi}</div>
+                    <div className="w-[170px] min-w-[170px]">{p.instansi}</div>
                   </td>
 
                   {/* Status */}
-                  <td className="px-4 py-2 border-r border-slate-200 text-left leading-tight">
-                    <div className="min-w-[120px]">
+                  <td className="px-4 py-2 border-r border-slate-200 text-center leading-tight">
+                    <div className="min-w-[120px] flex justify-center">
                       <span className={`text-[11.2px] lg:text-[10px] xl:text-[10.7px] 2xl:text-[11.5px] font-black uppercase tracking-normal leading-tight ${p.status === 'Terverifikasi' ? 'text-emerald-500' :
                         p.status === 'Ditolak' ? 'text-red-500' :
                           p.status === 'Refunded' ? 'text-orange-500' :

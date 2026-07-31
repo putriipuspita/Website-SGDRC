@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, LogOut, ChevronDown, Settings, Award } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, ChevronDown, Settings, Award, QrCode } from 'lucide-react';
 
 // Import Utility
 import { formatJudul } from '../../../lib/formatHelper';
@@ -170,6 +170,20 @@ const SidebarAdmin = ({ apakahSidebarTerbuka }) => {
               {/* Icon dan Nama Menu */}
               <Settings size={18} />
               <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">Informasi</span>
+            </Link>
+          </div>
+
+          {/* Menu Absensi Event */}
+          <div className="px-4 mb-1">
+            <Link
+              href="/admin/absensi"
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 ${lokasi === '/admin/absensi'
+                ? 'text-[#16B9FF] font-bold'
+                : 'text-white hover:bg-white/10'
+                }`}
+            >
+              <QrCode size={18} />
+              <span className="text-[14.3px] lg:text-[14px] font-semibold tracking-wide">Absensi Event</span>
             </Link>
           </div>
         </div>

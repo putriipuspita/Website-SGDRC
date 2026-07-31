@@ -23,7 +23,7 @@ export const TableBase = ({
               {headers.map((header, idx) => (
                 <th
                   key={idx}
-                  className={`px-4 py-4 text-[11.5px] lg:text-[10.5px] font-black text-white uppercase tracking-wide border-white/10 text-center ${idx < headers.length - 1 ? 'border-r' : ''
+                  className={`px-4 py-4 text-[12px] lg:text-[11px] font-black text-white uppercase tracking-wide border-white/10 text-center ${idx < headers.length - 1 ? 'border-r' : ''
                     } ${header.className || ''}`}
                 >
                   {header.label}

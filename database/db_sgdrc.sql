@@ -87,7 +87,7 @@ CREATE TABLE `lomba_dashboard` (
 INSERT INTO `lomba_dashboard` (`id`, `nama`, `jenjang`, `harga`, `tanggal`, `tim`, `gambar`, `status`, `grup_wa`) VALUES
 (1, 'ROBOT SOCCER JUNIOR', 'SD / MI', 'Rp. 250.000', '01 November 2026', '2 Orang', '/aset/lomba/soccer.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (2, 'ROBOT SOCCER SENIOR', 'SMP/MTS - SMA/K/MA', 'Rp. 250.000', '01 November 2026', '2 Orang', '/aset/lomba/soccer.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
-(3, 'FAST BUILDING JUNIOR', 'Maks 7 Tahun', 'Rp. 175.000', '01 November 2026', '1 Orang', '/aset/lomba/lego.png', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
+(3, 'FAST BUILDING JUNIOR', 'Maks 7 Tahun', 'Rp. 175.000', '01 November 2026', '1 Orang', '/aset/lomba/lego.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (4, 'FAST BUILDING SENIOR', 'Maks 9 Tahun', 'Rp. 175.000', '01 November 2026', '1 Orang', '/aset/lomba/fast building.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (5, 'WEDO 2.0', '3 SD - 6 SD', 'Rp. 175.000', '01 November 2026', '1 Orang', '/aset/lomba/wedo.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
 (6, 'PROJECT INNOVATIVE', 'SMP/MTS - SMA/K/MA', 'Rp. 200.000', '02 November 2026', '1 - 3 Orang', '/aset/lomba/project innovative.webp', 'Open', 'https://chat.whatsapp.com/Ci2u6pcBI6l7kUITChkPC6'),
@@ -173,6 +173,8 @@ CREATE TABLE `pendaftaran` (
   `file_bukti_bayar` varchar(255) DEFAULT NULL,
   `file_bukti_refund` varchar(255) DEFAULT NULL,  
   `status_pendaftaran` enum('pending','success','rejected','refund') DEFAULT 'pending',
+  `status_kehadiran` enum('belum_hadir','hadir') DEFAULT 'belum_hadir',
+  `waktu_kehadiran` datetime DEFAULT NULL,
   `catatan_admin` text DEFAULT NULL,
   `peringkat` varchar(50) DEFAULT NULL,
   `is_sertifikat_siap` tinyint(1) DEFAULT 0,

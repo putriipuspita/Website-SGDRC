@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { join } from 'path';
+import { dapatkanDataKartuQr, generateKartuQrSvg } from '@/lib/generateKartuQr';
 
 // Konfigurasi Email
 const port = parseInt(process.env.EMAIL_PORT || '465');
@@ -65,7 +66,7 @@ export async function kirimEmailVerifikasi(emailTujuan, namaUser, linkVerifikasi
 }
 
 // Fungsi Mengirim Notifikasi Status Pendaftaran
-export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, catatan, host = 'sgdrc.id', pathLampiran = null, apakahKoreksi = false) {
+export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, catatan, host = 'sgdrc.id', pathLampiran = null, apakahKoreksi = false, dataPendaftaran = null) {
   // Cek Status Pendaftaran
   const apakahBerhasil = status === 'success';
   const apakahRefund = status === 'refund';
@@ -82,7 +83,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
     ? `PENGEMBALIAN DANA SGDRC ${TAHUN}`
     : `INFORMASI PENDAFTARAN SGDRC ${TAHUN}`;
 
-  // Menentukan Warna Status
+  // Menentukan Warna Status (Hijau Emerald untuk Terverifikasi)
   const statusColor = apakahBerhasil ? '#10b981' : (apakahRefund ? '#f59e0b' : '#f43f5e');
 
   // Menentukan Header atau Judul
@@ -90,7 +91,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
     ? 'PENDAFTARAN PESERTA TERVERIFIKASI'
     : (apakahRefund ? 'PENGEMBALIAN DANA' : 'PENDAFTARAN PESERTA DITOLAK');
 
-  // Isi Pesan
+  // Isi Pesan Email (Tanpa Preview Gambar Inline)
   const pesanHtml = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; line-height: 1.6; color: #333;">
       <!-- Header atau Judul Email -->
@@ -100,7 +101,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
       
       <!-- Isi Pesan Berhasil -->
       ${apakahBerhasil ? `
-        <p>Kami ingin menginformasikan bahwa pendaftaran kamu untuk <strong>Sunan Gunung Djati Robotic Competition (SGDRC) ${TAHUN}</strong> telah berhasil diverifikasi 🎉</p>
+        <p>Kami ingin menginformasikan bahwa pendaftaran kamu untuk <strong>Sunan Gunung Djati Robotics Competition (SGDRC) ${TAHUN}</strong> telah berhasil diverifikasi 🎉</p>
       ` :
       // Isi Pesan Refund
       apakahRefund ? `
@@ -108,7 +109,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
       ` : `
 
       <!-- Isi Pesan Ditolak -->
-        <p>Terima kasih sudah mendaftar pada <strong>Sunan Gunung Djati Robotic Competition (SGDRC) ${TAHUN}</strong>.</p>
+        <p>Terima kasih sudah mendaftar pada <strong>Sunan Gunung Djati Robotics Competition (SGDRC) ${TAHUN}</strong>.</p>
         <p>Mohon maaf, setelah kami lakukan pengecekan, pendaftaran kamu belum dapat diproses lebih lanjut.</p>
       `}
 
@@ -126,13 +127,8 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
 
       <!-- Pesan Tambahan Berhasil -->
       ${apakahBerhasil ? `
-        <p>Selamat! Kamu sudah resmi menjadi peserta <strong>SGDRC ${TAHUN}</strong>.</p>
-        <p>Silakan login ke dashboard untuk:</p>
-        <ul style="margin: 10px 0; padding-left: 20px;">
-          <li>Melihat detail pendaftaran lomba</li>
-          <li>Mengunduh bukti pendaftaran resmi</li>
-          <li>Bergabung ke grup WhatsApp koordinasi</li>
-        </ul>
+        <p>Selamat! Kamu sudah resmi menjadi peserta <strong>Sunan Gunung Djati Robotics Competition (SGDRC) ${TAHUN}</strong>.</p>
+        <p>Silakan login ke dashboard untuk melihat detail pendaftaran, mengunduh bukti pendaftaran resmi (PDF), dan bergabung ke grup WhatsApp koordinasi.</p>
       ` :
 
       // Pesan Tambahan Refund
@@ -161,6 +157,15 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
     </div>
   `;
 
+  // Susun Lampiran (jika ada Bukti Refund)
+  const attachments = [];
+  if (apakahRefund && pathLampiran) {
+    attachments.push({
+      filename: 'Bukti_Refund.jpg',
+      path: join(process.cwd(), 'public', pathLampiran)
+    });
+  }
+
   // Pengirim Email
   try {
     await transporter.sendMail({
@@ -168,12 +173,7 @@ export async function kirimEmailNotifikasi(emailTujuan, namaPeserta, status, cat
       to: emailTujuan,
       subject: subjek,
       html: pesanHtml,
-      attachments: (apakahRefund && pathLampiran) ? [
-        {
-          filename: 'Bukti_Refund.jpg',
-          path: join(process.cwd(), 'public', pathLampiran)
-        }
-      ] : []
+      attachments: attachments
     });
     return true;
   } catch (error) {
