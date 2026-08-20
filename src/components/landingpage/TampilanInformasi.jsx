@@ -37,23 +37,34 @@ const hitungStatus = (item) => {
 
 // Menampilkan Poster dan Timeline Kegiatan Perlombaan
 export default function TampilanInformasi({ data }) {
+  const [indeksPoster, setIndeksPoster] = React.useState(0);
+  const [modalOpen, setModalOpen] = React.useState(false);
+
+  // Ambil list poster atau fallback dari single poster
+  const listPoster = React.useMemo(() => {
+    if (data.posterList && Array.isArray(data.posterList) && data.posterList.length > 0) {
+      return data.posterList.filter(Boolean);
+    }
+    return data.poster ? [data.poster] : [];
+  }, [data.posterList, data.poster]);
+
   return (
     // Bagian Poster & Timeline
     <div className="grid grid-cols-1 lg:grid-cols-1 lg:landscape:grid-cols-12 gap-10 lg:gap-12 items-start">
 
-      {/* Container Kolom Poster */}
+      {/* Container Kolom Poster Carousel */}
       <div className="lg:col-span-1 lg:landscape:col-span-6">
-        {/* Poster Tetep Terlihat Ketika Scrool */}
-        <div className="sticky top-28 space-y-6">
+        <div className="sticky top-28 space-y-4">
           <div className="relative group">
-            <div className="bg-white p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-2 border-slate-100 overflow-hidden transform transition-all duration-700">
-              <div className="relative rounded-xl overflow-hidden bg-slate-50">
-                {/* Menampilkan Poster */}
-                {data.poster ? (
+            <div className="bg-white p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-2 border-slate-100 overflow-hidden transition-all duration-700">
+              <div className="relative rounded-xl overflow-hidden bg-slate-50 min-h-[350px] flex items-center justify-center p-2 border border-slate-100">
+                {/* Menampilkan Poster Aktif */}
+                {listPoster.length > 0 ? (
                   <img
-                    src={data.poster}
-                    alt="Poster Lomba"
-                    className="w-full h-auto object-contain"
+                    src={listPoster[indeksPoster]}
+                    alt={`Poster Lomba ${indeksPoster + 1}`}
+                    onClick={() => setModalOpen(true)}
+                    className="w-full h-auto object-contain cursor-pointer hover:scale-[1.01] transition-transform duration-300 rounded-lg"
                   />
                 ) : (
                   // Tampilan Jika Poster Belum Ada
@@ -63,10 +74,72 @@ export default function TampilanInformasi({ data }) {
                   </div>
                 )}
               </div>
+
+              {/* Indikator Titik Slider & Nomor Poster */}
+              {listPoster.length > 0 && (
+                <div className="flex items-center justify-between mt-3 px-2">
+                  <span className="text-[12px] font-medium text-slate-500">
+                    Poster {indeksPoster + 1} dari {listPoster.length}
+                  </span>
+
+                  {listPoster.length > 1 && (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setIndeksPoster(prev => (prev === 0 ? listPoster.length - 1 : prev - 1))}
+                        className="w-7 h-7 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all flex items-center justify-center"
+                        title="Sebelumnya"
+                      >
+                        ❮
+                      </button>
+
+                      <div className="flex gap-1.5 px-1">
+                        {listPoster.map((_, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setIndeksPoster(idx)}
+                            className={`h-2 rounded-full transition-all duration-300 ${idx === indeksPoster ? 'bg-[#16B9FF] w-5' : 'bg-slate-200 w-2 hover:bg-slate-300'
+                              }`}
+                          />
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => setIndeksPoster(prev => (prev === listPoster.length - 1 ? 0 : prev + 1))}
+                        className="w-7 h-7 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all flex items-center justify-center"
+                        title="Selanjutnya"
+                      >
+                        ❯
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal Lightbox Perbesar Poster */}
+      {modalOpen && listPoster[indeksPoster] && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setModalOpen(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] flex items-center justify-center" onClick={e => e.stopPropagation()}>
+            <img
+              src={listPoster[indeksPoster]}
+              alt="Perbesar Poster"
+              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+            />
+            <button
+              onClick={() => setModalOpen(false)}
+              className="absolute -top-4 -right-4 w-9 h-9 bg-white text-slate-800 rounded-full font-bold shadow-xl flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Container Timeline */}
       <div className="lg:col-span-1 lg:landscape:col-span-6 space-y-8">

@@ -75,8 +75,8 @@ export async function POST(request) {
           }
         }
 
-        // Hapus file fisik foto dokumentasi yang dihapus oleh admin
-        if (key === 'foto_dokumentasi_list') {
+        // Hapus file fisik foto dokumentasi atau poster yang dihapus oleh admin
+        if (key === 'foto_dokumentasi_list' || key === 'poster_list') {
           try {
             const [lama] = await db.query('SELECT nilai FROM pengaturan WHERE nama_key = ?', [key]);
             if (lama.length > 0 && lama[0].nilai) {
@@ -90,7 +90,7 @@ export async function POST(request) {
               }
             }
           } catch (err) {
-            console.error("Gagal membersihkan file dokumentasi lama:", err.message);
+            console.error(`Gagal membersihkan file ${key} lama:`, err.message);
           }
         }
 

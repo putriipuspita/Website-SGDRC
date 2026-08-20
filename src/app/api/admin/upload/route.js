@@ -13,6 +13,19 @@ export async function POST(request) {
     const formData = await request.formData();
     const file = formData.get('file');
     const folder = formData.get('folder') || 'umum';
+    const fileLama = formData.get('fileLama');
+
+    // Hapus file lama jika ada
+    if (fileLama && typeof fileLama === 'string' && fileLama.startsWith('/uploads/')) {
+      try {
+        const fullPathLama = path.join(process.cwd(), 'public', fileLama);
+        await fs.unlink(fullPathLama);
+      } catch (err) {
+        if (err.code !== 'ENOENT') {
+          console.error("Gagal hapus file fisik lama saat re-upload:", err.message);
+        }
+      }
+    }
 
     // Validasi File Upload
     if (!file) {

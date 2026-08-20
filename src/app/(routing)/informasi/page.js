@@ -23,9 +23,22 @@ async function ambilDataInformasi() {
       }
     }
 
+    // Data poster list
+    let posterList = [];
+    if (pengaturan.poster_list) {
+      try {
+        posterList = JSON.parse(pengaturan.poster_list);
+      } catch (e) {
+        posterList = pengaturan.poster_utama ? [pengaturan.poster_utama] : [];
+      }
+    } else if (pengaturan.poster_utama) {
+      posterList = [pengaturan.poster_utama];
+    }
+
     // Return data informasi
     return {
       poster: pengaturan.poster_utama || '',
+      posterList: posterList,
       timeline: timelineList,
       judulEvent: pengaturan.judul_hero || `SGDRC ${new Date().getFullYear()}`
     };

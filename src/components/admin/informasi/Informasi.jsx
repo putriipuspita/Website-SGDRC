@@ -107,6 +107,7 @@ const Informasi = () => {
 
           // Poster dan Timeline
           poster_utama: data.poster_utama || '',
+          poster_list: data.poster_list || (data.poster_utama ? JSON.stringify([data.poster_utama]) : '[]'),
           timeline_list: data.timeline_list || '[]',
 
           // Dokumentasi
@@ -206,12 +207,15 @@ const Informasi = () => {
     }
   };
 
-  // Fungsi Upload File (tanpa notifikasi popup)
-  const prosesUploadFile = async (file, folder, pesanLoading = "Mengunggah...") => {
+  // Fungsi Upload File
+  const prosesUploadFile = async (file, folder, pesanLoading = "Mengunggah...", fileLama = null) => {
     if (!file) return null;
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
+    if (fileLama) {
+      formData.append('fileLama', fileLama);
+    }
     try {
       const res = await fetchDenganToken('/api/admin/upload', { method: 'POST', body: formData });
       if (res.ok) {

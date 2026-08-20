@@ -79,11 +79,23 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
   const [editPoster, setEditPoster] = useState(false);
   const [editTimeline, setEditTimeline] = useState(false);
 
-  const [posterBaru, setPosterBaru] = useState(data.poster_utama || '');
+  const [posterList, setPosterList] = useState([]);
+  const [indeksPoster, setIndeksPoster] = useState(0);
   const [timeline, setTimeline] = useState([]);
 
-  // Inisialisasi timeline dari JSON string
+  // Inisialisasi poster dan timeline dari JSON string
   useEffect(() => {
+    if (data.poster_list) {
+      try {
+        const parsed = JSON.parse(data.poster_list);
+        setPosterList(Array.isArray(parsed) ? parsed : []);
+      } catch (e) {
+        setPosterList(data.poster_utama ? [data.poster_utama] : []);
+      }
+    } else if (data.poster_utama) {
+      setPosterList([data.poster_utama]);
+    }
+
     if (data.timeline_list) {
       try {
         setTimeline(JSON.parse(data.timeline_list));
@@ -91,7 +103,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
         setTimeline([]);
       }
     }
-  }, [data.timeline_list]);
+  }, [data.poster_list, data.poster_utama, data.timeline_list]);
 
   // Fungsi Tambah Timeline
   const tambahTimeline = () => {
@@ -116,14 +128,32 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
     setTimeline(timeline.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
-  // Fungsi Upload Poster
-  const tanganiUploadPoster = async (e) => {
+  // Fungsi Upload / Ganti Poster Tertentu
+  const tanganiUploadPoster = async (e, targetIndex = null) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const path = await prosesUploadFile(file, 'poster', "Mengunggah poster...");
+    const fileLama = targetIndex !== null ? posterList[targetIndex] : null;
+    const path = await prosesUploadFile(file, 'poster', "Mengunggah poster...", fileLama);
     if (path) {
-      setPosterBaru(path);
+      if (targetIndex !== null) {
+        const listBaru = [...posterList];
+        listBaru[targetIndex] = path;
+        setPosterList(listBaru);
+      } else {
+        const listBaru = [...posterList, path];
+        setPosterList(listBaru);
+        setIndeksPoster(listBaru.length - 1);
+      }
+    }
+  };
+
+  // Fungsi Hapus Poster Tertentu
+  const tanganiHapusPoster = (idxHapus) => {
+    const listBaru = posterList.filter((_, i) => i !== idxHapus);
+    setPosterList(listBaru);
+    if (indeksPoster >= listBaru.length) {
+      setIndeksPoster(Math.max(0, listBaru.length - 1));
     }
   };
 
@@ -133,7 +163,8 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
     try {
       const payload = {
         umum: {
-          poster_utama: posterBaru,
+          poster_utama: posterList[0] || '',
+          poster_list: JSON.stringify(posterList),
           timeline_list: JSON.stringify(timeline.map(item => ({
             ...item,
             status: hitungStatus(item),
@@ -182,14 +213,14 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm h-fit">
 
             {/* Container Header */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-4">
               {/* Judul dan Icon */}
               <div className="flex items-center gap-2">
                 <ImageIcon size={18} className="text-[#16B9FF]" />
                 <h3 className="font-black text-slate-800 text-[13px] uppercase">Poster Utama</h3>
               </div>
 
-              {/* Container Tombol */}
+              {/* Container Tombol Edit */}
               <div className="flex gap-2">
                 <button
                   onClick={() => {
@@ -197,7 +228,7 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
                     setEditPoster(!editPoster);
                   }}
                   disabled={sedangMenyimpan}
-                  className={`px-4 py-2.5 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editPoster
+                  className={`px-4 py-2 rounded-xl text-[11.5px] sm:text-[11px] font-bold transition-all flex items-center gap-2 shadow-sm ${editPoster
                       ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                       : 'bg-[#0B255D] text-white hover:bg-blue-500'
                     } disabled:opacity-50`}
@@ -215,31 +246,90 @@ const Jadwal = ({ data, ambilData, prosesUploadFile }) => {
               </div>
             </div>
 
+            {/* Tombol Aksi Tambah / Ganti / Hapus di atas Gambar (Saat Mode Edit) */}
+            {editPoster && (
+              <div className="grid grid-cols-3 gap-2 mb-4 p-2 bg-slate-50 rounded-xl border border-slate-200">
+                {/* Ganti Poster */}
+                {posterList.length > 0 && posterList[indeksPoster] ? (
+                  <>
+                    <label className="cursor-pointer bg-white hover:bg-slate-100 text-slate-700 px-2 py-2 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 border border-slate-200 text-center shadow-sm">
+                      <UploadCloud size={14} className="text-blue-500 shrink-0" /> <span className="truncate">Ganti</span>
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => tanganiUploadPoster(e, indeksPoster)} />
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() => tanganiHapusPoster(indeksPoster)}
+                      className="bg-rose-50 hover:bg-rose-100 text-rose-600 px-2 py-2 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 border border-rose-200 shadow-sm"
+                    >
+                      <Trash2 size={14} className="shrink-0" /> <span className="truncate">Hapus</span>
+                    </button>
+                  </>
+                ) : (
+                  <div className="col-span-2"></div>
+                )}
+
+                {/* Tambah Poster Baru */}
+                <label className="cursor-pointer bg-blue-50 hover:bg-blue-100 text-[#0066da] px-2 py-2 rounded-lg text-[11px] font-semibold transition-all flex items-center justify-center gap-1 border border-blue-200 text-center shadow-sm">
+                  <Plus size={14} className="shrink-0" /> <span className="truncate">Tambah</span>
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => tanganiUploadPoster(e, null)} />
+                </label>
+              </div>
+            )}
+
             {/* Container Gambar Poster */}
-            <div className="relative group rounded-2xl overflow-hidden border-2 border-slate-100 bg-slate-50 min-h-[400px] flex items-center justify-center">
-              {posterBaru ? (
-                // Tampilan Poster
+            <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 min-h-[380px] flex items-center justify-center p-2">
+              {posterList.length > 0 && posterList[indeksPoster] ? (
                 <img
-                  src={posterBaru}
-                  alt="Poster Utama"
-                  className="w-full h-auto object-contain max-h-[600px]"
+                  src={posterList[indeksPoster]}
+                  alt={`Poster ${indeksPoster + 1}`}
+                  className="w-full h-auto object-contain max-h-[550px] rounded-lg"
                 />
               ) : (
-
-                // Tampilan Jika Tidak Ada Poster
                 <div className="text-center p-10">
                   <ImageIcon size={48} className="text-slate-200 mx-auto mb-3" />
                   <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide leading-relaxed">Belum ada poster</p>
                 </div>
               )}
+            </div>
 
-              {/* Opsi Upload Poster */}
-              {editPoster && (
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                  <label className="cursor-pointer bg-white p-4 rounded-full text-slate-800 shadow-xl hover:scale-110 transition-transform flex items-center justify-center">
-                    <UploadCloud size={24} />
-                    <input type="file" className="hidden" accept="image/*" onChange={tanganiUploadPoster} />
-                  </label>
+            {/* Baris Navigasi & Info Status di Bawah Gambar */}
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <span className="text-[12px] font-medium text-slate-500">
+                Poster {posterList.length > 0 ? indeksPoster + 1 : 0} dari {posterList.length}
+              </span>
+
+              {/* Tombol Geser & Indikator Titik */}
+              {posterList.length > 1 && (
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIndeksPoster(prev => (prev === 0 ? posterList.length - 1 : prev - 1))}
+                    className="w-7 h-7 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all flex items-center justify-center"
+                    title="Sebelumnya"
+                  >
+                    ❮
+                  </button>
+
+                  <div className="flex gap-1 px-1">
+                    {posterList.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setIndeksPoster(i)}
+                        className={`h-2 rounded-full transition-all duration-300 ${i === indeksPoster ? 'bg-[#16B9FF] w-4' : 'bg-slate-200 w-2'
+                          }`}
+                      />
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIndeksPoster(prev => (prev === posterList.length - 1 ? 0 : prev + 1))}
+                    className="w-7 h-7 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-all flex items-center justify-center"
+                    title="Selanjutnya"
+                  >
+                    ❯
+                  </button>
                 </div>
               )}
             </div>

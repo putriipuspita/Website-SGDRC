@@ -81,7 +81,8 @@ const Umum = ({
   // Fungsi Upload Dokumentasi Satu per Satu
   const handleUploadSingleFoto = async (index, file) => {
     if (!file) return;
-    const path = await prosesUploadFile(file, 'dokumentasi', "Mengunggah foto...");
+    const fileLama = listFoto[index];
+    const path = await prosesUploadFile(file, 'dokumentasi', "Mengunggah foto...", fileLama);
     if (path) {
       const newList = [...listFoto];
       newList[index] = path;
